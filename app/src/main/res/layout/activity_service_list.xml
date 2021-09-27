@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_01" />
+
+    <ImageView
+        android:layout_width="@dimen/h_1000"
+        android:layout_height="@dimen/h_1000"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:src="@drawable/icono_cablebox"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="1200dp"
+        android:layout_height="1000dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="-10dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/watchingtv" />
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="84dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="0dp"
+        android:alpha="1"
+        android:src="@drawable/icono_cablebox" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="11dp"
+        tools:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/iv_and"
+            android:layout_width="@dimen/h_50"
+            android:layout_height="@dimen/h_50"
+            android:src="@drawable/android" />
+
+
+        <ImageView
+            android:id="@+id/iv_ios"
+            android:layout_width="@dimen/h_50"
+            android:layout_height="@dimen/h_50"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/iv_and"
+            android:src="@drawable/apple" />
+
+        <ImageView
+            android:id="@+id/iv_linux"
+            android:layout_width="@dimen/h_50"
+            android:layout_height="@dimen/h_50"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/iv_ios"
+            android:src="@drawable/linux" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_botones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/h_100"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <RelativeLayout
+                android:id="@+id/ini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/h_20"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/btn_iniciar"
+                    android:layout_width="@dimen/h_250"
+                    android:layout_height="@dimen/h_250"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/mybutton_home" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_iniciar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Canales"
+                    android:textSize="@dimen/h_50" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/h_20"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/btn_wifi"
+                    android:layout_width="@dimen/h_250"
+                    android:layout_height="@dimen/h_250"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/mybutton_wifi"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_wifi"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Red"
+                    android:textSize="@dimen/h_50" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_actua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/h_20"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/btn_actua"
+                    android:layout_width="@dimen/h_250"
+                    android:layout_height="@dimen/h_250"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/mybutton_actua"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_actua"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Actualizar"
+                    android:textSize="@dimen/h_50" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_config_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_version"
+        android:layout_below="@+id/ll_botones"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="@dimen/h_100"
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/h_20">
+
+            <Button
+                android:id="@+id/btn_apps"
+                android:layout_width="@dimen/h_250"
+                android:layout_height="@dimen/h_250"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/mybutton_apps" />
+
+            <TextView
+                android:id="@+id/tv_apps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_apps"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Apps"
+                android:textSize="@dimen/h_50" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/h_20">
+
+            <Button
+                android:id="@+id/btn_cambiar_ip"
+                android:layout_width="@dimen/h_250"
+                android:layout_height="@dimen/h_250"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/mybutton_cambiar" />
+
+            <TextView
+                android:id="@+id/tv_bus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_cambiar_ip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Nueva IP"
+                android:textSize="@dimen/h_50" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/h_20">
+
+            <Button
+                android:id="@+id/btn_fabrica"
+                android:layout_width="@dimen/h_250"
+                android:layout_height="@dimen/h_250"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/mybutton_fabrica" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_fabrica"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Reinicar"
+                android:textSize="@dimen/h_50" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_btn_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/h_20">
+
+            <Button
+                android:id="@+id/btn_switch"
+                android:layout_width="@dimen/h_250"
+                android:layout_height="@dimen/h_250"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/mybutton_to_unicast" />
+
+            <TextView
+                android:id="@+id/tv_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_switch"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Multicast"
+                android:textSize="@dimen/h_50" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_redes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_version"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/ll_botones"
+        android:background="#CC3A4053"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/wifiActivationTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Wi-Fi"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/wifiActivationTv"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="start"
+                android:layout_marginTop="1dp"
+                android:fontFamily="@font/segoe_ui_italic"
+                android:text="Para desconectarte de una red, manten presionado un segundo"
+                android:textSize="12dp" />
+
+            <Switch
+                android:id="@+id/wifiActivationSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:switchMinWidth="@dimen/h_20" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp">
+
+            <TextView
+                android:id="@+id/tv_redes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Redes disponibles"
+                android:textColor="#3DA8C0"
+                android:textSize="13dp"></TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wifiRv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_redes"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="1dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_ip_nueva"
+        android:layout_width="@dimen/w_1500"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/back_03"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/w_10"
+            android:textSize="@dimen/w_80"
+            android:textColor="#fff"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:gravity="center"
+            android:text="IP"/>
+
+        <EditText
+            android:id="@+id/et_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/w_150"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/w_10"
+            android:textSize="@dimen/w_70"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:hint="Nueva IP" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/w_20"
+            android:layout_marginStart="@dimen/w_500"
+            android:background="@drawable/mybutton"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Ok"
+            android:textSize="@dimen/w_60" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_mensaje_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_10"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/h_100"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/tv_inf_wi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_40"
+            android:text="No hay una Red conectada"></TextView>
+
+        <ImageView
+            android:layout_width="@dimen/h_40"
+            android:layout_height="@dimen/h_40"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/tv_inf_wi"
+            android:src="@drawable/no_signal"></ImageView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:alpha="0.5"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:text="Version 1.0.0"
+        android:textSize="@dimen/h_40"></TextView>
+
+    <LinearLayout
+        android:id="@+id/ll_descarga"
+        android:layout_width="@dimen/h_700"
+        android:layout_height="@dimen/h_400"
+        android:background="#CC3A4053"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_50"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_60"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Descargando..."></TextView>
+
+        <TextView
+            android:id="@+id/tv_por_descarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_40"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="%"></TextView>
+
+        <SeekBar
+            android:id="@+id/sb_descarga"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"></SeekBar>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_actualizando"
+        android:layout_width="@dimen/h_1000"
+        android:layout_height="@dimen/h_400"
+        android:background="#CC3A4053"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_50"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_60"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Actualizando Informacion..."></TextView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_50" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_mns_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_descarga"
+        android:layout_marginHorizontal="@dimen/h_50"
+        android:layout_marginVertical="@dimen/h_10"
+        android:background="#3B504E"
+        android:fontFamily="@font/segoe_ui"
+        android:padding="@dimen/h_28"
+        android:text="Si la instalacion Automatica no se inicio vaya a su almacenamiento interno y en la carpeta /apk encontrara CableBoxTv.apk para instalar.\nRecuerde permitir la instalacion de aplicaciones provenientes de fuentes desconocidas en la configuracion del celular."
+        android:textSize="@dimen/h_45"
+        android:visibility="invisible"></TextView>
+
+    <TextView
+        android:id="@+id/tv_imei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:textSize="@dimen/h_40"
+        android:text="IMEI: "
+        android:visibility="invisible"></TextView>
+
+</RelativeLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#fff"
+    tools:context=".activity.PermissionActivity">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_01"/>
+
+    <ImageView
+        android:layout_width="@dimen/h_1000"
+        android:layout_height="@dimen/h_1000"
+        android:src="@drawable/icono_cablebox"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="50dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:text="Porfavor acepte los permisos para continuar"
+        android:textSize="25dp"></TextView>
+
+</RelativeLayout>

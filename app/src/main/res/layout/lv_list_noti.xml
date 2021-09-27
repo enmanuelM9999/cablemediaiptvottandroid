@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/tv_notifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/h_100"
+        android:textColor="#fff"
+        android:layout_marginTop="0dp"
+        android:background="@drawable/degradado_aa"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/h_20"
+        android:text="Esto es un mensaje de prueba"
+        android:textSize="@dimen/h_35"/>
+
+</RelativeLayout>
