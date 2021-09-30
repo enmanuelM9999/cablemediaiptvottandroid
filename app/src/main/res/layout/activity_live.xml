@@ -522,7 +522,8 @@
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/button_fav" />
+                android:src="@drawable/button_fav"
+                tools:visibility="gone" />
 
             <!--<RelativeLayout
                 android:id="@+id/iv_notificaciones"
