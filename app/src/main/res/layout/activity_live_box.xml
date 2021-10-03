@@ -476,7 +476,8 @@
                 android:layout_marginBottom="@dimen/w_20"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/button_fav" />
+                android:src="@drawable/button_fav"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_list"
