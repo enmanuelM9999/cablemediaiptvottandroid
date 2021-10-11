@@ -465,7 +465,7 @@
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/ic_exit_app" />
+                android:src="@drawable/ic_exit" />
 
             <ImageView
                 android:id="@+id/iv_bloquear"
@@ -566,7 +566,7 @@
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/ic_dig_num" />
+                android:src="@drawable/ic_dig_numero" />
 
             <ImageView
                 android:id="@+id/iv_list"
