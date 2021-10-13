@@ -183,7 +183,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private final static String IP_KEY = "ipLista";
 
         //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
-        private static String direcPag = "51.161.73.204";
+        private static String direcPag = "ipmux.cablebox.co";
     // Leer y obtener informacion de los canales a traves de un JSON
         private static String BASE_URI = "http://"+direcPag+":5509/api/RestController.php";
         private static String BASE_URI_AUX = "http://51.161.73.204:5509/api/RestController.php";
@@ -312,7 +312,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         ButterKnife.bind(this);
 
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-        direcPag = sharpref.getString("IP", "51.161.73.204");// ipmux
+        direcPag = sharpref.getString("IP", direcPag);// ipmux
         BASE_URI = "http://"+direcPag+":5509/api/RestController.php";
 
         /*String ip = PreUtils.getString(ServiceProgramActivity.this, IP_KEY, "http://"+direcPag+":5509/api/RestController.php");
@@ -510,7 +510,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
             handler.removeMessages(CODE_ACT_PLAN);
             SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-            etIP.setText(sharpref.getString("IP", "51.161.73.204"));
+            etIP.setText(sharpref.getString("IP", direcPag));
 
             llIpNueva.setVisibility(View.VISIBLE);
         }
@@ -534,7 +534,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     direcPag = etIP.getText().toString();
                     SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharepref.edit();
-                    editor.putString("IP", etIP.getText().toString());
+                    editor.putString("IP", direcPag);
                     editor.commit();
                     BASE_URI = "http://"+direcPag+"/api/RestController.php";
 

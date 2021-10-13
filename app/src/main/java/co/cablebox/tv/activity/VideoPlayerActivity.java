@@ -105,7 +105,7 @@ import com.google.gson.Gson;
 public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideoLayoutListener {
     private static final String TAG = VideoPlayerActivity.class.getName();
 
-    private static String direcPag = "51.161.73.204";
+    private static String direcPag = "ipmux.cablebox.co";
     //Volley
     private Gson gson;
 
@@ -2083,9 +2083,10 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
                     numTaps++;
                     if(numTaps == 2){
                         numTaps = 0;
-                        toggleOptions();
+
                     }
                     handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    toggleOptions();
                     toggleInfoChannel();
                     togglePlaylist();
                     handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, 5000);
@@ -2886,7 +2887,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
         pbError.setText("");
         pbError.setVisibility(View.INVISIBLE);
         tvProgramA.setText("");
-        tvProgramB.setText("");
+        tvProgramB.setText("CableExito");
         tvHorarioIni.setText("");
         tvHorarioFin.setText("");
 
