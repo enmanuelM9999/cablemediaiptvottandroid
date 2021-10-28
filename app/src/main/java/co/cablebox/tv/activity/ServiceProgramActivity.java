@@ -972,13 +972,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 //Si el IMEI no es Null significa que la aplicacion se esta ejecutando en un Celular, si no la App esta en una TvBox
                 consultarPermiso(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
 
-                VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
-                /*if (imei != null) {
+                //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
+                if (imei != null) {
                     VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
                 }else{
                     imei = getSerialNumber();
                     VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, direcPag);
-                }*/
+                }
 
                 finish();
 

@@ -2473,10 +2473,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Animaciones para navegar entre las opciones(Solo para TvBox)
     private void navOpciones(){
-        if(posOpcion > 3)
+        if(posOpcion > 2)
             posOpcion  = 1;
         else if(posOpcion < 1)
-            posOpcion = 3;
+            posOpcion = 2;
         System.out.println("posOpcion "+posOpcion);
         ivList.setBackground(getDrawable(R.drawable.borde_volumen));
         ivFavorite.setBackground(getDrawable(R.drawable.borde_volumen));
@@ -2486,10 +2486,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             case 1:
                 ivList.setBackground(getDrawable(R.drawable.bordes_suave_act));
                 break;
-            case 2:
+            /*case 2:
                 ivFavorite.setBackground(getDrawable(R.drawable.bordes_suave_act));
                 break;
-            case 3:
+
+             */
+            case 2:
                 ivInformation.setBackground(getDrawable(R.drawable.bordes_suave_act));
         }
     }
@@ -2509,6 +2511,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
                 break;
 
+            /*
             case 2:
                 if(consultarFavorito(liveBean.getData().get(channelIndex).getName())){
                     //Remover Fav por SQLite
@@ -2547,7 +2550,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 break;
 
-            case 3:
+
+             */
+            case 2:
                 ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
                 exitOptions();
                 channelIndex = liveBean.getData().size()-1;
