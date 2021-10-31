@@ -2165,8 +2165,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        String toastText=""+keyCode+" onKeyDown";
-        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
         switch (keyCode) {
 
             case KeyEvent.KEYCODE_HOME:
@@ -2410,8 +2408,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        String toastText=""+keyCode+" onKeyUp";
-        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
         switch (keyCode) {
 
 
