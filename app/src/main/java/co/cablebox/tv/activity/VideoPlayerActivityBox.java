@@ -3393,6 +3393,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     /*Cantidad de tiempo en milisegundos que debe pasar antes de que se oculte todo el hud */
     public int HUD_HIDE_TIME=5000;
+    /*Cantidad de tiempo en milisegundos que debe durar las animaciones de mostrar y ocultar elementos del hud*/
+    public int ANIM_TIME=1000;
 
     /*Métodos de alto nivel: son métodos más orientados al "qué hacer", no al "cómo hacerlo". Son los que se deben usar para interactuar con la vista, no usar los métodos de bajo nivel en la vista. Los métodos de alto nivel usan los métodos de bajo nivel
      */
@@ -3492,7 +3494,30 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * Método que muestra la barra inferior con la información del canal
      */
     public void showChannelInfo(){
-        rlDisplayDown.setVisibility(View.VISIBLE);
+        if(rlDisplayDown.getVisibility() == View.INVISIBLE){
+            if (animInBot == null) {
+                animInBot = new TranslateAnimation(0f, 0f, rlDisplayDown.getHeight(), 0f);
+                animInBot.setDuration(300);
+            }
+
+            animInBot.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    rlDisplayDown.setVisibility(View.VISIBLE);
+                    //tvChannelNumber.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            rlDisplayDown.startAnimation(animInBot);
+        }
     }
 
     /**
@@ -3506,11 +3531,31 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      *Método que muestra la barra superior de opciones
      */
     public void showOptions(){
-        rlOpciones.setBackground(null);
-        posOpcion = 1;
-        ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
-        ivList.setBackground(getDrawable(R.drawable.borde_volumen));
-        llOptions.setVisibility(View.VISIBLE);
+
+            if (animInOptions == null) {
+                animInOptions = new TranslateAnimation(0f, 0f, -llOptions.getHeight(), 0f);
+                animInOptions.setDuration(300);
+            }
+            animInOptions.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    rlOpciones.setBackground(null);
+                    posOpcion = 1;
+                    ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
+                    ivList.setBackground(getDrawable(R.drawable.borde_volumen));
+                    llOptions.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            llOptions.startAnimation(animInOptions);
 
 
     }
