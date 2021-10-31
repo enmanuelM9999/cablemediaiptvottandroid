@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -418,16 +419,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     break;
 
                 case CODE_GONE_PROGRAMINFO:
-                    if(rlDisplayDown.getVisibility() == View.VISIBLE){
-                        exitProgramList();
-                        exitInfoChannel();
-                        exitOptions();
-
-                        posOpcion = 1;
-                        ivList.setBackground(getDrawable(R.drawable.borde_volumen));
-                        ivFavorite.setBackground(getDrawable(R.drawable.borde_volumen));
-                        ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
-                    }
+                     clearScreen();
                     break;
 
                 case CODE_HIDE_VOLUMEN:
@@ -1290,7 +1282,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         } else {
                             if(numCurrent != channelIndex)
                                 showLoading();
-                            System.out.println("Cargando: " + Math.floor(event.getBuffering()) + "%");
+                            //System.out.println("Cargando: " + Math.floor(event.getBuffering()) + "%");
                         }
 
                         break;
@@ -1313,29 +1305,29 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         break;
 
                     case MediaPlayer.Event.PausableChanged:
-                        System.out.println("PausableChanged..............");
+                        //System.out.println("PausableChanged..............");
                         break;
 
                     case MediaPlayer.Event.EndReached:
-                        System.out.println("EndReached..............");
+                        //System.out.println("EndReached..............");
                         break;
 
                     case MediaPlayer.Event.MediaChanged:
-                        System.out.println("MediaChanged..............");
+                        //System.out.println("MediaChanged..............");
                         break;
 
                     case MediaPlayer.Event.Opening:
-                        System.out.println("Opening..............");
+                        //System.out.println("Opening..............");
                         break;
 
 
                     case MediaPlayer.Event.Paused:
-                        System.out.println("Paused..............");
+                        //System.out.println("Paused..............");
                         break;
 
 
                     case MediaPlayer.Event.Stopped:
-                        System.out.println("Stopped..............");
+                        //System.out.println("Stopped..............");
 
                         play(0);
 
@@ -1343,36 +1335,36 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
 
                     case MediaPlayer.Event.TimeChanged:
-                        System.out.println("TimeChanged..............");
+                        //System.out.println("TimeChanged..............");
                         break;
 
                     case MediaPlayer.Event.PositionChanged:
-                        System.out.println("PositionChanged..............");
+                        //System.out.println("PositionChanged..............");
                         break;
 
                     case MediaPlayer.Event.SeekableChanged:
-                        System.out.println("SeekableChanged..............");
+                        //System.out.println("SeekableChanged..............");
                         break;
 
                     case MediaPlayer.Event.LengthChanged:
-                        System.out.println("LengthChanged..............");
+                        //System.out.println("LengthChanged..............");
                         break;
 
                     case MediaPlayer.Event.Vout:
-                        System.out.println("Vout..............");
+                        //System.out.println("Vout..............");
                         break;
 
 
                     case MediaPlayer.Event.ESAdded:
-                        System.out.println("ESAdded..............");
+                        //System.out.println("ESAdded..............");
                         break;
 
                     case MediaPlayer.Event.ESDeleted:
-                        System.out.println("ESDeleted..............");
+                        //System.out.println("ESDeleted..............");
                         break;
 
                     case MediaPlayer.Event.ESSelected:
-                        System.out.println("ESSelected..............");
+                        //System.out.println("ESSelected..............");
                         break;
                 }
             }
@@ -2169,20 +2161,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Metodos para reconocer cuando se oprime una tecla desde controles compatibles con la TvBox
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_UP:
-                break;
 
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                break;
-        }
-        return super.onKeyLongPress(keyCode, event);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        String toastText=""+keyCode+" onKeyDown";
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
         switch (keyCode) {
 
             case KeyEvent.KEYCODE_HOME:
@@ -2192,7 +2176,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
-                System.out.println("Enter");
                 if (writingNum) {
                     System.out.println("Escribiendo Enter");
                     delayBusNum = 0;
@@ -2203,13 +2186,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }else {
                     System.out.println("Informacion Enter");
                     if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        toggleInfoChannel();
-                        togglePlaylist();
-                        viewInfo = true;
+                        clearAndShowChannelInfo();
                     }else{
-                        exitProgramList();
-                        exitInfoChannel();
-                        viewInfo = false;
+                        clearScreen();
                     }
                     setIdProgramaActual();
                     showProgramInfo();
@@ -2246,6 +2225,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         ivFavorite.setImageResource(R.drawable.button_fav);
                         rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
                     }
+
+                        change = false;
+                        setIdProgramaActual();
+                        showProgramInfo();
+                        changeChannel();
+
                 }
                 break;
 
@@ -2271,6 +2256,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         ivFavorite.setImageResource(R.drawable.button_fav);
                         rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
                     }
+
+                        change = false;
+                        setIdProgramaActual();
+                        showProgramInfo();
+                        changeChannel();
+
                 }
                 break;
 
@@ -2309,10 +2300,22 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 break;
 
             case KeyEvent.KEYCODE_MENU:
+                /*
                 if(llOptions.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
                     rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
                 }
-                break;
+
+                 */
+                if(isOptionsActive() || isChannelListActive()){
+                    clearScreen();
+                }
+                else{
+                    rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                    clearAndShowOptionsAndChannelInfo();
+                }
+                return true;
+                //break;
+
 
             case KeyEvent.KEYCODE_0:
                 writingNum = true;
@@ -2407,42 +2410,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        String toastText=""+keyCode+" onKeyUp";
+        Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
         switch (keyCode) {
 
-            case KeyEvent.KEYCODE_DPAD_UP:
-                if(llList.getVisibility() == View.INVISIBLE){
-                    change = false;
-                    setIdProgramaActual();
-                    showProgramInfo();
-                    changeChannel();
-                }
-                break;
 
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                if(llList.getVisibility() == View.INVISIBLE){
-                    change = false;
-                    setIdProgramaActual();
-                    showProgramInfo();
-                    changeChannel();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_MENU:
-                //toggleOptions();
-                if(llOptions.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
-                    posOpcion = 1;
-                    ivList.setBackground(getDrawable(R.drawable.borde_volumen));
-                    ivFavorite.setBackground(getDrawable(R.drawable.borde_volumen));
-                    ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
-
-                    rlOpciones.setBackground(null);
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
-                    toggleInfoChannel();
-                    togglePlaylist();
-                    toggleOptions();
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, 5000);
-                }
-                break;
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if(llOptions.getVisibility() == View.INVISIBLE){
@@ -3420,5 +3392,204 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             return 0;
         }
     };
+
+    //-----enmanuel
+
+    /*Cantidad de tiempo en milisegundos que debe pasar antes de que se oculte todo el hud */
+    public int HUD_HIDE_TIME=5000;
+
+    /*Métodos de alto nivel: son métodos más orientados al "qué hacer", no al "cómo hacerlo". Son los que se deben usar para interactuar con la vista, no usar los métodos de bajo nivel en la vista. Los métodos de alto nivel usan los métodos de bajo nivel
+     */
+
+
+    /**
+     *Este método limpia toda la pantalla y hace aparecer la barra inferior con la información del canal. Debe desaparecer en un tiempo definido
+     */
+    public void clearAndShowChannelInfo(){
+        clearScreen();
+        showChannelInfo();
+        clearScreen(HUD_HIDE_TIME);
+
+    }
+
+    /**
+     *Este método limpia toda la pantalla y hace aparecer el menú superior de opciones y la barra inferior con la información del canal. Debe desaparecer en un tiempo definido
+     */
+    public void clearAndShowOptionsAndChannelInfo(){
+        clearScreen();
+        showChannelInfo();
+        showOptions();
+        clearScreen(HUD_HIDE_TIME);
+
+    }
+
+    /**
+     *Este método limpia toda la pantalla y hace aparecer el menú izquierdo con la lista de canales y la barra inferior con la información del canal. Debe desaparecer en un tiempo definido
+     */
+    public void clearAndShowListAndChannelInfo(){
+        clearScreen();
+        showChannelInfo();
+        showChannelList();
+        clearScreen(HUD_HIDE_TIME);
+
+    }
+
+    // Canal siguiente
+    private void showNextChannel() {
+        //pausar la reproduccion
+        try {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
+        }catch (Exception e){
+            System.out.println("ERROR PAUSE");}
+
+        tvBlack.setVisibility(View.VISIBLE);
+        channelIndex++;
+
+        if (channelIndex >= liveBean.getData().size()) {
+            channelIndex = 0;
+        }
+    }
+
+    // Canal Anterior
+    private void showPreviousChannel() {
+        try {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
+        }catch (Exception e){
+            System.out.println("ERROR PAUSE");
+        }
+
+        tvBlack.setVisibility(View.VISIBLE);
+        channelIndex--;
+
+        if (channelIndex < 0) {
+            channelIndex = liveBean.getData().size() - 1;
+        }
+    }
+
+
+// Métodos de bajo nivel: Métodos más orientados al "cómo hacer" y no al "qué hacer". Dan soporte a los métodos de alto nivel
+
+    /**
+     *Este método limpia toda la pantalla para que solo se visualice el video
+     */
+    public void clearScreen(){
+        hideOptions();
+        hideChannelInfo();
+        hideChannelList();
+    }
+    /**
+     *Método que limpia toda la pantalla en un tiempo definido para que solo se visualice el video.
+     *@param millis es la cantidad de tiempo en milisegundos que deben pasar antes de que se limpie toda la pantalla
+     */
+    public void clearScreen(int millis){
+        handler.removeMessages(CODE_GONE_PROGRAMINFO);
+        handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, HUD_HIDE_TIME);
+    }
+
+
+
+    /**
+     * Método que muestra la barra inferior con la información del canal
+     */
+    public void showChannelInfo(){
+        rlDisplayDown.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Método que oculta la barra inferior con la información del canal
+     */
+    public void hideChannelInfo(){
+        rlDisplayDown.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     *Método que muestra la barra superior de opciones
+     */
+    public void showOptions(){
+        rlOpciones.setBackground(null);
+        posOpcion = 1;
+        ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
+        ivList.setBackground(getDrawable(R.drawable.borde_volumen));
+        llOptions.setVisibility(View.VISIBLE);
+
+
+    }
+
+
+    /**
+     *Método que oculta la barra superior con las opciones
+     */
+    public void hideOptions(){
+        llOptions.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Método que muestra la barra izquierda con la lista de canales
+     */
+    public void showChannelList(){
+        llList.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     *Método que oculta la barra izquierda con la lista de canales
+     */
+    public void hideChannelList(){
+        llList.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     *Método para saber si hay algún elemento visual (HUD) activo
+     * @return true o false
+     */
+    public boolean isSomeHudActive(){
+        boolean isActive=false;
+        if(
+                rlDisplayDown.getVisibility() == View.VISIBLE ||
+                        llOptions.getVisibility() == View.VISIBLE ||
+                        llList.getVisibility() == View.VISIBLE
+        ){
+            isActive= true;
+        }
+        return isActive;
+
+    }
+
+    /**
+     *Método para saber si las opciones estan visibles
+     * @return true o false
+     */
+    public boolean isOptionsActive(){
+        boolean isActive=false;
+        if(
+                llOptions.getVisibility() == View.VISIBLE
+        ){
+            isActive= true;
+        }
+        return isActive;
+
+    }
+
+    /**
+     *Método para saber si la lista izquierda de canales está visible
+     * @return true o false
+     */
+    public boolean isChannelListActive(){
+        boolean isActive=false;
+        if(
+                llList.getVisibility() == View.VISIBLE
+        ){
+            isActive= true;
+        }
+        return isActive;
+
+    }
+
+
+
+
 
 }
