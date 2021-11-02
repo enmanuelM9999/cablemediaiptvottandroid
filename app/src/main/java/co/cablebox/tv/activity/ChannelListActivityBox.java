@@ -376,6 +376,7 @@ public class ChannelListActivityBox extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 posCanal = i;
                 numRepro = canalesCategorias.get(posCategoria).get(posCanal).getNum();
+                showNewChannel();
             }
 
             @Override
@@ -1161,10 +1162,7 @@ public class ChannelListActivityBox extends Activity {
                 break;
 
             case KeyEvent.KEYCODE_MENU:
-                changeChannel();
-                actualizarListaProgramas();
-                pbError.setText("");
-                pbError.setVisibility(View.INVISIBLE);
+                showNewChannel();
                 break;
 
             case KeyEvent.KEYCODE_J:
@@ -2012,6 +2010,15 @@ public class ChannelListActivityBox extends Activity {
             ServiceProgramActivity.openLive(ChannelListActivityBox.this);
             finish();
         }
+    }
+
+    //enmanuel
+
+    public void showNewChannel(){
+        changeChannel();
+        actualizarListaProgramas();
+        pbError.setText("");
+        pbError.setVisibility(View.INVISIBLE);
     }
 
 }
