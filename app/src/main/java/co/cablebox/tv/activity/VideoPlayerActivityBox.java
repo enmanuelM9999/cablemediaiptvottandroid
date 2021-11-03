@@ -1427,6 +1427,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
 
+    // Iniciar actividad VideoPlayerActivity desde la vista de Categorias pero sin errores como openLiveB.
+    public static void openLiveC(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, int indexOfChannel) {
+        VideoPlayerActivityBox.mensajeBean = mensajeBean;
+        VideoPlayerActivityBox.liveBean = liveBean;
+        VideoPlayerActivityBox.IMEI = IMEI;
+        PreUtils.setInt(context, PROGRAM_KEY, indexOfChannel);
+        context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
+    }
+
     // Reproduce canal actual
     private void play(int position) {
         reproduccion = (Reproduccion) new Reproduccion().execute();
@@ -1579,7 +1588,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.removeMessages(CODE_ACT_PLAN);
 
             //ChannelListActivityBox.channelIndex = channelIndex;
-            ChannelListActivityBox.channelIndex = 1;
+            ChannelListActivityBox.channelIndex = 0;
             ChannelListActivityBox.openLive(this, liveBean, IMEI, mensajeBean, direcPag);
             finish();
         }
