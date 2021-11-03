@@ -1017,7 +1017,7 @@ public class ChannelListActivityBox extends Activity {
 
             surfaceView.setVisibility(View.INVISIBLE);
 
-            VideoPlayerActivityBox.openLiveC(this, liveBean, mensajeBean, IMEI,posCanal);
+            VideoPlayerActivityBox.openLiveC(this, liveBean, mensajeBean, IMEI,numRepro);
             finish();
         }
     }

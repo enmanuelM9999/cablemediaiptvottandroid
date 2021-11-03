@@ -590,6 +590,17 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     }
                 }
             });
+            lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO,10000);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
         } else {
             //no conectado a internet
             ButterKnife.bind(this);
@@ -1428,10 +1439,20 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Iniciar actividad VideoPlayerActivity desde la vista de Categorias pero sin errores como openLiveB.
-    public static void openLiveC(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, int indexOfChannel) {
+    public static void openLiveC(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String num) {
         VideoPlayerActivityBox.mensajeBean = mensajeBean;
         VideoPlayerActivityBox.liveBean = liveBean;
         VideoPlayerActivityBox.IMEI = IMEI;
+        //encontrar el index del canal elegido
+        int indexOfChannel=0;
+        for (int i = 0; i < VideoPlayerActivityBox.liveBean.getData().size(); i++) {
+            if (liveBean.getData().get(i).getNum().equals(num)) {
+                indexOfChannel=i;
+                VideoPlayerActivityBox.channelIndex = indexOfChannel;
+                break;
+            }
+        }
+        //cargar el activity
         PreUtils.setInt(context, PROGRAM_KEY, indexOfChannel);
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
@@ -1589,6 +1610,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             //ChannelListActivityBox.channelIndex = channelIndex;
             ChannelListActivityBox.channelIndex = 0;
+            PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
             ChannelListActivityBox.openLive(this, liveBean, IMEI, mensajeBean, direcPag);
             finish();
         }
