@@ -62,7 +62,8 @@
         <activity
             android:name=".activity.ServiceProgramActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:noHistory="true"/>
 
         <activity
             android:name=".activity.VideoPlayerActivity"

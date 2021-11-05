@@ -329,6 +329,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private static final String Q15QSFD = "55555"; // Lista de Programas instalados en el dispositivo (En el celular no funciona)
     private static final String Q12FAFD = "99999"; // Visualisar Consumo de CPU y RAM
     private static final String Q84ASNV = "12345"; //Cambiar IP
+    private static final String Q_LOAD_MAIN_ACTIVITY = "11111";
     private String wordKey = "";
 
     // Variables de Canal actual y programa actual
@@ -396,23 +397,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         delayBusNum = 3000;
                         wordKey = "";
                     } else if (wordKey.equals(Q84ASNV)){
-                        if (liveBean != null) {
-                            try {
-                                if (mediaPlayer.isPlaying()) {
-                                    mediaPlayer.pause();
-                                }
-                            }catch (Exception e){}
-
-                            surfaceview.setVisibility(View.INVISIBLE);
-                            mSubtitlesSurface.setVisibility(View.INVISIBLE);
-
-                            ServiceProgramActivity.openLive(VideoPlayerActivityBox.this);
-                            delayBusNum = 3000;
-                            wordKey = "";
-
-                            finish();
-                        }
-
+                        openServiceActivityAsTechnician();
                     }
                     delayBusNum = 3000;
                     wordKey = "";
@@ -1617,35 +1602,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     private void openServiceActivity() {
-        if (liveBean != null) {
-            try {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                }
-            }catch (Exception e){}
-
-            surfaceview.setVisibility(View.INVISIBLE);
-            mSubtitlesSurface.setVisibility(View.INVISIBLE);
-
-            socket.disconnect();
-            handler.removeMessages(CODE_SHOWLOADING);
-            handler.removeMessages(CODE_STOP_SHOWLOADING);
-            handler.removeMessages(CODE_HIDE_BLACK);
-            handler.removeMessages(CODE_CHANGE_BY_NUM);
-            handler.removeMessages(CODE_HIDE_ERROR);
-            handler.removeMessages(CODE_SALIR_APP);
-            handler.removeMessages(CODE_GONE_PROGRAMINFO);
-            handler.removeMessages(CODE_HIDE_VOLUMEN);
-            handler.removeMessages(CODE_HIDE_OPTION);
-            handler.removeMessages(CODE_DEG_LOCK);
-            handler.removeMessages(CODE_COLOR_NUM);
-            handler.removeMessages(CODE_CHANGE_CHANNEL);
-            handler.removeMessages(CODE_HIDE_NOT);
-            handler.removeMessages(CODE_ACT_PLAN);
-
-            ServiceProgramActivity.openLive(VideoPlayerActivityBox.this);
-            finish();
-        }
+        prepareForCloseVideoPlayerActivityBox();
+        ServiceProgramActivity.openLive(VideoPlayerActivityBox.this);
+        finish();
     }
 
     // Llenar Lista de Canales en interfaz
@@ -3497,6 +3456,44 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         if (channelIndex < 0) {
             channelIndex = liveBean.getData().size() - 1;
         }
+    }
+
+    //Abrir el activity principal
+    private void openServiceActivityAsTechnician(){
+        prepareForCloseVideoPlayerActivityBox();
+        ServiceProgramActivity.openLiveC(VideoPlayerActivityBox.this);
+        finish();
+    }
+
+    /**
+     * Este método prepara la activity para ser cerrada por completo y que no hayan eventos programados pendientes
+     */
+    public void prepareForCloseVideoPlayerActivityBox(){
+            try {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                }
+            }catch (Exception e){}
+
+            surfaceview.setVisibility(View.INVISIBLE);
+            mSubtitlesSurface.setVisibility(View.INVISIBLE);
+
+            socket.disconnect();
+            handler.removeMessages(CODE_SHOWLOADING);
+            handler.removeMessages(CODE_STOP_SHOWLOADING);
+            handler.removeMessages(CODE_HIDE_BLACK);
+            handler.removeMessages(CODE_CHANGE_BY_NUM);
+            handler.removeMessages(CODE_HIDE_ERROR);
+            handler.removeMessages(CODE_SALIR_APP);
+            handler.removeMessages(CODE_GONE_PROGRAMINFO);
+            handler.removeMessages(CODE_HIDE_VOLUMEN);
+            handler.removeMessages(CODE_HIDE_OPTION);
+            handler.removeMessages(CODE_DEG_LOCK);
+            handler.removeMessages(CODE_COLOR_NUM);
+            handler.removeMessages(CODE_CHANGE_CHANNEL);
+            handler.removeMessages(CODE_HIDE_NOT);
+            handler.removeMessages(CODE_ACT_PLAN);
+
     }
 
 

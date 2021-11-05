@@ -205,6 +205,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         private boolean viewApp = false;
 
+        // Variable que define si la activity se cargará en modo Técnico para hacer ajustes. False siginifica que no es un Técnico y la activity cargará normal para un usuario
+        private static boolean isTechnician=false;
+
     private static int what = 0;
     private Handler handler = new Handler() {
         @Override
@@ -385,6 +388,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         socketNoti();
 
         funciones();
+
+        if(!isTechnician){
+            setLiveData();
+        }
     }
 
     private void inicio() {
@@ -990,7 +997,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                     new AlertDialog.Builder(this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Dispositivo no registrado")
+                            .setTitle("Cargando canales. Por favor espere...") //Dispositivo no registrado
                             .setMessage("")
                             .setNegativeButton(null, null)// sin listener
                             .setPositiveButton(R.string.reintentar, new DialogInterface.OnClickListener() {// un listener que al pulsar, cierre la aplicacion
@@ -1050,6 +1057,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Metodo para cerrar la aplicacion
     public void cerrarApp() {
+        isTechnician=false;
+        openLive(this);
         finish();
 
         /*System.exit(0);
@@ -1219,6 +1228,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     public static void openLiveB(Context context) {
         ServiceProgramActivity.camPlan = true;
+        context.startActivity(new Intent(context, ServiceProgramActivity.class));
+    }
+
+    //Inicia la Actividad ServiceProgramActivity como un técnico/technician
+    public static void openLiveC(Context context) {
+        ServiceProgramActivity.isTechnician = true;
         context.startActivity(new Intent(context, ServiceProgramActivity.class));
     }
 

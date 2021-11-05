@@ -35,7 +35,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="0dp"
         android:alpha="1"
-        android:src="@drawable/icono_cablebox" />
+        android:src="@drawable/icono_cablebox"
+        tools:visibility="invisible" />
 
 
     <RelativeLayout
