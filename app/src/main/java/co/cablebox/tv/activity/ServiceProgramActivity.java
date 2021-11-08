@@ -389,7 +389,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         funciones();
 
-        if(!isTechnician){
+        if(!isTechnician){ //usuario normal
+            setContentView(R.layout.layout_cableoperador_loading);
             setLiveData();
         }
     }
@@ -992,7 +993,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }catch (Exception e){
                 //Lista de canales vacia
                 System.out.println("Error de direccion: "+e);
-
+                /*
                 try {
 
                     new AlertDialog.Builder(this)
@@ -1015,6 +1016,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                             })
                             .show();
                 }catch (Exception ex){ }
+
+                 */
             }
         }
     }
@@ -1301,6 +1304,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @Override
     protected void onDestroy() {
         destroyWifiConnectorListeners();
+        isTechnician=false;
         super.onDestroy();
     }
 
