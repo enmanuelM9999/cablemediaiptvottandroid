@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    >
 
     <LinearLayout
         android:id="@+id/ll_botones"
@@ -14,7 +14,8 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="#FFFFFF">
 
         <RelativeLayout
             android:id="@+id/rl_actua"

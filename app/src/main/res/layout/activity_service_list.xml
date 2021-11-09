@@ -152,7 +152,6 @@
                     android:id="@+id/btn_actua"
                     android:layout_width="@dimen/h_250"
                     android:layout_height="@dimen/h_250"
-                    android:layout_centerHorizontal="true"
                     android:background="@drawable/mybutton_actua" />
 
                 <TextView
@@ -527,5 +526,48 @@
         android:textSize="@dimen/h_40"
         android:text="IMEI: "
         android:visibility="invisible"></TextView>
+
+
+    <LinearLayout
+        android:id="@+id/ll_loading_channels"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:background="#FFFFFF"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/rl_loading_channels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/h_20"
+            android:layout_gravity="center">
+
+
+            <ImageView
+                android:id="@+id/logo_cableoperador"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:src="@drawable/cableoperador"></ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/logo_cableoperador"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Cargando canales... \n Presione 'MENU' para más opciones"
+                android:textSize="@dimen/h_50"
+                android:textColor="#000"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 </RelativeLayout>

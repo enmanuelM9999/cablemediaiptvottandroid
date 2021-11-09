@@ -3,7 +3,6 @@ package co.cablebox.tv.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,12 +38,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -66,21 +63,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 //import butterknife.Bind;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
 import co.cablebox.tv.actualizacion.MyReceiver;
@@ -99,8 +91,6 @@ import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.RemoveWifiListe
 import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.ShowWifiListener;
 import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.WifiConnectorModel;
 import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.WifiStateListener;
-
-import static co.cablebox.tv.activity.VideoPlayerActivityBox.IMEI;
 
 public class ServiceProgramActivity extends Activity implements WifiConnectorModel {
 
@@ -146,6 +136,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     @BindView(R.id.tv_imei)
     TextView tvImei;
+
+    @BindView(R.id.ll_loading_channels)
+    LinearLayout llLoadingChannels;
 
     private TranslateAnimation animInListWifi;
     private TranslateAnimation exitAnimListWifi;
@@ -202,6 +195,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private final static int CODE_SALIR_APP = 3;
         private final static int CODE_ACT = 4;
         private final static int CODE_ACT_PLAN = 5;
+        private final static int CODE_TRY_PLAYER = 6;
 
         private boolean viewApp = false;
 
@@ -213,6 +207,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case CODE_TRY_PLAYER:
+                    btnIniciarOnClick();
+                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,1000);
+                    break;
                 case CODE_NETWORK_SUCCESS:
                     setLiveData();
                     break;
@@ -251,7 +249,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 case CODE_ACT:
                     llActualizando.setVisibility(View.INVISIBLE);
                     actualizando = false;
-                    estadoBotones(true);
+                    setButtonsState(true);
 
                     handler.removeMessages(CODE_ACT_PLAN);
                     if(!onWifi){
@@ -322,7 +320,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         BASE_URI = ip;*/
         System.out.println("IP: "+BASE_URI);
 
-        estadoBotones(false);
+        setButtonsState(false);
 
         //Descargar Apk
         InitDescarga();
@@ -368,6 +366,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             list.add(n);
         }
 
+
         llActualizando.setVisibility(View.VISIBLE);
         new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -384,14 +383,16 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         }.start();
 
+
+
         inicio();
         socketNoti();
 
         funciones();
 
         if(!isTechnician){ //usuario normal
-            setContentView(R.layout.layout_cableoperador_loading);
-            setLiveData();
+            llLoadingChannels.setVisibility(View.VISIBLE);
+            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
         }
     }
 
@@ -471,19 +472,24 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     }
 
+    private void btnIniciarOnClick(){
+
+
+        if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+            handler.removeMessages(CODE_ACT_PLAN);
+            String localUrl = getServerFromFile(LOCAL_URL);
+            if (!TextUtils.isEmpty(localUrl)) {
+                BASE_URI = localUrl;
+            }
+            initData();
+        }
+    }
+
     private void funciones(){
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                handler.removeMessages(CODE_ACT_PLAN);
-                String localUrl = getServerFromFile(LOCAL_URL);
-                if (!TextUtils.isEmpty(localUrl)) {
-                    BASE_URI = localUrl;
-                }
-                //mQueue = Volley.newRequestQueue(this);
-                //volleyS = new VolleyS(mQueue);
-                initData();
-            }
+                btnIniciarOnClick();
+
             }
         });
 
@@ -505,7 +511,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         btnActua.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                estadoBotones(false);
+                setButtonsState(false);
                 handler.removeMessages(CODE_ACT_PLAN);
                 llDescarga.setVisibility(View.VISIBLE);
                 myReceiver.Descargar(direcPag);
@@ -943,6 +949,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 claveExit("5");
                 break;
 
+            case KeyEvent.KEYCODE_6:
+                break;
+
             case KeyEvent.KEYCODE_8:
                 claveExit("8");
                 break;
@@ -950,6 +959,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             case KeyEvent.FLAG_EDITOR_ACTION:
                 System.out.println("Oprimio Enter");
                 break;
+
+            case KeyEvent.KEYCODE_MENU:
+                llLoadingChannels.setVisibility(View.INVISIBLE);
+                setButtonsState(true);
+                return true;
+
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -1082,7 +1097,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     aux.append(imei);
                     aux.append("___");
                     aux.append(time);
-                    //mVolleyService.getDataVolley("GETCALL","http://cmxpon.cablebox.co:5505/api/RestController.php?q=client&tk=cf4da3d85afbe06c32828ac371a7c036f31f0e55ac4a4515e630baf56096a085");
                     JSONObject sendObj = null;
                     try {
                         System.out.println("-------------holi");
@@ -1305,11 +1319,16 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     protected void onDestroy() {
         destroyWifiConnectorListeners();
         isTechnician=false;
+        handler.removeMessages(CODE_NETWORK_SUCCESS);
+        handler.removeMessages(CODE_TRY_PLAYER);
         super.onDestroy();
     }
 
-
-    public void estadoBotones(boolean estado){
+    /**
+     * Sirve para hacer clickeables los botones de la interfaz
+     * @param estado
+     */
+    public void setButtonsState(boolean estado){
         System.out.println(estado);
         btnWifi.setClickable(estado);
         btnWifi.setFocusable(estado);
@@ -1328,6 +1347,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         btnOK.setClickable(estado);
         btnOK.setFocusable(estado);
     }
+
 
     //Animacion de Lista de Wifi
     public void toggleWifi() {
