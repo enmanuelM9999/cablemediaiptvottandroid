@@ -208,7 +208,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CODE_TRY_PLAYER:
-                    btnIniciarOnClick();
+                    try {
+                        btnIniciarOnClick();
+                    }catch(Exception e){
+                    }
                     handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,1000);
                     break;
                 case CODE_NETWORK_SUCCESS:
