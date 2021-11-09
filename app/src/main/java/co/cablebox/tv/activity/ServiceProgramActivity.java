@@ -338,8 +338,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         setLocationPermission();
         createWifiConnectorObject();
 
-        //EjemploSocket.openLive(this);
-
         consultarPermiso(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
         if(imei == null){
             isCel = false;
@@ -384,13 +382,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }.start();
 
 
-
-        inicio();
         socketNoti();
-
         funciones();
 
+        llLoadingChannels.setVisibility(View.INVISIBLE);
         if(!isTechnician){ //usuario normal
+            inicio();
             llLoadingChannels.setVisibility(View.VISIBLE);
             handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
         }
@@ -473,8 +470,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void btnIniciarOnClick(){
-
-
+        inicio();
         if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
             handler.removeMessages(CODE_ACT_PLAN);
             String localUrl = getServerFromFile(LOCAL_URL);
@@ -489,6 +485,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 btnIniciarOnClick();
+                Toast.makeText(ServiceProgramActivity.this, "Cargando canales...", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -1112,38 +1109,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                     mVolleyServiceCH.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
 
-                    /*if(camPlan) {
-                        camPlan = false;
-                        System.out.println("CAMBIANDO PLAN");
-                        inicarVid();
-                    }*/
-
-
-                    /*
-                    HttpURLConnection conn = (HttpURLConnection) new URL(BASE_URI).openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setConnectTimeout(2000);
-                    conn.setReadTimeout(2000);
-                    conn.connect();
-
-                    int responseCode = conn.getResponseCode();
-                    if (responseCode == 200) {
-                        InputStream is = conn.getInputStream();
-                        String s = StreamUtils.stream2String(is);
-                        if (!TextUtils.isEmpty(s)) {
-                            liveBean = gson.fromJson(s, LiveBean.class);
-
-                            File dirFile = new File(LIVE_DIR);
-                            if (!dirFile.exists()) {
-                                dirFile.mkdirs();
-                            }
-
-                            File file = new File(LIVE_DIR, LOCAL_LIST_FILE);
-                            FileOutputStream stream = new FileOutputStream(file);
-                            stream.write(s.getBytes());
-                            what = CODE_NETWORK_SUCCESS;
-                        }
-                    }*/
                 } catch (Exception e) {
                     System.out.println("Error "+e);
                 } finally {
@@ -1151,53 +1116,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         }.start();
 
-
-        /*mVolleyServiceMS = new VolleyService(mResultCallbackMS,this);
-        JSONObject sendObj = null;
-        try {
-            sendObj = new JSONObject("{'q':'messages','tk':'"+tk+"'}");
-        } catch (JSONException e) {
-            System.out.println("Error MS 1 "+e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error MS 2 "+e);
-            e.printStackTrace();
-        }
-        mVolleyServiceMS.postDataVolley("POSTCALL", "http://cmxpon.cablebox.co:5506/api/RestController.php", sendObj);*/
-
-
-       /*mVolleyServiceMS = new VolleyService(mResultCallbackMS,this);
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    //Mensajes
-                    System.out.println("Buscando Mensajes");
-                    Date date= new Date();
-                    long time = date.getTime();
-                    StringBuilder aux = new StringBuilder();
-                    aux.append(imei);
-                    aux.append("___");
-                    aux.append(time);
-
-                    JSONObject sendObj = null;
-                    try {
-                        String code = MCrypt.bytesToHex(mc.encrypt(aux.toString()));
-                        sendObj = new JSONObject("{'q':'messages','tk':'"+tk+"'}");
-                    } catch (JSONException e) {
-                        System.out.println("Error MS 1 "+e);
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        System.out.println("Error MS 2 "+e);
-                        e.printStackTrace();
-                    }
-                    mVolleyServiceMS.postDataVolley("POSTCALL", "http://cmxpon.cablebox.co:5506/api/RestController.php", sendObj);
-                } catch (Exception e) {
-                    System.out.println("Error MSMS "+e);
-                } finally {
-                }
-            }
-        }.start();*/
 
     }
 
@@ -1306,6 +1224,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         super.onPause();
         System.out.println("onPause");
         myReceiver.borrarRegistro(myReceiver);
+        isTechnician=false;
+        handler.removeMessages(CODE_NETWORK_SUCCESS);
+        handler.removeMessages(CODE_TRY_PLAYER);
     }
 
     @Override

@@ -75,4 +75,7 @@ dependencies {
 
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.1.0'
+
+    //animaciones
+    implementation 'com.airbnb.android:lottie:1.5.3'
 }

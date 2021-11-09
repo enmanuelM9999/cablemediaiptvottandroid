@@ -2524,7 +2524,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         pbError.setText("");
         pbError.setVisibility(View.INVISIBLE);
         tvProgramA.setText("");
-        tvProgramB.setText("");
+        tvProgramB.setText("CableEXITO");
         tvHorarioIni.setText("");
         tvHorarioFin.setText("");
 
