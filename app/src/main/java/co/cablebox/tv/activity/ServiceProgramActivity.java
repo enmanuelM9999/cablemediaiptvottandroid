@@ -844,7 +844,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getSerialNumber() {
         String serialNumber;
         try {
