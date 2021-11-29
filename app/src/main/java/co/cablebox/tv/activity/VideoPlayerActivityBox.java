@@ -2289,11 +2289,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_MENU:
                 /*
-                if(llOptions.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
-                    rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
-                }
-
-                 */
                 if(isOptionsActive() || isChannelListActive()){
                     clearScreen();
                 }
@@ -2303,7 +2298,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 return true;
                 //break;
-
+                 */
+                if(isOptionsActive() || isChannelListActive()){
+                    clearScreen();
+                }
+                else{
+                    clearAndShowChannelList();
+                }
+                return true;
 
             case KeyEvent.KEYCODE_0:
                 writingNum = true;
@@ -2392,6 +2394,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     ivMute.setVisibility(View.INVISIBLE);
                 }
                 break;
+
+            default:
+
+
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -2936,6 +2942,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Ejecuta el play del canal actual
     private void changeChannel() {
+        /*
         //ivlcVout.detachViews();
 
         if(liveBean.getData().get(channelIndex).getId().equals(numCanalInformativo)){
@@ -2945,6 +2952,20 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             pbError.setText("Problemas técnicos en el canal");
             play(channelIndex);
         }
+
+        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+        nuevoCanal = true;
+
+         */
+        //ivlcVout.detachViews();
+
+        if(liveBean.getData().get(channelIndex).getId().equals(numCanalInformativo)){
+            channelIndex=0;
+        }
+
+        pbError.setText("Problemas técnicos en el canal");
+        play(channelIndex);
+
 
         socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
         nuevoCanal = true;
@@ -3417,6 +3438,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public void clearAndShowListAndChannelInfo(){
         clearScreen();
         showChannelInfo();
+        showChannelList();
+        clearScreen(HUD_HIDE_TIME);
+
+    }
+
+    /**
+     *Este método limpia toda la pantalla y hace aparecer la lista de canales a la izquierda. Debe desaparecer en un tiempo definido
+     */
+    public void clearAndShowChannelList(){
+        clearScreen();
         showChannelList();
         clearScreen(HUD_HIDE_TIME);
 

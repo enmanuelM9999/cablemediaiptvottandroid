@@ -176,7 +176,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private final static String IP_KEY = "ipLista";
 
         //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
-        private static String direcPag = "ipmux.cablebox.co";
+        private static String direcPag = "51.161.73.204";
     // Leer y obtener informacion de los canales a traves de un JSON
         private static String BASE_URI = "http://"+direcPag+":5509/api/RestController.php";
         private static String BASE_URI_AUX = "http://51.161.73.204:5509/api/RestController.php";
@@ -1230,6 +1230,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         isTechnician=false;
         handler.removeMessages(CODE_NETWORK_SUCCESS);
         handler.removeMessages(CODE_TRY_PLAYER);
+        finish();
     }
 
     @Override
