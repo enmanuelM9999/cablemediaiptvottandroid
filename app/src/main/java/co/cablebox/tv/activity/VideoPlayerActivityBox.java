@@ -1458,7 +1458,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Escribiendo el numero del canal
     private void canalNum(String num) {
-        if (numChange.length() <= 2) {
+        if (numChange.length() <= 3) { //permite 3 digitos antes de agregar otro
             handler.removeMessages(CODE_CHANGE_BY_NUM);
             numChange += num;
 
@@ -2395,7 +2395,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 break;
 
-            default:
+            case KeyEvent.KEYCODE_SETTINGS:
+                Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
+                return true;
+
 
 
         }
@@ -2405,7 +2408,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
-
 
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:

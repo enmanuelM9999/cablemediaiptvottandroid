@@ -220,7 +220,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 case CODE_NETWORK_ERROR:
                     //Link de la lista de canales erroneo
-                    Toast.makeText(ServiceProgramActivity.this, "Error de Red!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(ServiceProgramActivity.this, "Error de Red!", Toast.LENGTH_LONG).show();
                     break;
 
                 case CODE_SALIR_APP:
@@ -1491,7 +1491,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
             @Override
             public void errorSearchingNetworks(int errorCode) {
-                Toast.makeText(ServiceProgramActivity.this, "Error al obtener lista de Wi-Fi, error: " + errorCode, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ServiceProgramActivity.this, "Error al obtener lista de Wi-Fi, error: " + errorCode, Toast.LENGTH_SHORT).show();
             }
         });
     }
