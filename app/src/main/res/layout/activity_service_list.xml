@@ -252,7 +252,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Reinicar"
+                android:text="Reiniciar IP"
                 android:textSize="@dimen/h_50" />
         </RelativeLayout>
 
@@ -278,7 +278,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Multicast"
+                android:text="Unicast"
                 android:textSize="@dimen/h_50" />
         </RelativeLayout>
     </LinearLayout>
@@ -491,7 +491,7 @@
             android:layout_marginTop="@dimen/h_50"
             android:fontFamily="@font/segoe_ui_bold"
             android:gravity="center"
-            android:text="Actualizando Informacion..."
+            android:text="Actualizando Información..."
             android:textSize="@dimen/h_60"></TextView>
 
         <ProgressBar

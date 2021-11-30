@@ -191,6 +191,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Acciones que se ejecutar si el JSON leido es correcto o no
         private final static int CODE_NETWORK_ERROR = 0;
+        private final static int CODE_NETWORK_ERROR = 0;
         private final static int CODE_NETWORK_SUCCESS = 1;
         private final static int CODE_SALIR_APP = 3;
         private final static int CODE_ACT = 4;
@@ -212,7 +213,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         btnIniciarOnClick();
                     }catch(Exception e){
                     }
-                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,1000);
+                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
                     break;
                 case CODE_NETWORK_SUCCESS:
                     setLiveData();
@@ -369,7 +370,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
 
         llActualizando.setVisibility(View.VISIBLE);
-        new CountDownTimer(10000, 1000) {
+        new CountDownTimer(3000, 1000) {
             public void onTick(long millisUntilFinished) {
 
             }
@@ -607,12 +608,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             public void onClick(View v) {
                 if(url_type.equals("multicast")){
                     url_type = "unicast";
-                    tpUrl.setText("Multicast");
+                    tpUrl.setText("Unicast");
                     Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Unicast", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     url_type = "multicast";
-                    tpUrl.setText("Unicast");
+                    tpUrl.setText("Multicast");
                     Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Multicast", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -1242,11 +1243,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         destroyWifiConnectorListeners();
         isTechnician=false;
-        handler.removeMessages(CODE_NETWORK_SUCCESS);
-        handler.removeMessages(CODE_TRY_PLAYER);
-        super.onDestroy();
+        removeAllHandlerMessages();
     }
 
     /**
@@ -1601,5 +1601,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         return onLocation;
     }
 
+    public void removeAllHandlerMessages(){
+        handler.removeMessages(CODE_ACT_PLAN);
+        handler.removeMessages(CODE_TRY_PLAYER);
+        handler.removeMessages(CODE_ACT);
+        handler.removeMessages(CODE_NETWORK_SUCCESS);
+        handler.removeMessages(CODE_NETWORK_ERROR);
+        handler.removeMessages(CODE_SALIR_APP);
+
+    }
 
 }

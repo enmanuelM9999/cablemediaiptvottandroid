@@ -513,12 +513,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_box);
 
-        /*if (!Settings.canDrawOverlays(getApplicationContext())) {
-            finishAndRemoveTask();
-            startActivity(new Intent("android.settings.action.MANAGE_OVERLAY_PERMISSION"));
-        }
-        bloquearBarras();*/
-
         if (isNetDisponible()) {
             //Conectado a internet
             ButterKnife.bind(this);
@@ -535,12 +529,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             setIdProgramaActual();
             showProgramInfo();
-
-            //Para TvBox (Deshabilita las acciones de celular)
-            /*ivNav.setVisibility(View.INVISIBLE);
-            llOptions.setVisibility(View.INVISIBLE);
-            ivBloquear.setVisibility(View.INVISIBLE);
-            ivVer.setVisibility(View.INVISIBLE);*/
 
             adaptarListaCanales();
             //Celular
@@ -2119,7 +2107,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Metodo para cerrar la aplicacion
     public void cerrarApp() {
-        System.out.println("PROGRAM_KEY "+channelIndex);
+        System.out.println("---PROGRAM_KEY "+channelIndex);
 
         PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
 
@@ -2157,12 +2145,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
 
-            case KeyEvent.KEYCODE_HOME:
-                System.out.println("Home");
-                cerrarApp();
-                break;
+            case 283:
+                System.out.println("++++++++++++++++++++++++Home");
+                return true;
+                //break;
 
-            case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
                 if (writingNum) {
                     System.out.println("Escribiendo Enter");
@@ -2397,9 +2384,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_SETTINGS:
                 Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
+                System.out.println("++++++++++++++++++++++++SETTINGS");
                 return true;
-
-
 
         }
         return super.onKeyDown(keyCode, event);
