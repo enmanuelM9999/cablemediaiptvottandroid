@@ -191,7 +191,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Acciones que se ejecutar si el JSON leido es correcto o no
         private final static int CODE_NETWORK_ERROR = 0;
-        private final static int CODE_NETWORK_ERROR = 0;
         private final static int CODE_NETWORK_SUCCESS = 1;
         private final static int CODE_SALIR_APP = 3;
         private final static int CODE_ACT = 4;
@@ -213,7 +212,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         btnIniciarOnClick();
                     }catch(Exception e){
                     }
-                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
+                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2500);
                     break;
                 case CODE_NETWORK_SUCCESS:
                     setLiveData();
@@ -313,6 +312,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void start(){
         setContentView(R.layout.activity_service_list);
         ButterKnife.bind(this);
 
@@ -393,10 +395,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(!isTechnician){ //usuario normal
             inicio();
             llLoadingChannels.setVisibility(View.VISIBLE);
-            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
+            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,3000);
         }
     }
-
     private void inicio() {
         initVolleyCallback();
         mVolleyServiceTK = new VolleyService(mResultCallbackTK,this);
@@ -699,7 +700,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         what = CODE_NETWORK_SUCCESS;
                     }
                 } finally {
-                    handler.sendEmptyMessage(what);
+                    handler.sendEmptyMessageDelayed(what,0);
                 }
             }
             @Override
@@ -1002,6 +1003,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 }else{
                     imei = getSerialNumber();
                     VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, direcPag);
+
                 }
 
                 finish();
@@ -1226,28 +1228,29 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @Override
     protected void onPause() {
         super.onPause();
-        System.out.println("onPause");
+        System.out.println("onPause service");
         myReceiver.borrarRegistro(myReceiver);
+        destroyWifiConnectorListeners();
         isTechnician=false;
-        handler.removeMessages(CODE_NETWORK_SUCCESS);
-        handler.removeMessages(CODE_TRY_PLAYER);
+        removeAllHandlerMessages();
         finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        System.out.println("onResume");
-        myReceiver.Registrar(myReceiver);
+        System.out.println("onResume service");
+        start();
     }
 
+    /*
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        destroyWifiConnectorListeners();
-        isTechnician=false;
-        removeAllHandlerMessages();
+        finish();
     }
+
+     */
 
     /**
      * Sirve para hacer clickeables los botones de la interfaz
@@ -1608,7 +1611,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         handler.removeMessages(CODE_NETWORK_SUCCESS);
         handler.removeMessages(CODE_NETWORK_ERROR);
         handler.removeMessages(CODE_SALIR_APP);
-
     }
 
 }
