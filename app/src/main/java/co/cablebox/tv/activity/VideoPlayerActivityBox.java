@@ -2145,11 +2145,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
 
-            case 283:
-                System.out.println("++++++++++++++++++++++++Home");
-                return true;
-                //break;
-
             case KeyEvent.KEYCODE_ENTER:
                 if (writingNum) {
                     System.out.println("Escribiendo Enter");
@@ -2177,6 +2172,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 break;
 
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                if (isOnlyChannelInfoActive()){
+                    clearScreen();
+                }
+                else if(!isSomeHudActive()){
+                    showChannelInfo();
+                }
+                break;
             case KeyEvent.KEYCODE_DPAD_UP:
 
                 if(llList.getVisibility() == View.INVISIBLE){
@@ -3619,6 +3622,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * Método que muestra la barra izquierda con la lista de canales
      */
     public void showChannelList(){
+        adaptarListaCanales();
         llList.setVisibility(View.VISIBLE);
     }
 
@@ -3666,14 +3670,17 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * @return true o false
      */
     public boolean isChannelListActive(){
-        boolean isActive=false;
-        if(
-                llList.getVisibility() == View.VISIBLE
-        ){
-            isActive= true;
-        }
-        return isActive;
+        return llList.getVisibility() == View.VISIBLE;
+    }
 
+    /**
+     *Método para saber si la barra inferior con la informacion del canal está visible y ningun otro elemento hud más
+     * @return true o false
+     */
+    public boolean isOnlyChannelInfoActive(){
+        return rlDisplayDown.getVisibility() == View.VISIBLE &&
+                llOptions.getVisibility() == View.INVISIBLE &&
+                llList.getVisibility() == View.INVISIBLE;
     }
 
 

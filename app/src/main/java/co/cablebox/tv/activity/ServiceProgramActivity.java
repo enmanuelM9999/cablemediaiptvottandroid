@@ -314,7 +314,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         super.onCreate(savedInstanceState);
     }
 
-    private void start(){
+    private void
+    start(){
         setContentView(R.layout.activity_service_list);
         ButterKnife.bind(this);
 
@@ -371,7 +372,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
 
 
-        llActualizando.setVisibility(View.VISIBLE);
+        //llActualizando.setVisibility(View.VISIBLE);
         new CountDownTimer(3000, 1000) {
             public void onTick(long millisUntilFinished) {
 
@@ -393,9 +394,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         llLoadingChannels.setVisibility(View.INVISIBLE);
         if(!isTechnician){ //usuario normal
-            inicio();
+            //inicio();
             llLoadingChannels.setVisibility(View.VISIBLE);
-            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,3000);
+            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
         }
     }
     private void inicio() {
