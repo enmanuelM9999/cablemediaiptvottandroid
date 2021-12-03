@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Instrumentation;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,14 +19,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
-import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,7 +37,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -81,10 +77,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
-import java.util.TimerTask;
 
 //import butterknife.Bind;
 import butterknife.BindView;
@@ -100,10 +94,7 @@ import co.cablebox.tv.utils.OnSwipeTouchListener;
 import co.cablebox.tv.utils.PreUtils;
 import co.cablebox.tv.utils.Utilidades;
 
-import co.cablebox.tv.socket.Notificaciones;
 import co.cablebox.tv.utils.VolleyService;
-
-import static org.videolan.libvlc.util.VLCUtil.TAG;
 
 
 public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVideoLayoutListener {
@@ -287,7 +278,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         private final static int CODE_SALIR_APP = 7;
 
-        private final static int CODE_GONE_PROGRAMINFO = 8;
+        private final static int CODE_CLEAR_SCREEN = 8;
 
         private final static int CODE_HIDE_VOLUMEN = 9;
 
@@ -306,6 +297,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         private final static int CODE_NOTF_VIEW = 16;
 
         private final static int CODE_NOTF_VIEW_OPC = 17;
+
 
     // Variable guardar No. de canal
         private final static String PROGRAM_KEY = "lastProIndex";
@@ -361,7 +353,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_HIDE_BLACK:
                     tvBlack.setVisibility(View.INVISIBLE);
                     delayExitInfoChannel = 3000;
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, delayExitInfoChannel);
+                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, delayExitInfoChannel);
                     break;
 
                 case CODE_CHANGE_BY_NUM:
@@ -403,7 +395,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     wordKey = "";
                     break;
 
-                case CODE_GONE_PROGRAMINFO:
+                case CODE_CLEAR_SCREEN:
                      clearScreen();
                     break;
 
@@ -455,6 +447,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     mensajeNot.setVisibility(View.INVISIBLE);
                     fondoNot.setVisibility(View.INVISIBLE);
                     break;
+
             }
         }
     };
@@ -566,8 +559,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO,10000);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
+                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,10000);
                 }
 
                 @Override
@@ -1572,7 +1565,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.removeMessages(CODE_CHANGE_BY_NUM);
             handler.removeMessages(CODE_HIDE_ERROR);
             handler.removeMessages(CODE_SALIR_APP);
-            handler.removeMessages(CODE_GONE_PROGRAMINFO);
+            handler.removeMessages(CODE_CLEAR_SCREEN);
             handler.removeMessages(CODE_HIDE_VOLUMEN);
             handler.removeMessages(CODE_HIDE_OPTION);
             handler.removeMessages(CODE_DEG_LOCK);
@@ -1761,11 +1754,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }else if(llList.getVisibility() == View.VISIBLE) {
                     exitList();
                 }else if(llOptions.getVisibility() == View.INVISIBLE){
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     toggleInfoChannel();
-                    togglePlaylist();
+                    togglePanelNum();
                     toggleOptions();
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, 5000);
+                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
                 }
             }
 
@@ -1773,7 +1766,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 //
                 if(rlPanelNum.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
                     change = true;
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     next();
                     if(rlDisplayDown.getVisibility() == View.INVISIBLE){
                         toggleInfoChannel();
@@ -1805,7 +1798,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 //
                 if(rlPanelNum.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
                     change = true;
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     previous();
                     if(rlDisplayDown.getVisibility() == View.INVISIBLE){
                         toggleInfoChannel();
@@ -1841,9 +1834,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numOne.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("1");
+                        pressNumber("1");
                         break;
                     case MotionEvent.ACTION_UP:
                         numOne.setBackground(null);
@@ -1860,9 +1851,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numTwo.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("2");
+                        pressNumber("2");
                         break;
                     case MotionEvent.ACTION_UP:
                         numTwo.setBackground(null);
@@ -1879,9 +1868,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numThree.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("3");
+                        pressNumber("3");
                         break;
                     case MotionEvent.ACTION_UP:
                         numThree.setBackground(null);
@@ -1898,9 +1885,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numFour.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("4");
+                        pressNumber("4");
                         break;
                     case MotionEvent.ACTION_UP:
                         numFour.setBackground(null);
@@ -1917,9 +1902,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numFive.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("5");
+                        pressNumber("5");
                         break;
                     case MotionEvent.ACTION_UP:
                         numFive.setBackground(null);
@@ -1936,9 +1919,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numSix.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("6");
+                        pressNumber("6");
                         break;
                     case MotionEvent.ACTION_UP:
                         numSix.setBackground(null);
@@ -1955,9 +1936,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numSeven.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("7");
+                        pressNumber("7");
                         break;
                     case MotionEvent.ACTION_UP:
                         numSeven.setBackground(null);
@@ -1974,9 +1953,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numEight.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("8");
+                        pressNumber("8");
                         break;
                     case MotionEvent.ACTION_UP:
                         numEight.setBackground(null);
@@ -1993,9 +1970,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numNine.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("9");
+                        pressNumber("9");
                         break;
                     case MotionEvent.ACTION_UP:
                         numNine.setBackground(null);
@@ -2012,9 +1987,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     case MotionEvent.ACTION_DOWN:
                         numZero.setBackground(getDrawable(R.drawable.bordes_suave_act));
-
-                        writingNum = true;
-                        canalNum("0");
+                        pressNumber("0");
                         break;
                     case MotionEvent.ACTION_UP:
                         numZero.setBackground(null);
@@ -2177,14 +2150,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     clearScreen();
                 }
                 else if(!isSomeHudActive()){
-                    showChannelInfo();
+                    showChannelInfoAndHideLater();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
 
                 if(llList.getVisibility() == View.INVISIBLE){
                     change = true;
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     next();
                     if(rlDisplayDown.getVisibility() == View.INVISIBLE){
                         toggleInfoChannel();
@@ -2215,7 +2188,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if(llList.getVisibility() == View.INVISIBLE){
                     change = true;
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     previous();
                     if(rlDisplayDown.getVisibility() == View.INVISIBLE){
                         toggleInfoChannel();
@@ -2245,10 +2218,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 if(llOptions.getVisibility() == View.VISIBLE){
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     posOpcion++;
                     navOpciones();
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, 5000);
+                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
                 }else{
                     onVolumen = true;
                     //Accion Barra de Volumen DOWN
@@ -2262,10 +2235,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if(llOptions.getVisibility() == View.VISIBLE){
-                    handler.removeMessages(CODE_GONE_PROGRAMINFO);
+                    handler.removeMessages(CODE_CLEAR_SCREEN);
                     posOpcion--;
                     navOpciones();
-                    handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, 5000);
+                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
                 }else{
                     onVolumen = true;
                     //Accion Barra de Volumen UP
@@ -2298,59 +2271,43 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 return true;
 
             case KeyEvent.KEYCODE_0:
-                writingNum = true;
-                canalNum("0");
+                pressNumber("0");
                 break;
 
             case KeyEvent.KEYCODE_1:
-                claveExit("1");
-                writingNum = true;
-                canalNum("1");
+                pressNumber("1");
                 break;
 
             case KeyEvent.KEYCODE_2:
-                claveExit("2");
-                writingNum = true;
-                canalNum("2");
+                pressNumber("2");
                 break;
 
             case KeyEvent.KEYCODE_3:
-                claveExit("3");
-                writingNum = true;
-                canalNum("3");
+                pressNumber("3");
                 break;
 
             case KeyEvent.KEYCODE_4:
-                claveExit("4");
-                writingNum = true;
-                canalNum("4");
+                pressNumber("4");
                 break;
 
             case KeyEvent.KEYCODE_5:
-                claveExit("5");
-                writingNum = true;
-                canalNum("5");
+                pressNumber("5");
                 break;
 
             case KeyEvent.KEYCODE_6:
-                writingNum = true;
-                canalNum("6");
+                pressNumber("6");
                 break;
 
             case KeyEvent.KEYCODE_7:
-                writingNum = true;
-                canalNum("7");
+                pressNumber("7");;
                 break;
 
             case KeyEvent.KEYCODE_8:
-                writingNum = true;
-                canalNum("8");
+                pressNumber("8");
                 break;
 
             case KeyEvent.KEYCODE_9:
-                claveExit("9");
-                writingNum = true;
-                canalNum("9");
+                pressNumber("9");
                 break;
 
             case KeyEvent.KEYCODE_VOLUME_UP:
@@ -3507,7 +3464,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.removeMessages(CODE_CHANGE_BY_NUM);
             handler.removeMessages(CODE_HIDE_ERROR);
             handler.removeMessages(CODE_SALIR_APP);
-            handler.removeMessages(CODE_GONE_PROGRAMINFO);
+            handler.removeMessages(CODE_CLEAR_SCREEN);
             handler.removeMessages(CODE_HIDE_VOLUMEN);
             handler.removeMessages(CODE_HIDE_OPTION);
             handler.removeMessages(CODE_DEG_LOCK);
@@ -3525,17 +3482,19 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      *Este método limpia toda la pantalla para que solo se visualice el video
      */
     public void clearScreen(){
+        removeHudDelayedMessages();
         hideOptions();
         hideChannelInfo();
         hideChannelList();
     }
+
     /**
      *Método que limpia toda la pantalla en un tiempo definido para que solo se visualice el video.
      *@param millis es la cantidad de tiempo en milisegundos que deben pasar antes de que se limpie toda la pantalla
      */
     public void clearScreen(int millis){
-        handler.removeMessages(CODE_GONE_PROGRAMINFO);
-        handler.sendEmptyMessageDelayed(CODE_GONE_PROGRAMINFO, HUD_HIDE_TIME);
+        handler.removeMessages(CODE_CLEAR_SCREEN);
+        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, HUD_HIDE_TIME);
     }
 
 
@@ -3682,6 +3641,37 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 llOptions.getVisibility() == View.INVISIBLE &&
                 llList.getVisibility() == View.INVISIBLE;
     }
+
+    /**
+     *Método para decir a la app que se presionó un número
+     * @return void
+     */
+    public void pressNumber(String number){
+        claveExit(number);
+        writingNum = true;
+        canalNum(number);
+    }
+
+
+    /**
+     *Método que muestra la barra inferior con la info del canal y se oculta despues de un tiempo prudente en milisegundos
+     * @return void
+     */
+    public void showChannelInfoAndHideLater(){
+        int tiempoPrudenteMilis=5000; //en milisegundos
+        showChannelInfo();
+        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,tiempoPrudenteMilis);
+    }
+
+
+    /**
+     *Método que elimina los metodos con demora (delayed messages) que ocultan elementos hud
+     * @return void
+     */
+    public void removeHudDelayedMessages(){
+        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,5000);
+    }
+
 
 
 
