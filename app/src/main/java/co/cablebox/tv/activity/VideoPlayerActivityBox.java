@@ -3669,12 +3669,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * @return void
      */
     public void removeHudDelayedMessages(){
-        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,5000);
+        handler.removeMessages(CODE_CLEAR_SCREEN);
     }
-
-
-
-
-
-
 }

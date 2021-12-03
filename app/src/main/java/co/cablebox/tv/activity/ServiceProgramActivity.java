@@ -398,6 +398,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             llLoadingChannels.setVisibility(View.VISIBLE);
             handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
         }
+        else if(isTechnician){ //usuario técnico
+            togglePanelConf();
+        }
     }
     private void inicio() {
         initVolleyCallback();
