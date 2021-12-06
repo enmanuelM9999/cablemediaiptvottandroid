@@ -140,6 +140,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @BindView(R.id.ll_loading_channels)
     LinearLayout llLoadingChannels;
 
+    @BindView(R.id.ll_screen_nonet)
+    LinearLayout llScreenNonet;
+
+    @BindView(R.id.ll_screen_nochannels)
+    LinearLayout llScreenNochannels;
+
     private TranslateAnimation animInListWifi;
     private TranslateAnimation exitAnimListWifi;
     private TranslateAnimation animInBtnConf;
@@ -197,6 +203,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private final static int CODE_ACT_PLAN = 5;
         private final static int CODE_TRY_PLAYER = 6;
 
+        //
+        private final static int CODE_CAN_SHOW_FAILURE_SCREENS = 7;
+
         private boolean viewApp = false;
 
         // Variable que define si la activity se cargará en modo Técnico para hacer ajustes. False siginifica que no es un Técnico y la activity cargará normal para un usuario
@@ -210,6 +219,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 case CODE_TRY_PLAYER:
                     try {
                         btnIniciarOnClick();
+                        if (canShowFailureScreens){
+                            if(!isNetDisponible()){
+                                showNonetNoti();
+                            }
+                            else {
+                                showNochannelsNoti();
+                            }
+                        }
                     }catch(Exception e){
                     }
                     handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2500);
@@ -267,6 +284,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         inicarVid();
                     }
                     break;
+                case CODE_CAN_SHOW_FAILURE_SCREENS:
+                    canShowFailureScreens=true;
+                    break;
             }
         }
     };
@@ -307,6 +327,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         public static String Nickname;
 
         public static String IMEI = "";
+
+    //notifications control
+    public boolean canShowFailureScreens = false;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -393,10 +416,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         funciones();
 
         llLoadingChannels.setVisibility(View.INVISIBLE);
+        hideNonetAndNochannelsNotification();
         if(!isTechnician){ //usuario normal
-            //inicio();
             llLoadingChannels.setVisibility(View.VISIBLE);
-            handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
+            guaranteeOpenChannelsWithBusyWaiting();
+            handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,7000);
         }
         else if(isTechnician){ //usuario técnico
             togglePanelConf();
@@ -493,7 +517,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void funciones(){
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                btnIniciarOnClick();
+                guaranteeOpenChannelsWithBusyWaiting();
                 Toast.makeText(ServiceProgramActivity.this, "Cargando canales...", Toast.LENGTH_LONG).show();
 
             }
@@ -516,12 +540,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         btnActua.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                /*
+                 if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
                 setButtonsState(false);
                 handler.removeMessages(CODE_ACT_PLAN);
                 llDescarga.setVisibility(View.VISIBLE);
                 myReceiver.Descargar(direcPag);
             }
+                 */
+            Toast.makeText(ServiceProgramActivity.this,"No hay versiones nuevas disponibles", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -968,6 +995,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
             case KeyEvent.KEYCODE_MENU:
                 llLoadingChannels.setVisibility(View.INVISIBLE);
+                hideNonetAndNochannelsNotification();
                 setButtonsState(true);
                 return true;
 
@@ -1237,6 +1265,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         destroyWifiConnectorListeners();
         isTechnician=false;
         removeAllHandlerMessages();
+        hideNonetAndNochannelsNotification();
         finish();
     }
 
@@ -1608,6 +1637,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         return onLocation;
     }
 
+    /** "Garantizar la apertura de canales con espera activa"
+     * Método que usa la espera activa (busy waiting) para garantizar que se abra el reproductor en cuanto sea posible acceder a los canales.
+     * Se pregunta cada 2 segs si es posible acceder a los canales (por si el cliente recién paga por o si el internet vuelve).
+     */
+    public void guaranteeOpenChannelsWithBusyWaiting(){
+        handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
+    }
+
     public void removeAllHandlerMessages(){
         handler.removeMessages(CODE_ACT_PLAN);
         handler.removeMessages(CODE_TRY_PLAYER);
@@ -1615,6 +1652,31 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         handler.removeMessages(CODE_NETWORK_SUCCESS);
         handler.removeMessages(CODE_NETWORK_ERROR);
         handler.removeMessages(CODE_SALIR_APP);
+        handler.removeMessages(CODE_CAN_SHOW_FAILURE_SCREENS);
+    }
+
+    public void hideNonetAndNochannelsNotification(){
+        llScreenNochannels.setVisibility(View.INVISIBLE);
+        llScreenNonet.setVisibility(View.INVISIBLE);
+    }
+
+    public void showNonetNoti(){
+        if(llScreenNochannels.getVisibility() == View.VISIBLE)
+        llScreenNochannels.setVisibility(View.INVISIBLE);
+
+        if(llScreenNonet.getVisibility() == View.INVISIBLE)
+        llScreenNonet.setVisibility(View.VISIBLE);
+    }
+
+    public void showNochannelsNoti(){
+        if(llScreenNochannels.getVisibility() == View.INVISIBLE){
+            llScreenNochannels.setVisibility(View.VISIBLE);
+        }
+
+
+        if(llScreenNonet.getVisibility() == View.VISIBLE)
+        {llScreenNonet.setVisibility(View.INVISIBLE);}
+
     }
 
 }

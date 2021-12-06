@@ -2230,6 +2230,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     rlVolumenA.setVisibility(View.VISIBLE);
                     sbVolumenA.setProgress(audioManagerB.getStreamVolume(AudioManager.STREAM_MUSIC) - 1);
+                    ivMute.setVisibility(View.INVISIBLE);
                 }
                 break;
 
@@ -2247,6 +2248,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     rlVolumenA.setVisibility(View.VISIBLE);
                     sbVolumenA.setProgress(audioManagerA.getStreamVolume(AudioManager.STREAM_MUSIC) + 1);
+                    ivMute.setVisibility(View.INVISIBLE);
                 }
                 break;
 
@@ -3486,6 +3488,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         hideOptions();
         hideChannelInfo();
         hideChannelList();
+        exitPanelNum();
     }
 
     /**
