@@ -58,7 +58,12 @@ public class AppsListActivity extends Activity {
         for (ResolveInfo ri: availableActivities){
             Item app = new Item();
 
-            if(ri.activityInfo.packageName.equals("co.cablebox.tv") ||  ri.activityInfo.packageName.equals("com.android.tv.settings") || ri.activityInfo.packageName.equals("tv.pluto.android") || ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") || ri.activityInfo.packageName.equals("com.estrongs.android.pop")){
+            if(ri.activityInfo.packageName.equals("co.cablebox.tv") ||
+                    ri.activityInfo.packageName.equals("com.android.tv.settings") ||
+                    ri.activityInfo.packageName.equals("tv.pluto.android") ||
+                    ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
+                    ri.activityInfo.packageName.equals("com.estrongs.android.pop")||
+                    ri.activityInfo.packageName.equals("org.videolan.vlc")){
                 app.setLabel(ri.activityInfo.packageName);
                 app.setName(ri.loadLabel(manager));
                 app.setIcon(ri.loadIcon(manager));

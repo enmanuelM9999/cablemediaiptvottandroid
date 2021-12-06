@@ -996,6 +996,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             case KeyEvent.KEYCODE_MENU:
                 llLoadingChannels.setVisibility(View.INVISIBLE);
                 hideNonetAndNochannelsNotification();
+                canShowFailureScreens=false;
                 setButtonsState(true);
                 return true;
 
@@ -1656,6 +1657,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     public void hideNonetAndNochannelsNotification(){
+        handler.removeMessages(CODE_CAN_SHOW_FAILURE_SCREENS);
         llScreenNochannels.setVisibility(View.INVISIBLE);
         llScreenNonet.setVisibility(View.INVISIBLE);
     }
