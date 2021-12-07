@@ -517,6 +517,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void funciones(){
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                canShowFailureScreens=true;
                 guaranteeOpenChannelsWithBusyWaiting();
                 Toast.makeText(ServiceProgramActivity.this, "Cargando canales...", Toast.LENGTH_LONG).show();
 
@@ -994,10 +995,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 break;
 
             case KeyEvent.KEYCODE_MENU:
+                //ocultar panel de cargando canales
                 llLoadingChannels.setVisibility(View.INVISIBLE);
+                //ocultar pantallas de error "no canales" y "sin conexión"
                 hideNonetAndNochannelsNotification();
+                //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
                 canShowFailureScreens=false;
+                //permitir usar botones
                 setButtonsState(true);
+                //"return true" evita comportamientos por defecto del S.O. para el botón presionado
                 return true;
 
         }
@@ -1640,7 +1646,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     /** "Garantizar la apertura de canales con espera activa"
      * Método que usa la espera activa (busy waiting) para garantizar que se abra el reproductor en cuanto sea posible acceder a los canales.
-     * Se pregunta cada 2 segs si es posible acceder a los canales (por si el cliente recién paga por o si el internet vuelve).
+     * Se pregunta cada 2 segs si es posible acceder a los canales (por si el cliente recién paga o por si el internet vuelve).
      */
     public void guaranteeOpenChannelsWithBusyWaiting(){
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
