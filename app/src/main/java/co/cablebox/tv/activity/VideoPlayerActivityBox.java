@@ -59,6 +59,8 @@ import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.videolan.libvlc.IVLCVout;
@@ -327,6 +329,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     // Variables de Canal actual y programa actual
         private static int channelIndex = 0;
         private static int idProgramCurrent = 0;
+        private static int lastChannelIndex=0; //el último canal que se reprodujo, esto para volver al canal anterior con el botón "atrás"
 
     private static boolean deMosaico = false; // Controla si la Actividad es iniciada al elegir un canal desde el mosaico de Categorias o no
     private static boolean failNet = false; // Controla cualquier fallo de conexion
@@ -359,13 +362,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_CHANGE_BY_NUM:
                     if (numChange != "") {
                         cambiarPorNumero(Integer.parseInt(numChange));
-                        if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                            toggleInfoChannel();
-                            togglePlaylist();
-                        }
-                        setIdProgramaActual();
-                        showProgramInfo();
-                        changeChannelList();
+                        changeChannelInScreen();
 
                         tvChannelNumberChange.setVisibility(View.INVISIBLE);
                         exitPanelNum();
@@ -1052,6 +1049,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            channelIndex=0;
                             JSONObject data = (JSONObject) args[0];
                             try {
                                 String id = data.getString("receptorNickname");
@@ -2156,62 +2154,23 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             case KeyEvent.KEYCODE_DPAD_UP:
 
                 if(llList.getVisibility() == View.INVISIBLE){
-                    change = true;
+                    //Agregar el último canal visitado
+                    lastChannelIndex=channelIndex;
+
                     handler.removeMessages(CODE_CLEAR_SCREEN);
-                    next();
-                    if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        toggleInfoChannel();
-                        togglePlaylist();
-                    }
-                    changeChannelList();
-                    showProgramInfo();
-                    setIdProgramaActual();
-                    changeChannel();
+                   nextChannelInScreen();
 
-
-                    if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                        ivFavorite.setImageResource(R.drawable.button_fav_b);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                    }else{
-                        ivFavorite.setImageResource(R.drawable.button_fav);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                    }
-
-                        change = false;
-                        setIdProgramaActual();
-                        showProgramInfo();
-                        changeChannel();
 
                 }
                 break;
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 if(llList.getVisibility() == View.INVISIBLE){
-                    change = true;
+                    //Agregar el último canal visitado
+                    lastChannelIndex=channelIndex;
+
                     handler.removeMessages(CODE_CLEAR_SCREEN);
-                    previous();
-                    if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        toggleInfoChannel();
-                        togglePlaylist();
-                    }
-                    changeChannelList();
-                    showProgramInfo();
-                    setIdProgramaActual();
-                    changeChannel();
-
-
-                    if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                        ivFavorite.setImageResource(R.drawable.button_fav_b);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                    }else{
-                        ivFavorite.setImageResource(R.drawable.button_fav);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                    }
-
-                        change = false;
-                        setIdProgramaActual();
-                        showProgramInfo();
-                        changeChannel();
+                    previousChannelInScreen();
 
                 }
                 break;
@@ -2344,6 +2303,13 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 break;
 
+            case KeyEvent.KEYCODE_BACK:
+                int tempLastChannelIndex= lastChannelIndex;
+                lastChannelIndex=channelIndex;
+                channelIndex=tempLastChannelIndex;
+                changeChannelInScreen();
+
+                return true;
             case KeyEvent.KEYCODE_SETTINGS:
                 Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
                 System.out.println("++++++++++++++++++++++++SETTINGS");
@@ -2909,9 +2875,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
          */
         //ivlcVout.detachViews();
 
+
+
         if(liveBean.getData().get(channelIndex).getId().equals(numCanalInformativo)){
             channelIndex=0;
         }
+
 
         pbError.setText("Problemas técnicos en el canal");
         play(channelIndex);
@@ -2923,6 +2892,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Metodo para cambiar canal ppor numero
     private void cambiarPorNumero(int i) {
+        //Agregar el último canal visitado
+        lastChannelIndex=channelIndex;
         for(int j = 0; j < liveBean.getData().size(); j++){
             if(i == Integer.parseInt(liveBean.getData().get(j).getNum())){
                 if (mediaPlayer.isPlaying()) {
@@ -2931,15 +2902,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 tvBlack.setVisibility(View.VISIBLE);
                 channelIndex = j;
                 changeChannel();
-
-
-                if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                    ivFavorite.setImageResource(R.drawable.button_fav_b);
-                    rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                }else{
-                    ivFavorite.setImageResource(R.drawable.button_fav);
-                    rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                }
 
                 return;
             }
@@ -3674,4 +3636,32 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public void removeHudDelayedMessages(){
         handler.removeMessages(CODE_CLEAR_SCREEN);
     }
+
+
+
+    /**
+     *Método que cambia el canal modificando todos los elementos de la vista
+     * @return void
+     */
+    public void changeChannelInScreen(){
+        changeChannelList();
+        showProgramInfo();
+        setIdProgramaActual();
+        changeChannel();
+        showChannelInfo();
+    }
+
+    public void nextChannelInScreen(){
+        next();
+        changeChannelInScreen();
+
+    }
+
+    public void previousChannelInScreen(){
+        previous();
+        changeChannelInScreen();
+
+    }
+
+
 }

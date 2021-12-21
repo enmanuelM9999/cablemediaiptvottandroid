@@ -243,13 +243,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 case CODE_SALIR_APP:
                     handler.removeMessages(CODE_ACT_PLAN);
                     if (wordKey.equals(Q15QSFD)) {
-                        if(llConfigBo.getVisibility() == View.INVISIBLE){
-                            togglePanelConf();
-                            delayBusNum = 0;
-                        }else if(llConfigBo.getVisibility() == View.VISIBLE){
-                            exitPanelConf();
-                            delayBusNum = 3000;
-                        }
+                        technicianMode();
                     }else if(wordKey.equals(SH0W1M31)){
                         if(llConfigBo.getVisibility() == View.INVISIBLE){
                             if(isCel)
@@ -291,7 +285,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     };
 
-    private static final String Q15QSFD = "55555";
+    private static final String Q15QSFD = "12345";
     private static final String SH0W1M31 = "88888";
     private String wordKey = "";
     private int delayBusNum = 3000;
@@ -350,7 +344,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         BASE_URI = ip;*/
         System.out.println("IP: "+BASE_URI);
 
-        setButtonsState(false);
+        setButtonsState(true);
 
         //Descargar Apk
         InitDescarga();
@@ -394,7 +388,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             list.add(n);
         }
 
-
         //llActualizando.setVisibility(View.VISIBLE);
         new CountDownTimer(3000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -420,7 +413,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(!isTechnician){ //usuario normal
             llLoadingChannels.setVisibility(View.VISIBLE);
             guaranteeOpenChannelsWithBusyWaiting();
-            handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,7000);
+            handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
         }
         else if(isTechnician){ //usuario técnico
             togglePanelConf();
@@ -541,15 +534,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         btnActua.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*
-                 if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+
+                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
                 setButtonsState(false);
                 handler.removeMessages(CODE_ACT_PLAN);
                 llDescarga.setVisibility(View.VISIBLE);
                 myReceiver.Descargar(direcPag);
             }
-                 */
-            Toast.makeText(ServiceProgramActivity.this,"No hay versiones nuevas disponibles", Toast.LENGTH_SHORT).show();
+
+            //Toast.makeText(ServiceProgramActivity.this,"No hay versiones nuevas disponibles", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -610,7 +603,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
                     direcPag = "51.161.73.204";
                     url_type = "multicast";
-                    tpUrl.setText("Unicast");
+                    tpUrl.setText("multicast");
                     Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Multicast", Toast.LENGTH_SHORT).show();
                     SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharepref.edit();
@@ -995,14 +988,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 break;
 
             case KeyEvent.KEYCODE_MENU:
-                //ocultar panel de cargando canales
-                llLoadingChannels.setVisibility(View.INVISIBLE);
-                //ocultar pantallas de error "no canales" y "sin conexión"
-                hideNonetAndNochannelsNotification();
-                //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
-                canShowFailureScreens=false;
-                //permitir usar botones
-                setButtonsState(true);
                 //"return true" evita comportamientos por defecto del S.O. para el botón presionado
                 return true;
 
@@ -1684,6 +1669,40 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         if(llScreenNonet.getVisibility() == View.VISIBLE)
         {llScreenNonet.setVisibility(View.INVISIBLE);}
+
+    }
+
+    public void toggleUrlType() {
+        if(url_type.equals("multicast")){
+            url_type = "unicast";
+        }
+        else{
+            url_type = "multicast";
+        }
+    }
+
+    public void openTechMode(){
+        openLiveC(this);
+    }
+
+    public void technicianMode(){
+        //ocultar panel de cargando canales
+        llLoadingChannels.setVisibility(View.INVISIBLE);
+        //ocultar pantallas de error "no canales" y "sin conexión"
+        hideNonetAndNochannelsNotification();
+        //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
+        canShowFailureScreens=false;
+        //mostrar fila inferior de botones
+        togglePanelConf();
+        //esconder el panel de wifi que se expandió
+        exitWifi();
+        onWifi=false;
+        //permitir usar botones
+        setButtonsState(true);
+        //funciones de botones
+        funciones();
+        //tech mode
+        isTechnician=true;
 
     }
 
