@@ -294,7 +294,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         private final static int CODE_HIDE_NOT = 14;
 
-        private final static int CODE_ACT_PLAN = 15;
+        private final static int CODE_RESTART_APP = 15;
 
         private final static int CODE_NOTF_VIEW = 16;
 
@@ -429,7 +429,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     exitOptions();
                     break;
 
-                case CODE_ACT_PLAN:
+                case CODE_RESTART_APP:
                     ServiceProgramActivity.openLiveB(VideoPlayerActivityBox.this);
                     finish();
                     break;
@@ -1049,22 +1049,36 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            channelIndex=0;
-                            JSONObject data = (JSONObject) args[0];
-                            try {
+                            try{
+                                JSONObject data = (JSONObject) args[0];
                                 String id = data.getString("receptorNickname");
-                                System.out.println("Actualizar Plan "+id);
-                                if(id.equals(IMEI)) {
-                                    //Actualizar
-                                    llActualizando.setVisibility(View.VISIBLE);
-
-                                    handler.removeMessages(CODE_ACT_PLAN);
-                                    handler.sendEmptyMessageDelayed(CODE_ACT_PLAN, 3000);
-                                }
-                            } catch (Exception e) {
-                                Log.d("error socket ", ""+e.toString());
-                                //e.printStackTrace();
+                                restartApp(id);
                             }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+
+
+                        }
+                    });
+                }
+            });
+
+            socket.on("sincronizarConServidor", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                JSONObject data = (JSONObject) args[0];
+                                String id = data.getString("receptorNickname");
+                                restartApp(id);
+                            }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+
 
                         }
                     });
@@ -1570,7 +1584,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.removeMessages(CODE_COLOR_NUM);
             handler.removeMessages(CODE_CHANGE_CHANNEL);
             handler.removeMessages(CODE_HIDE_NOT);
-            handler.removeMessages(CODE_ACT_PLAN);
+            handler.removeMessages(CODE_RESTART_APP);
 
             //ChannelListActivityBox.channelIndex = channelIndex;
             ChannelListActivityBox.channelIndex = 0;
@@ -3435,7 +3449,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.removeMessages(CODE_COLOR_NUM);
             handler.removeMessages(CODE_CHANGE_CHANNEL);
             handler.removeMessages(CODE_HIDE_NOT);
-            handler.removeMessages(CODE_ACT_PLAN);
+            handler.removeMessages(CODE_RESTART_APP);
 
     }
 
@@ -3661,6 +3675,28 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         previous();
         changeChannelInScreen();
 
+    }
+
+    /**
+     *El servidor Ipmux envía un evento para que las cajas se actualicen con información nueva.
+     * Este método reinicia la app para que consulte la información actualizada
+     * @param : El id/IMEI es para verificar que el dispositivo sea el mismo
+     * @return void
+     */
+    public void restartApp(String id){
+
+        channelIndex=0;
+
+        try {
+            if(id.equals(IMEI)) {
+                //Actualizar
+                llActualizando.setVisibility(View.VISIBLE);
+                handler.removeMessages(CODE_RESTART_APP);
+                handler.sendEmptyMessageDelayed(CODE_RESTART_APP, 3000);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
 
