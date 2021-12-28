@@ -358,7 +358,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
-        tvVersion.setText("IPTv-BOX Copyrigth CableMEDIA® 2019 Version ANDROID-7.1-"+BuildConfig.VERSION_NAME);
+        tvVersion.setText("Copyrigth CableMEDIA® 2021");
         setLocationPermission();
         createWifiConnectorObject();
 

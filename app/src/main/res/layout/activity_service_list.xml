@@ -28,50 +28,9 @@
         android:scaleType="fitStart"
         android:src="@drawable/devices" />
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="84dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="0dp"
-        android:alpha="1"
-        android:src="@drawable/icono_cablebox"
-        tools:visibility="invisible" />
 
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="11dp"
-        tools:visibility="invisible">
 
-        <ImageView
-            android:id="@+id/iv_and"
-            android:layout_width="@dimen/h_50"
-            android:layout_height="@dimen/h_50"
-            android:src="@drawable/android" />
-
-
-        <ImageView
-            android:id="@+id/iv_ios"
-            android:layout_width="@dimen/h_50"
-            android:layout_height="@dimen/h_50"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/iv_and"
-            android:src="@drawable/apple" />
-
-        <ImageView
-            android:id="@+id/iv_linux"
-            android:layout_width="@dimen/h_50"
-            android:layout_height="@dimen/h_50"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/iv_ios"
-            android:src="@drawable/linux" />
-
-    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_botones"
@@ -89,59 +48,7 @@
             android:orientation="horizontal"
             android:layout_marginBottom="20dp">
 
-            <LinearLayout
-                android:id="@+id/ll_screen_nonet"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#000"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
 
-                app:layout_constraintStart_toStartOf="parent">
-
-                <RelativeLayout
-                    android:id="@+id/rl_screen_nonet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/h_20">
-
-
-                    <ImageView
-                        android:id="@+id/nonet_logo"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/nowifi"></ImageView>
-
-
-                    <TextView
-                        android:id="@+id/txt_nonet"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/nonet_logo"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="0dp"
-                        android:fontFamily="@font/segoe_ui_bold"
-                        android:text="Por favor revisa tu conexión a internet"
-                        android:textColor="#fff"
-                        android:textSize="@dimen/h_40" />
-
-                    <TextView
-                        android:id="@+id/txt_nonet_line2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_nonet"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="0dp"
-                        android:fontFamily="@font/segoe_ui_bold"
-                        android:text=""
-                        android:textColor="#fff"
-                        android:textSize="@dimen/h_40" />
-                </RelativeLayout>
-            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/ini"
@@ -265,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/h_20"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
 
@@ -695,6 +602,60 @@
                 android:textColor="#fff"
                 android:textSize="@dimen/h_40" />
 
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_screen_nonet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_screen_nonet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/h_20">
+
+
+            <ImageView
+                android:id="@+id/nonet_logo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/nowifi"></ImageView>
+
+
+            <TextView
+                android:id="@+id/txt_nonet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nonet_logo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Por favor revisa tu conexión a internet"
+                android:textColor="#fff"
+                android:textSize="@dimen/h_40" />
+
+            <TextView
+                android:id="@+id/txt_nonet_line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_nonet"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="@dimen/h_40" />
         </RelativeLayout>
     </LinearLayout>
 
