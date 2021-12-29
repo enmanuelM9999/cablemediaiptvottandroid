@@ -102,7 +102,10 @@ import co.cablebox.tv.utils.VolleyService;
 public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVideoLayoutListener {
     private static final String TAG = VideoPlayerActivityBox.class.getName();
 
-    private static String direcPag = "51.161.73.204";
+    private static String ipmuxProtocol = "http://";
+    private static String ipmuxIP = "51.161.73.204";
+    private static String ipmuxPort = "5509";
+    private static String ipmuxApiPath = "/api/RestController.php";
     //Volley
     private Gson gson;
 
@@ -613,7 +616,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mVolleyServiceTK.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
+        mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
     }
 
     void initVolleyCallback(){
@@ -720,7 +723,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             System.out.println("Error MS 2 "+e);
             e.printStackTrace();
         }
-        mVolleyServiceMS.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
+        mVolleyServiceMS.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
     }
 
 
@@ -736,7 +739,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             System.out.println("Error MS 2 "+e);
             e.printStackTrace();
         }
-        mVolleyServiceMS.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
+        mVolleyServiceMS.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
     }
     public void translateNotf() {
         if(mensajeBean.getData() != null) {
@@ -1039,7 +1042,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         try {
             Nickname = IMEI;
             System.out.println("NickSocket "+Nickname);
-            socket = IO.socket("http://"+direcPag+":4010/");
+            socket = IO.socket("http://"+ ipmuxIP +":4010/");
             socket.connect();
             socket.emit("join", Nickname);
 
@@ -1393,11 +1396,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Iniciar actividad VideoPlayerActivity
-    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String direcPag) {
+    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String anIpmuxIp, String anIpmuxPort) {
         VideoPlayerActivityBox.mensajeBean = mensajeBean;
         VideoPlayerActivityBox.liveBean = liveBean;
         VideoPlayerActivityBox.IMEI = IMEI;
-        VideoPlayerActivityBox.direcPag = direcPag;
+        VideoPlayerActivityBox.ipmuxIP = anIpmuxIp;
+        VideoPlayerActivityBox.ipmuxPort = anIpmuxPort;
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
 
@@ -1589,7 +1593,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             //ChannelListActivityBox.channelIndex = channelIndex;
             ChannelListActivityBox.channelIndex = 0;
             PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
-            ChannelListActivityBox.openLive(this, liveBean, IMEI, mensajeBean, direcPag);
+            ChannelListActivityBox.openLive(this, liveBean, IMEI, mensajeBean, ipmuxIP);
             finish();
         }
     }
@@ -3697,6 +3701,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         } catch (Exception e) {
 
         }
+    }
+
+
+    /**
+     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort, ipmuxApiPath y construye una uri para que la app acceda al servidor ipmux y haga peticiones
+     * */
+    public String generateAndReturnIpmuxUri(){
+        String portNotation = ":";
+        if (ipmuxPort.equals("")) portNotation="";
+        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
     }
 
 

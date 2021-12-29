@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -181,10 +182,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     // Variable guardar Ip
         private final static String IP_KEY = "ipLista";
 
-        //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
-        private static String direcPag = "51.161.73.204";
+    //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
+        private static String ipmuxProtocol = "http://";
+        private static String ipmuxIP = "51.161.73.204";
+        private static String ipmuxPort = "5509";
+        private static String ipmuxApiPath = "/api/RestController.php";
     // Leer y obtener informacion de los canales a traves de un JSON
-        private static String BASE_URI = "http://"+direcPag+":5509/api/RestController.php";
+        private static String BASE_URI = "http://"+ ipmuxIP +":5509/api/RestController.php";
         private static String BASE_URI_AUX = "http://51.161.73.204:5509/api/RestController.php";
 
         private static final String LIVE_URI = "/api/live";
@@ -203,12 +207,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private final static int CODE_ACT_PLAN = 5;
         private final static int CODE_TRY_PLAYER = 6;
 
-        //
+        // Las "failure screens" son las pantallas "revisa tu conexión a internet" y "no se puede acceder a los canales"
         private final static int CODE_CAN_SHOW_FAILURE_SCREENS = 7;
 
         private boolean viewApp = false;
 
-        // Variable que define si la activity se cargará en modo Técnico para hacer ajustes. False siginifica que no es un Técnico y la activity cargará normal para un usuario
+        // Variable que define si la activity se cargará en modo Técnico para hacer ajustes. False significa que no es un Técnico y la activity cargará normal para un usuario
         private static boolean isTechnician=false;
 
     private static int what = 0;
@@ -337,8 +341,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         ButterKnife.bind(this);
 
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-        direcPag = sharpref.getString("IP", direcPag);// ipmux
-        BASE_URI = "http://"+direcPag+":5509/api/RestController.php";
+        ipmuxIP = sharpref.getString("IP", ipmuxIP);// ipmux
+        ipmuxPort = sharpref.getString("PORT", ipmuxPort);// ipmux
+        BASE_URI = generateAndReturnIpmuxUri();
 
         /*String ip = PreUtils.getString(ServiceProgramActivity.this, IP_KEY, "http://"+direcPag+":5509/api/RestController.php");
         BASE_URI = ip;*/
@@ -438,7 +443,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mVolleyServiceTK.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
+        mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
     }
 
     //Notifaciones por Socket
@@ -447,7 +452,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         try {
             Nickname = IMEI;
             System.out.println("NickSocket "+Nickname);
-            socket = IO.socket("http://"+direcPag+":4010/");
+            socket = IO.socket("http://"+ ipmuxIP +":4010/");
             socket.connect();
             socket.emit("join", Nickname);
 
@@ -491,7 +496,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             System.out.println("Error VS 2 "+e);
             e.printStackTrace();
         }
-        mVolleyServiceVersion.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObjV);
+        mVolleyServiceVersion.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObjV);
 
     }
 
@@ -539,7 +544,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 setButtonsState(false);
                 handler.removeMessages(CODE_ACT_PLAN);
                 llDescarga.setVisibility(View.VISIBLE);
-                myReceiver.Descargar(direcPag);
+                myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
             }
 
             //Toast.makeText(ServiceProgramActivity.this,"No hay versiones nuevas disponibles", Toast.LENGTH_SHORT).show();
@@ -548,13 +553,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         btnCambiarIp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-        if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-            handler.removeMessages(CODE_ACT_PLAN);
-            SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-            etIP.setText(sharpref.getString("IP", direcPag));
+                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                    handler.removeMessages(CODE_ACT_PLAN);
+                    SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
+                    etIP.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
 
-            llIpNueva.setVisibility(View.VISIBLE);
-        }
+                    llIpNueva.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -572,12 +577,17 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         btnOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                    direcPag = etIP.getText().toString();
+
+                    String myarray []=  getIpAndPortByText(etIP.getText().toString());
+                    ipmuxIP=myarray[0];
+                    ipmuxPort=myarray[1];
+
                     SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharepref.edit();
-                    editor.putString("IP", direcPag);
+                    editor.putString("IP", ipmuxIP);
+                    editor.putString("PORT", ipmuxPort);
                     editor.commit();
-                    BASE_URI = "http://"+direcPag+"/api/RestController.php";
+                    BASE_URI = generateAndReturnIpmuxUri();
 
                     PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
@@ -594,6 +604,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     inicio();
                     socketNoti();
                     initData();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etIP.getWindowToken(), 0);
                 }
             }
         });
@@ -601,7 +614,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         btnFabrica.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                    direcPag = "51.161.73.204";
+                    ipmuxIP = "51.161.73.204";
                     url_type = "multicast";
                     tpUrl.setText("multicast");
                     Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Multicast", Toast.LENGTH_SHORT).show();
@@ -1023,10 +1036,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
                 if (imei != null) {
-                    VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
+                    VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, ipmuxIP);
                 }else{
                     imei = getSerialNumber();
-                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, direcPag);
+                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort);
 
                 }
 
@@ -1137,7 +1150,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         e.printStackTrace();
                     }
 
-                    mVolleyServiceCH.postDataVolley("POSTCALL", "http://"+direcPag+":5509/api/RestController.php", sendObj);
+                    mVolleyServiceCH.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
 
                 } catch (Exception e) {
                     System.out.println("Error "+e);
@@ -1705,6 +1718,57 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         isTechnician=true;
 
     }
+
+    /**
+    * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort, ipmuxApiPath y construye una uri para que la app acceda al servidor ipmux y haga peticiones
+    * */
+    public String generateAndReturnIpmuxUri(){
+        String portNotation = ":";
+        if (ipmuxPort.equals("")) portNotation="";
+        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
+    }
+
+    /**
+     * Método que lee una cadena de texto y devuelve un arreglo de 2 posiciones. La posición 0 corresponde a la IP y la posición 1 al puerto
+     * @param ipText es una cadena de texto por ejm "51.111.111.1:3298", "ipmux.cablebox.com"
+     * @return ip y puerto
+     */
+    public String [] getIpAndPortByText(String ipText){
+        String uri []={ipmuxIP,ipmuxPort};
+        boolean stringHaveOnlyOnePortNotation =  countCharacter(ipText,':') == 1;
+        boolean stringDontHavePortNotation =  countCharacter(ipText,':') == 0;
+        if(stringHaveOnlyOnePortNotation){ //el usuario escribió la ip+puerto
+            try {
+                uri=ipText.trim().split(":");
+            } catch (Exception e){}
+        }
+        else if(stringDontHavePortNotation){ //el usuario escribió el dominio sin el puerto
+            uri[0]=ipText;
+            uri[1]="";
+        }
+
+        return uri;
+    }
+
+    /**
+     * calcular el número de veces que se repite un carácter en un String
+     * @param cadena
+     * @param character
+     * @return
+     */
+    public static int countCharacter(String cadena, char character) {
+        int posicion, contador = 0;
+        //se busca la primera vez que aparece
+        posicion = cadena.indexOf(character);
+        while (posicion != -1) { //mientras se encuentre el caracter
+            contador++;           //se cuenta
+            //se sigue buscando a partir de la posición siguiente a la encontrada
+            posicion = cadena.indexOf(character, posicion + 1);
+        }
+        return contador;
+    }
+
+
 
 
 
