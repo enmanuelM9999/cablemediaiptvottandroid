@@ -220,29 +220,5 @@ public class MyReceiver extends BroadcastReceiver {
         myContext.unregisterReceiver(myReceiver);
     }
 
-    public void estadoBotones(boolean estado){
-        final Button btnWifi = (Button) myActivity.findViewById(R.id.btn_wifi);
-        final Button btnApps = (Button) myActivity.findViewById(R.id.btn_apps);
-        final Button btnActua = (Button) myActivity.findViewById(R.id.btn_actua);
-        final Button btnCambiarIp = (Button) myActivity.findViewById(R.id.btn_cambiar_ip);
-        final Button btnIniciar = (Button) myActivity.findViewById(R.id.btn_iniciar);
-        final Button btnFabrica = (Button) myActivity.findViewById(R.id.btn_fabrica);
-        final Button btnOK = (Button) myActivity.findViewById(R.id.btn_ok);
 
-
-        btnWifi.setClickable(estado);
-        btnWifi.setFocusable(estado);
-        btnApps.setClickable(estado);
-        btnApps.setFocusable(estado);
-        btnActua.setClickable(estado);
-        btnActua.setFocusable(estado);
-        btnCambiarIp.setClickable(estado);
-        btnCambiarIp.setFocusable(estado);
-        btnIniciar.setClickable(estado);
-        btnIniciar.setFocusable(estado);
-        btnFabrica.setClickable(estado);
-        btnFabrica.setFocusable(estado);
-        btnOK.setClickable(estado);
-        btnOK.setFocusable(estado);
-    }
 }

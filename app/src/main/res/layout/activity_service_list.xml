@@ -11,245 +11,46 @@
         android:layout_height="match_parent"
         android:background="@drawable/back_01" />
 
-    <ImageView
-        android:layout_width="@dimen/h_1000"
-        android:layout_height="@dimen/h_1000"
-        android:layout_centerVertical="true"
+    <TextView
+        android:id="@+id/tv_imei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_marginStart="50dp"
-        android:src="@drawable/icono_cablebox"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:layout_width="1200dp"
-        android:layout_height="1000dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="-10dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/devices" />
-
-
-
-
-
-    <LinearLayout
-        android:id="@+id/ll_botones"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:textSize="@dimen/h_40"
+        android:text="IMEI: "
+        android:padding="8dp"
+        android:background="@drawable/grid_view_row_item_bg"
+        android:visibility="visible"></TextView>
+    <TextView
+        android:id="@+id/cablebox_title"
+        android:layout_below="@+id/tv_imei"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/h_100"
-        android:orientation="vertical">
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="50dp"
+        android:fontFamily="@font/segoe_ui_bold"
+        android:textSize="35sp"
+        android:text="CableBOX"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+    </TextView>
 
 
 
-            <RelativeLayout
-                android:id="@+id/ini"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/h_20"
-                android:layout_gravity="center" >
+    <GridView
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cablebox_title"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginHorizontal="40dp"
+        android:horizontalSpacing="1dp"
+        android:listSelector="@drawable/states_gridview"
+        android:numColumns="5" />
 
-                <Button
-                    android:id="@+id/btn_iniciar"
-                    android:layout_width="@dimen/h_250"
-                    android:layout_height="@dimen/h_250"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/mybutton_home" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/btn_iniciar"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="0dp"
-                    android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Canales"
-                    android:textSize="@dimen/h_50" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/wifi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/h_20"
-                android:layout_gravity="center" >
-
-                <Button
-                    android:id="@+id/btn_wifi"
-                    android:layout_width="@dimen/h_250"
-                    android:layout_height="@dimen/h_250"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/mybutton_wifi"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/btn_wifi"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="0dp"
-                    android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Red"
-                    android:textSize="@dimen/h_50" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rl_actua"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/h_20"
-                android:layout_gravity="center">
-
-                <Button
-                    android:id="@+id/btn_actua"
-                    android:layout_width="@dimen/h_250"
-                    android:layout_height="@dimen/h_250"
-                    android:background="@drawable/mybutton_actua" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/btn_actua"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="0dp"
-                    android:fontFamily="@font/segoe_ui_bold"
-                    android:text="Actualizar"
-                    android:textSize="@dimen/h_50" />
-            </RelativeLayout>
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_config_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_version"
-        android:layout_below="@+id/ll_botones"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="@dimen/h_100"
-        android:layout_marginBottom="1dp"
-        android:orientation="horizontal"
-        android:visibility="invisible">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/h_20">
-
-            <Button
-                android:id="@+id/btn_apps"
-                android:layout_width="@dimen/h_250"
-                android:layout_height="@dimen/h_250"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/mybutton_apps" />
-
-            <TextView
-                android:id="@+id/tv_apps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_apps"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Apps"
-                android:textSize="@dimen/h_50" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/h_20"
-            android:visibility="visible"
-            >
-
-
-
-            <Button
-                android:id="@+id/btn_cambiar_ip"
-                android:layout_width="@dimen/h_250"
-                android:layout_height="@dimen/h_250"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/mybutton_cambiar" />
-
-            <TextView
-                android:id="@+id/tv_bus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_cambiar_ip"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Nueva IP"
-                android:textSize="@dimen/h_50" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/h_20"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/btn_fabrica"
-                android:layout_width="@dimen/h_250"
-                android:layout_height="@dimen/h_250"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/mybutton_fabrica" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_fabrica"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Reestablecer IP"
-                android:textSize="@dimen/h_50" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_btn_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/h_20"
-            android:visibility="gone"
-            >
-
-            <Button
-                android:id="@+id/btn_switch"
-                android:layout_width="@dimen/h_250"
-                android:layout_height="@dimen/h_250"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/mybutton_to_unicast" />
-
-            <TextView
-                android:id="@+id/tv_url"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/btn_switch"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Unicast"
-                android:textSize="@dimen/h_50" />
-        </RelativeLayout>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_redes"
@@ -262,10 +63,9 @@
         android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="0dp"
-        android:layout_toStartOf="@+id/ll_botones"
-        android:background="#CC3A4053"
+        android:background="#EE3A4053"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -385,10 +185,11 @@
             android:id="@+id/tv_inf_wi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:layout_centerVertical="true"
             android:fontFamily="@font/segoe_ui_bold"
             android:textSize="@dimen/h_40"
-            android:text="No hay una Red conectada"></TextView>
+            android:text="No hay una red conectada"></TextView>
 
         <ImageView
             android:layout_width="@dimen/h_40"
@@ -484,20 +285,11 @@
         android:background="#3B504E"
         android:fontFamily="@font/segoe_ui"
         android:padding="@dimen/h_28"
-        android:text="Si la instalacion Automatica no se inicio vaya a su almacenamiento interno y en la carpeta /apk encontrara CableBoxTv.apk para instalar.\nRecuerde permitir la instalacion de aplicaciones provenientes de fuentes desconocidas en la configuracion del celular."
+        android:text="Si la instalacion Automática no se inició vaya a su almacenamiento interno y en la carpeta /apk encontrara CableBoxTv.apk para instalar.\nRecuerde permitir la instalacion de aplicaciones provenientes de fuentes desconocidas en la configuracion del celular."
         android:textSize="@dimen/h_45"
         android:visibility="invisible"></TextView>
 
-    <TextView
-        android:id="@+id/tv_imei"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:fontFamily="@font/segoe_ui_bold"
-        android:textSize="@dimen/h_40"
-        android:text="IMEI: "
-        android:visibility="invisible"></TextView>
+
 
 
     <LinearLayout
@@ -645,7 +437,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Por favor revisa tu conexión a internet"
+                android:text="Por favor revisa tu conexión"
                 android:textColor="#fff"
                 android:textSize="@dimen/h_40" />
 

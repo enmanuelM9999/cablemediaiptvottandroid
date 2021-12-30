@@ -3,6 +3,7 @@ package co.cablebox.tv.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -32,20 +34,26 @@ import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -100,26 +108,9 @@ import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.WifiStateListen
 
 public class ServiceProgramActivity extends Activity implements WifiConnectorModel {
 
-    @BindView(R.id.btn_iniciar)
-    Button btnIniciar;
-    @BindView(R.id.btn_wifi)
-    Button btnWifi;
-    @BindView(R.id.btn_actua)
-    Button btnActua;
-    @BindView(R.id.btn_apps)
-    Button btnApps;
-    @BindView(R.id.btn_cambiar_ip)
-    Button btnCambiarIp;
-    @BindView(R.id.btn_fabrica)
-    Button btnFabrica;
-    @BindView(R.id.btn_switch)
-    Button btnSwitch;
-    @BindView(R.id.rl_btn_switch)
-    RelativeLayout Rl_BtnSwitch;
-    @BindView(R.id.tv_url)
-    TextView tpUrl;
-    @BindView(R.id.ll_config_btn)
-    LinearLayout llConfigBo; //panel inferior de botones cambiar ip, switch, modo multicast...
+
+    @BindView(R.id.cablebox_title)
+    TextView tvCableboxTitle;
 
     @BindView(R.id.btn_ok)
     Button btnOK;
@@ -160,10 +151,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     //Sirve para administrar el acceso a los items del gridview
     private PackageManager packageManager;
     private List<ServiceProgramGridViewItem> gridViewItems;
-    /*
-    private PackageManager manager=getPackageManager();
-    private List<ServiceProgramGridViewItem> gridViewItems= new ArrayList<>();
-    * */
+    private GridView gridView;
+
 
     private Switch mSwitch;
     private TextView mWifiActiveTxtView;
@@ -261,18 +250,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     handler.removeMessages(CODE_ACT_PLAN);
                     if (wordKey.equals(Q15QSFD)) {
                         technicianMode();
-                    }else if(wordKey.equals(SH0W1M31)){
-                        if(llConfigBo.getVisibility() == View.INVISIBLE){
-                            if(isCel)
-                                tvImei.setText("IMEI: "+imei);
-                            else
-                                tvImei.setText("MAC: "+imei);
-                            tvImei.setVisibility(View.VISIBLE);
-                            delayBusNum = 0;
-                        }else if(llConfigBo.getVisibility() == View.VISIBLE){
-                            tvImei.setVisibility(View.INVISIBLE);
-                            delayBusNum = 3000;
-                        }
                     }
                     wordKey = "";
                     break;
@@ -353,6 +330,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         setContentView(R.layout.activity_service_list);
         ButterKnife.bind(this);
 
+        setFontOnTitle(); //Fix para que el título tenga una fuente personalizada
+
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
         ipmuxIP = sharpref.getString("IP", ipmuxIP);// ipmux
         ipmuxPort = sharpref.getString("PORT", ipmuxPort);// ipmux
@@ -376,7 +355,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
-        tvVersion.setText("Copyrigth CableMEDIA® 2021");
+        tvVersion.setText("Copyrigth CableMEDIA® 2022");
         setLocationPermission();
         createWifiConnectorObject();
 
@@ -397,7 +376,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             tvImei.setVisibility(View.VISIBLE);
             //llConfigBo.setVisibility(View.VISIBLE);
             url_type = "unicast";
-            Rl_BtnSwitch.setVisibility(View.GONE);
         }
 
         List<Notificaciones> list = new ArrayList<>();
@@ -428,13 +406,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         llLoadingChannels.setVisibility(View.INVISIBLE);
         hideNonetAndNochannelsNotification();
+        loadItemsToGridView();
         if(!isTechnician){ //usuario normal
             llLoadingChannels.setVisibility(View.VISIBLE);
             guaranteeOpenChannelsWithBusyWaiting();
             handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
         }
         else if(isTechnician){ //usuario técnico
-            togglePanelConf();
+            exitWifi();
         }
     }
     private void inicio() {
@@ -526,66 +505,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void funciones(){
-        btnIniciar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                canShowFailureScreens=true;
-                guaranteeOpenChannelsWithBusyWaiting();
-                Toast.makeText(ServiceProgramActivity.this, "Cargando canales...", Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        btnWifi.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                handler.removeMessages(CODE_ACT_PLAN);
-                if(llRedes.getVisibility() == View.INVISIBLE) {
-                    onWifi = true;
-                    toggleWifi();
-                }else if(llRedes.getVisibility() == View.VISIBLE){
-                    onWifi = false;
-                    exitWifi();
-                }
-            }
-            }
-        });
-
-        btnActua.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                setButtonsState(false);
-                handler.removeMessages(CODE_ACT_PLAN);
-                llDescarga.setVisibility(View.VISIBLE);
-                myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
-            }
-
-            //Toast.makeText(ServiceProgramActivity.this,"No hay versiones nuevas disponibles", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnCambiarIp.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                    handler.removeMessages(CODE_ACT_PLAN);
-                    SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-                    etIP.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
-
-                    llIpNueva.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        btnApps.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                    viewApp = true;
-                    handler.removeMessages(CODE_ACT_PLAN);
-                    handler.removeMessages(CODE_NETWORK_SUCCESS);
-                    viewListApps();
-                }
-            }
-        });
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -624,52 +543,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         });
 
-        btnFabrica.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                    ipmuxIP = "51.161.73.204";
-                    url_type = "multicast";
-                    tpUrl.setText("multicast");
-                    Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Multicast", Toast.LENGTH_SHORT).show();
-                    SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharepref.edit();
-                    editor.putString("IP", "51.161.73.204");
-                    editor.commit();
-                    BASE_URI = BASE_URI_AUX;
 
-                    PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
-
-                    String localUrl = getServerFromFile(LOCAL_URL);
-                    if (!TextUtils.isEmpty(localUrl)) {
-                        BASE_URI = localUrl;
-                    }
-
-                    Toast.makeText(ServiceProgramActivity.this, "La Ip se ha reiniciado, oprima Inicio Normal", Toast.LENGTH_SHORT).show();
-
-                    //mQueue = Volley.newRequestQueue(this);
-                    //volleyS = new VolleyS(mQueue);
-                    inicio();
-                    socketNoti();
-                    initData();
-                }
-
-            }
-        });
-
-        btnSwitch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(url_type.equals("multicast")){
-                    url_type = "unicast";
-                    tpUrl.setText("Unicast");
-                    Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Unicast", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    url_type = "multicast";
-                    tpUrl.setText("Multicast");
-                    Toast.makeText(ServiceProgramActivity.this, "Reproduciendo direcciones Multicast", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void InitDescarga(){
@@ -1309,20 +1183,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      */
     public void setButtonsState(boolean estado){
         System.out.println(estado);
-        btnWifi.setClickable(estado);
-        btnWifi.setFocusable(estado);
-        btnApps.setClickable(estado);
-        btnApps.setFocusable(estado);
-        btnActua.setClickable(estado);
-        btnActua.setFocusable(estado);
-        btnCambiarIp.setClickable(estado);
-        btnCambiarIp.setFocusable(estado);
-        btnIniciar.setClickable(estado);
-        btnIniciar.setFocusable(estado);
-        btnFabrica.setClickable(estado);
-        btnFabrica.setFocusable(estado);
-        btnSwitch.setClickable(estado);
-        btnSwitch.setFocusable(estado);
         btnOK.setClickable(estado);
         btnOK.setFocusable(estado);
     }
@@ -1382,57 +1242,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     }
 
-    //Animacion de botones de configuracion
-    public void togglePanelConf() {
-        if(llConfigBo.getVisibility() == View.INVISIBLE){
-            if (animInBtnConf == null) {
-                animInBtnConf = new TranslateAnimation(llConfigBo.getWidth(), 0f, 0f, 0f);
-                animInBtnConf.setDuration(300);
-            }
-            animInBtnConf.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    llConfigBo.setVisibility(View.VISIBLE);
-                }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
 
-                }
-            });
-            llConfigBo.startAnimation(animInBtnConf);
-        }
-    }
-
-    private void exitPanelConf() {
-        if(llConfigBo.getVisibility() == View.VISIBLE){
-            if (exitAnimBtnConf == null) {
-                exitAnimBtnConf = new TranslateAnimation(0f, llConfigBo.getWidth(), 0f, 0f);
-                exitAnimBtnConf.setDuration(1000);
-
-            }
-            exitAnimBtnConf.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    llConfigBo.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            llConfigBo.startAnimation(exitAnimBtnConf);
-        }
-    }
 
     //Wifi
     @Override
@@ -1660,6 +1472,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      * Se pregunta cada 2 segs si es posible acceder a los canales (por si el cliente recién paga o por si el internet vuelve).
      */
     public void guaranteeOpenChannelsWithBusyWaiting(){
+        canShowFailureScreens=true;
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
     }
 
@@ -1718,8 +1531,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         hideNonetAndNochannelsNotification();
         //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
         canShowFailureScreens=false;
-        //mostrar fila inferior de botones
-        togglePanelConf();
         //esconder el panel de wifi que se expandió
         exitWifi();
         onWifi=false;
@@ -1786,10 +1597,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void loadItemsToGridView(){
         packageManager =getPackageManager();
         gridViewItems= new ArrayList<>();
+        gridView = findViewById(R.id.grid_view);
 
         loadConfigurationsToArrayList();
         loadAppsToArrayList();
-        loadArrayListToGridView();
+
+        loadAllArrayListsToGridView();
+        loadGridViewListeners();
     }
 
     private void loadConfigurationsToArrayList(){
@@ -1835,8 +1649,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             Item app = new Item();
 
             if
-            (   ri.activityInfo.packageName.equals("co.cablebox.tv") ||
-                ri.activityInfo.packageName.equals("com.android.tv.settings") ||
+            (   ri.activityInfo.packageName.equals("com.android.tv.settings") ||
                 ri.activityInfo.packageName.equals("tv.pluto.android") ||
                 ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
                 ri.activityInfo.packageName.equals("com.estrongs.android.pop")||
@@ -1854,39 +1667,169 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     }
 
-    private void loadArrayListToGridView(){
+    private void loadAllArrayListsToGridView(){
 
+        ArrayAdapter<ServiceProgramGridViewItem> adapter = new ArrayAdapter<ServiceProgramGridViewItem>(ServiceProgramActivity.this, R.layout.item, gridViewItems){
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
+                if(convertView == null){
+                    convertView = getLayoutInflater().inflate(R.layout.row_item, null);
+                    convertView.setClipToOutline(true);
+                }
 
+                ImageView appIcon = (ImageView) convertView.findViewById(R.id.image_app);
+                appIcon.setImageDrawable(gridViewItems.get(position).getIcon());
+
+                TextView appName = (TextView) convertView.findViewById(R.id.name_app);
+                appName.setText(gridViewItems.get(position).getText());
+
+                return convertView;
+            }
+        };
+        gridView.setAdapter(adapter);
     }
 
 
-    /*
-    private  void addClickListener(){
-        listApps.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    /**
+     * Cargar accines que se ejecutan al darle clic a un item del grid view
+     */
+    private  void loadGridViewListeners(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
 
-            ServiceProgramGridViewItem anItem= gridViewItems.get(pos); //obtenemos el item
-            String anActionType = anItem.getActionType(); //obtenemos el tipo de accion del item
-            switch (anActionType) {
+                //obtenemos el item seleccionado
+                ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
+                //obtenemos el tipo de accion del item
+                String theActionType = theItem.getActionType();
 
-                case ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION:
-                break;
+                //si el tipo de acción es igual a iniciar configuración...
+                if (theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION)){
 
-                case ServiceProgramGridViewItem.ACTION_TYPE_START_APP:
-                Intent i = manager.getLaunchIntentForPackage(anItem.getAction());
-                startActivity(i);
-                break;
+                    switch (theItem.getAction()){
+                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
+                            guaranteeOpenChannelsWithBusyWaiting();
+                            break;
+                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED:
+                            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                                handler.removeMessages(CODE_ACT_PLAN);
+                                if(llRedes.getVisibility() == View.INVISIBLE) {
+                                    onWifi = true;
+                                    toggleWifi();
+                                    llRedes.requestFocus();
+                                }else if(llRedes.getVisibility() == View.VISIBLE){
+                                    onWifi = false;
+                                    exitWifi();
+                                }
+                            }
+                            break;
+                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
+                            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                                setButtonsState(false);
+                                handler.removeMessages(CODE_ACT_PLAN);
+                                llDescarga.setVisibility(View.VISIBLE);
+                                myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
+                            }
+                            break;
+                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
+                            showChangeIpDialog();
+                            break;
+                    }
 
-            }
+                }
+
+                //si el tipo de acción es igual a iniciar app...
+                else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_APP)){
+                    Intent i = packageManager.getLaunchIntentForPackage(theItem.getAction());
+                    startActivity(i);
+                }
 
 
             }
         });
     }
 
-     */
+    private void setFontOnTitle(){
+        Typeface segoe;
+        String fontPath="fonts/segoe_ui_bold.ttf";
+        segoe= Typeface.createFromAsset(getAssets(),fontPath);
+        tvCableboxTitle.setTypeface(segoe);
+    }
 
+    private void showChangeIpDialog(){
+        if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+            handler.removeMessages(CODE_ACT_PLAN);
+
+            EditText inputNewIp;
+            AlertDialog.Builder builder= new AlertDialog.Builder(ServiceProgramActivity.this);
+            builder.setTitle("Cambiar IP");
+            builder.setMessage("");
+            inputNewIp= new EditText(ServiceProgramActivity.this);
+
+            //Pintar la ip configurada en el EditTExt
+            SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
+            inputNewIp.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
+
+            builder.setView(inputNewIp);
+
+            //Set positive button
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String txt= inputNewIp.getText().toString();
+
+                    if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+
+                        String myarray []=  getIpAndPortByText(inputNewIp.getText().toString());
+                        ipmuxIP=myarray[0];
+                        ipmuxPort=myarray[1];
+
+                        SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharepref.edit();
+                        editor.putString("IP", ipmuxIP);
+                        editor.putString("PORT", ipmuxPort);
+                        editor.commit();
+                        BASE_URI = generateAndReturnIpmuxUri();
+
+                        PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
+
+                        String localUrl = getServerFromFile(LOCAL_URL);
+                        if (!TextUtils.isEmpty(localUrl)) {
+                            BASE_URI = localUrl;
+                        }
+
+                        llIpNueva.setVisibility(View.INVISIBLE);
+                        Toast.makeText(ServiceProgramActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
+
+                        //mQueue = Volley.newRequestQueue(this);
+                        //volleyS = new VolleyS(mQueue);
+                        inicio();
+                        socketNoti();
+                        initData();
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(inputNewIp.getWindowToken(), 0);
+                    }
+
+                }
+            });
+
+            //Set negative button
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String txt= inputNewIp.getText().toString();
+                    dialog.dismiss();
+                }
+            });
+
+            //Create Dialog
+            AlertDialog ad= builder.create();
+            ad.show();
+
+        }
+    }
 
 
 
