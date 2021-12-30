@@ -81,6 +81,7 @@ public class AppsListActivity extends Activity {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
                 if(convertView == null){
                     convertView = getLayoutInflater().inflate(R.layout.row_item, null);
+                    convertView.setClipToOutline(true);
                 }
 
                 ImageView appIcon = (ImageView) convertView.findViewById(R.id.image_app);
@@ -92,7 +93,6 @@ public class AppsListActivity extends Activity {
                 return convertView;
             }
         };
-
         listApss.setAdapter(adapter);
     }
 

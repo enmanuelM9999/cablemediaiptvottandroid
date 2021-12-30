@@ -8,36 +8,39 @@
     android:gravity="center">
 
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="150dp"
-        android:orientation="vertical"
+        android:background="@drawable/grid_view_row_item_bg"
+        android:clipToPadding="true"
         android:gravity="center"
-        android:background="#99808080">
+        android:orientation="vertical"
+       >
 
         <ImageView
             android:id="@+id/image_app"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_margin="25dp"
-            android:src="@drawable/apple"/>
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/apple" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#AB878787"
             android:textAlignment="center">
+
 
             <TextView
                 android:id="@+id/name_app"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="-4dp"
                 android:text="Ajustes"
                 android:textAlignment="center"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
                 android:textColor="#fff"
-                android:textSize="20dp"
-                android:layout_marginTop="5dp"/>
+                android:textSize="20dp" />
         </RelativeLayout>
 
     </LinearLayout>

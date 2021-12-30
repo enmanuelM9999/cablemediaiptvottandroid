@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,6 +36,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -76,7 +79,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
+import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
+import co.cablebox.tv.bean.Item;
 import co.cablebox.tv.bean.LiveBean;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.socket.Notificaciones;
@@ -151,6 +156,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private TranslateAnimation exitAnimListWifi;
     private TranslateAnimation animInBtnConf;
     private TranslateAnimation exitAnimBtnConf;
+
+    //Sirve para administrar el acceso a los items del gridview
+    private PackageManager packageManager;
+    private List<ServiceProgramGridViewItem> gridViewItems;
+    /*
+    private PackageManager manager=getPackageManager();
+    private List<ServiceProgramGridViewItem> gridViewItems= new ArrayList<>();
+    * */
 
     private Switch mSwitch;
     private TextView mWifiActiveTxtView;
@@ -1734,20 +1747,22 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      * @return ip y puerto
      */
     public String [] getIpAndPortByText(String ipText){
-        String uri []={ipmuxIP,ipmuxPort};
+        //valores por defecto por si no es una url válida
+        String ipAndPort []={ipmuxIP,ipmuxPort};
+
         boolean stringHaveOnlyOnePortNotation =  countCharacter(ipText,':') == 1;
         boolean stringDontHavePortNotation =  countCharacter(ipText,':') == 0;
         if(stringHaveOnlyOnePortNotation){ //el usuario escribió la ip+puerto
             try {
-                uri=ipText.trim().split(":");
+                ipAndPort=ipText.trim().split(":");
             } catch (Exception e){}
         }
         else if(stringDontHavePortNotation){ //el usuario escribió el dominio sin el puerto
-            uri[0]=ipText;
-            uri[1]="";
+            ipAndPort[0]=ipText;
+            ipAndPort[1]="";
         }
 
-        return uri;
+        return ipAndPort;
     }
 
     /**
@@ -1768,6 +1783,109 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         return contador;
     }
 
+    private void loadItemsToGridView(){
+        packageManager =getPackageManager();
+        gridViewItems= new ArrayList<>();
+
+        loadConfigurationsToArrayList();
+        loadAppsToArrayList();
+        loadArrayListToGridView();
+    }
+
+    private void loadConfigurationsToArrayList(){
+        Drawable icon;
+        String text;
+        String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION;
+        String action;
+
+        //verCanales
+        icon = getResources().getDrawable(R.drawable.house);
+        text="Ver canales";
+        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+
+        //red
+        icon = getResources().getDrawable(R.drawable.wifi);
+        text="Red";
+        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED;
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+
+        //actualizar
+        icon = getResources().getDrawable(R.drawable.download);
+        text="Actualizar";
+        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+
+        //cambiarIp
+        icon = getResources().getDrawable(R.drawable.settings);
+        text="Cambiar IP";
+        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+
+
+    }
+
+    private void loadAppsToArrayList(){
+
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
+        for (ResolveInfo ri: availableActivities){
+            Item app = new Item();
+
+            if
+            (   ri.activityInfo.packageName.equals("co.cablebox.tv") ||
+                ri.activityInfo.packageName.equals("com.android.tv.settings") ||
+                ri.activityInfo.packageName.equals("tv.pluto.android") ||
+                ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
+                ri.activityInfo.packageName.equals("com.estrongs.android.pop")||
+                ri.activityInfo.packageName.equals("org.videolan.vlc")
+            )
+            {
+                Drawable icon= ri.loadIcon(packageManager);
+                String text= ri.loadLabel(packageManager).toString();
+                String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_APP;
+                String action =ri.activityInfo.packageName;
+
+                ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action);
+                gridViewItems.add(item);
+            }
+        }
+    }
+
+    private void loadArrayListToGridView(){
+
+
+    }
+
+
+    /*
+    private  void addClickListener(){
+        listApps.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+
+            ServiceProgramGridViewItem anItem= gridViewItems.get(pos); //obtenemos el item
+            String anActionType = anItem.getActionType(); //obtenemos el tipo de accion del item
+            switch (anActionType) {
+
+                case ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION:
+                break;
+
+                case ServiceProgramGridViewItem.ACTION_TYPE_START_APP:
+                Intent i = manager.getLaunchIntentForPackage(anItem.getAction());
+                startActivity(i);
+                break;
+
+            }
+
+
+            }
+        });
+    }
+
+     */
 
 
 

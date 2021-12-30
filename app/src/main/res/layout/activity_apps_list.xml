@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="co.cablebox.tv.activity.AppsListActivity"
-    android:background="@drawable/default_wallpaper">
+    android:background="@drawable/back_01">
 
     <ImageView
         android:id="@+id/logo"
@@ -15,17 +15,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
         android:src="@drawable/ic_logo_cb" />
-
-    <!--ListView
-        android:id="@+id/list_apps"
-        android:layout_width="match_parent"
-        android:layout_height="149dp"
-        android:layout_above="@+id/list_panel_app"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"></ListView-->
 
 
     <GridView
@@ -36,49 +25,10 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="40dp"
         android:layout_marginHorizontal="40dp"
-        android:numColumns="4" />
+        android:horizontalSpacing="1dp"
+        android:listSelector="@drawable/states_gridview"
+        android:numColumns="5" />
 
 
-    <!--RelativeLayout
-        android:id="@+id/app_config"
-        android:layout_width="117dp"
-        android:layout_height="117dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="30dp"
-        android:orientation="vertical"
-        android:background="#99808080">
-
-        <RelativeLayout
-            android:id="@+id/panel_name_app"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            android:background="#AB878787">
-
-            <TextView
-                android:id="@+id/name_app"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Ajustes"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="18dp"/>
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/image_app"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_above="@+id/panel_name_app"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="26dp"
-            android:layout_marginEnd="26dp"
-            android:layout_marginBottom="15dp"
-            android:src="@drawable/apple" />
-    </RelativeLayout-->
 
 </RelativeLayout>
