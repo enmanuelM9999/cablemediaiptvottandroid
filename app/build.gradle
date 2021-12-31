@@ -78,4 +78,6 @@ dependencies {
 
     //animaciones
     implementation 'com.airbnb.android:lottie:1.5.3'
+
+
 }

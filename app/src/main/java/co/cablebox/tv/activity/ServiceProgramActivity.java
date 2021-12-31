@@ -1717,7 +1717,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                 if(llRedes.getVisibility() == View.INVISIBLE) {
                                     onWifi = true;
                                     toggleWifi();
-                                    llRedes.requestFocus();
+                                    rv.requestFocus();
                                 }else if(llRedes.getVisibility() == View.VISIBLE){
                                     onWifi = false;
                                     exitWifi();
@@ -1764,12 +1764,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(ServiceProgramActivity.this);
             builder.setTitle("Cambiar IP");
-            builder.setMessage("");
+            //builder.setMessage("");
             inputNewIp= new EditText(ServiceProgramActivity.this);
 
             //Pintar la ip configurada en el EditTExt
             SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
             inputNewIp.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
+            inputNewIp.setMaxLines(1);
+            inputNewIp.setPadding(20,10,20,10);
 
             builder.setView(inputNewIp);
 
@@ -1824,12 +1826,16 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 }
             });
 
+
             //Create Dialog
             AlertDialog ad= builder.create();
             ad.show();
+            ad.getWindow().setLayout(400, 200); //Controlling width and height.
+
 
         }
     }
+
 
 
 

@@ -3,6 +3,7 @@
 
     <style name="AppBaseTheme" parent="@style/Theme.Leanback"></style>
 
+
     <style name="AppThemeB" parent="AppBaseTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
