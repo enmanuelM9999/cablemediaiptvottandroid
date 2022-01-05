@@ -14,6 +14,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -21,7 +23,6 @@ import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -152,13 +153,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private PackageManager packageManager;
     private List<ServiceProgramGridViewItem> gridViewItems;
     private GridView gridView;
+    ArrayAdapter<ServiceProgramGridViewItem> gridViewAdapter;
 
 
     private Switch mSwitch;
     private TextView mWifiActiveTxtView;
     private RecyclerView rv;
 
-    private WifiListRvAdapter adapter;
+    private WifiListRvAdapter wifiAdapter;
     private WifiConnector wifiConnector;
     private boolean onWifi = false;
 
@@ -224,7 +226,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             switch (msg.what) {
                 case CODE_TRY_PLAYER:
                     try {
-                        btnIniciarOnClick();
+                        openChannels();
                         if (canShowFailureScreens){
                             if(!isNetDisponible()){
                                 showNonetNoti();
@@ -344,7 +346,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         setButtonsState(true);
 
         //Descargar Apk
-        InitDescarga();
+        initDescarga();
 
         mSwitch = findViewById(R.id.wifiActivationSwitch);
         mWifiActiveTxtView = findViewById(R.id.wifiActivationTv);
@@ -385,23 +387,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
 
         //llActualizando.setVisibility(View.VISIBLE);
-        new CountDownTimer(3000, 1000) {
-            public void onTick(long millisUntilFinished) {
-
-            }
-            public void onFinish() {
-                handler.removeMessages(CODE_ACT);
-                handler.sendEmptyMessageDelayed(CODE_ACT, 0);
-                if(rlMensajeWifi.getVisibility() == View.VISIBLE){
-                    onWifi = true;
-                    toggleWifi();
-                }
-
-            }
-        }.start();
+        handler.removeMessages(CODE_ACT);
+        handler.sendEmptyMessageDelayed(CODE_ACT, 0);
+        if(rlMensajeWifi.getVisibility() == View.VISIBLE){
+            onWifi = true;
+            toggleWifi();
+        }
 
 
-        socketNoti();
+        //socketNoti();
         funciones();
 
         llLoadingChannels.setVisibility(View.INVISIBLE);
@@ -410,7 +404,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(!isTechnician){ //usuario normal
             llLoadingChannels.setVisibility(View.VISIBLE);
             guaranteeOpenChannelsWithBusyWaiting();
-            handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
+
         }
         else if(isTechnician){ //usuario técnico
             exitWifi();
@@ -492,7 +486,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     }
 
-    private void btnIniciarOnClick(){
+    private void openChannels(){
         inicio();
         if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
             handler.removeMessages(CODE_ACT_PLAN);
@@ -534,7 +528,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     //mQueue = Volley.newRequestQueue(this);
                     //volleyS = new VolleyS(mQueue);
                     inicio();
-                    socketNoti();
+                    //socketNoti();
                     initData();
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -546,7 +540,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     }
 
-    private void InitDescarga(){
+    private void initDescarga(){
         myReceiver = new MyReceiver(ServiceProgramActivity.this);
         myReceiver.Registrar(myReceiver);
     }
@@ -587,7 +581,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     String s = response.toString();
 
                     if (!TextUtils.isEmpty(s)) {
-                        System.out.println("ASGASGAS "+s);
+                        System.out.println("++++++++++++++++++JSON by server"+s);
                         liveBean = gson.fromJson(s, LiveBean.class);
 
                         File dirFile = new File(LIVE_DIR);
@@ -853,7 +847,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
                 exitWifi();
-                cerrarApp();
+                closeApp();
                 break;
 
             case KeyEvent.KEYCODE_1:
@@ -1001,13 +995,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     // Metodo para cerrar la aplicacion
-    public void cerrarApp() {
+    public void closeApp() {
+        myReceiver.borrarRegistro(myReceiver);
+        destroyWifiConnectorListeners();
         isTechnician=false;
-        openLive(this);
-        finish();
-
-        /*System.exit(0);
-        android.os.Process.killProcess(android.os.Process.myPid());*/
+        canShowFailureScreens=false;
+        removeAllHandlerMessages();
+        hideNonetAndNochannelsNotification();
+        actualizando=false;
+        //finish();
     }
 
     // Obtener lista de canales desde Json
@@ -1153,12 +1149,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     protected void onPause() {
         super.onPause();
         System.out.println("onPause service");
-        myReceiver.borrarRegistro(myReceiver);
-        destroyWifiConnectorListeners();
-        isTechnician=false;
-        removeAllHandlerMessages();
-        hideNonetAndNochannelsNotification();
-        finish();
+        closeApp();
+
     }
 
     @Override
@@ -1311,7 +1303,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void wifiAdapter(){
-        adapter = new WifiListRvAdapter(this.wifiConnector, new WifiListRvAdapter.WifiItemListener() {
+        wifiAdapter = new WifiListRvAdapter(this.wifiConnector, new WifiListRvAdapter.WifiItemListener() {
             @Override
             public void onWifiItemClicked(ScanResult scanResult) {
                 openConnectDialog(scanResult);
@@ -1322,7 +1314,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 disconnectFromAccessPoint(scanResult);
             }
         });
-        rv.setAdapter(adapter);
+        rv.setAdapter(wifiAdapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
     }
@@ -1338,8 +1330,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private void onWifiDisabled(){
         mWifiActiveTxtView.setText("Wi-Fi");
-        if(adapter != null)
-            adapter.setScanResultList(new ArrayList<ScanResult>());
+        if(wifiAdapter != null)
+            wifiAdapter.setScanResultList(new ArrayList<ScanResult>());
     }
 
     @Override
@@ -1347,7 +1339,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         wifiConnector.showWifiList(new ShowWifiListener() {
             @Override
             public void onNetworksFound(WifiManager wifiManager, List<ScanResult> wifiScanResult) {
-                adapter.setScanResultList(wifiScanResult);
+                wifiAdapter.setScanResultList(wifiScanResult);
             }
 
             @Override
@@ -1469,10 +1461,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     /** "Garantizar la apertura de canales con espera activa"
      * Método que usa la espera activa (busy waiting) para garantizar que se abra el reproductor en cuanto sea posible acceder a los canales.
-     * Se pregunta cada 2 segs si es posible acceder a los canales (por si el cliente recién paga o por si el internet vuelve).
+     * Se pregunta cada tiempo en segs si es posible acceder a los canales (por si el cliente recién paga o por si el internet vuelve).
      */
     public void guaranteeOpenChannelsWithBusyWaiting(){
-        canShowFailureScreens=true;
+        llLoadingChannels.setVisibility(View.VISIBLE);
+        handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
     }
 
@@ -1531,6 +1524,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         hideNonetAndNochannelsNotification();
         //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
         canShowFailureScreens=false;
+        //dejar de intentar reproducir canales
+        handler.removeMessages(CODE_TRY_PLAYER);
         //esconder el panel de wifi que se expandió
         exitWifi();
         onWifi=false;
@@ -1652,7 +1647,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             (   ri.activityInfo.packageName.equals("com.android.tv.settings") ||
                 ri.activityInfo.packageName.equals("tv.pluto.android") ||
                 ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
-                ri.activityInfo.packageName.equals("com.estrongs.android.pop")||
                 ri.activityInfo.packageName.equals("org.videolan.vlc")
             )
             {
@@ -1669,7 +1663,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private void loadAllArrayListsToGridView(){
 
-        ArrayAdapter<ServiceProgramGridViewItem> adapter = new ArrayAdapter<ServiceProgramGridViewItem>(ServiceProgramActivity.this, R.layout.item, gridViewItems){
+        gridViewAdapter = new ArrayAdapter<ServiceProgramGridViewItem>(ServiceProgramActivity.this, R.layout.item, gridViewItems){
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -1687,7 +1681,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 return convertView;
             }
         };
-        gridView.setAdapter(adapter);
+        gridView.setAdapter(gridViewAdapter);
     }
 
 
@@ -1695,9 +1689,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      * Cargar accines que se ejecutan al darle clic a un item del grid view
      */
     private  void loadGridViewListeners(){
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+
+                //********** Item clicked
+
+                gridViewAdapter.notifyDataSetChanged(); //fix para que el gridView se pueda clickear con los dedos y mouse, no solo con el control remoto
+                playUiSound();
 
                 //obtenemos el item seleccionado
                 ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
@@ -1807,7 +1807,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         //mQueue = Volley.newRequestQueue(this);
                         //volleyS = new VolleyS(mQueue);
                         inicio();
-                        socketNoti();
+                        //socketNoti();
                         initData();
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1830,13 +1830,19 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             //Create Dialog
             AlertDialog ad= builder.create();
             ad.show();
-            ad.getWindow().setLayout(400, 200); //Controlling width and height.
+            ad.getWindow().setLayout(300, 180); //Controlling width and height.
 
 
         }
     }
 
-
+    private void playUiSound(){
+        int sonido;
+        SoundPool sp= new SoundPool(1, AudioManager.STREAM_MUSIC,1);
+        sonido=sp.load(this,R.raw.ui_effect,1);
+        sp.play(sonido, 1,1,1,0,0);
+        //Toast.makeText(ServiceProgramActivity.this,"sound", Toast.LENGTH_SHORT).show();
+    }
 
 
 }

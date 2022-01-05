@@ -951,8 +951,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * Se comprueba si la actividad es iniciada desde el panel de categorias o no,
      * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
     private void initData() {
-        //Socket
-        socketNoti();
+
 
         if (!deMosaico){
             channelIndex = PreUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
@@ -1017,7 +1016,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         rlVolumenA.setVisibility(View.INVISIBLE);
         ivMute.setVisibility(View.INVISIBLE);
 
-        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+        //Socket
+        socketNoti();
 
         /*tiempo_canal.scheduleAtFixedRate(new TimerTask(){
             @Override
@@ -1043,8 +1043,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             Nickname = IMEI;
             System.out.println("NickSocket "+Nickname);
             socket = IO.socket("http://"+ ipmuxIP +":4010/");
-            socket.connect();
-            socket.emit("join", Nickname);
+
+            socketEmitConnectAndPlayingChannel();
 
             socket.on("nuevoplan", new Emitter.Listener() {
                 @Override
@@ -1053,9 +1053,31 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         @Override
                         public void run() {
                             try{
+                                //Toast.makeText(VideoPlayerActivityBox.this, "socket.on nuevoplan", Toast.LENGTH_SHORT).show();
                                 JSONObject data = (JSONObject) args[0];
                                 String id = data.getString("receptorNickname");
+                                //String myMsg = data.getString("msg");
+                                //Toast.makeText(VideoPlayerActivityBox.this, "imei: "+ id, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(VideoPlayerActivityBox.this, "Server: " +myMsg, Toast.LENGTH_SHORT).show();
                                 restartApp(id);
+                            }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+                        }
+                    });
+                }
+            });
+
+
+            socket.on("disconnect", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket desconectado",Toast.LENGTH_LONG).show();
                             }
                             catch(Exception e){
                                 Log.d("error socket ", ""+e.toString());
@@ -1066,6 +1088,48 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     });
                 }
             });
+
+            socket.on("reconnect", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+
+                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket reconnect event",Toast.LENGTH_LONG).show();
+                                //socket.disconnect();
+                                socketEmitConnectAndPlayingChannel();
+                            }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+
+
+                        }
+                    });
+                }
+            });
+
+            socket.on("connect", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket connect event",Toast.LENGTH_LONG).show();
+                            }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+
+
+                        }
+                    });
+                }
+            });
+
 
             socket.on("sincronizarConServidor", new Emitter.Listener() {
                 @Override
@@ -2904,7 +2968,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         play(channelIndex);
 
 
-        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+        socketEmitPlayingChannel();
         nuevoCanal = true;
     }
 
@@ -3713,5 +3777,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
     }
 
+    private void socketEmitPlayingChannel(){
+        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+    }
+
+    private void socketEmitConnectAndPlayingChannel(){
+        socket.connect();
+        socket.emit("join", IMEI);
+        socketEmitPlayingChannel();
+    }
 
 }

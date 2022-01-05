@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: org.videolan.android:libvlc-all:3.1.12@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4a6b225698ba164be0bb453aed392825/transformed/jetified-libvlc-all-3.1.12/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4a6b225698ba164be0bb453aed392825/transformed/jetified-libvlc-all-3.1.12/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4a6b225698ba164be0bb453aed392825/transformed/jetified-libvlc-all-3.1.12/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4a6b225698ba164be0bb453aed392825/transformed/jetified-libvlc-all-3.1.12/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

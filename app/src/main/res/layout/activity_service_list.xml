@@ -309,15 +309,7 @@
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent">
-
-        <RelativeLayout
-            android:id="@+id/rl_loading_channels"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/h_20">
 
 
             <ImageView
@@ -331,7 +323,6 @@
                 android:layout_width="300dp"
                 android:layout_height="90dp"
                 android:layout_below="@+id/logo_cableoperador"
-                android:layout_marginLeft="30dp"
                 app:lottie_autoPlay="true"
                 app:lottie_fileName="890-loading-animation.json"
                 app:lottie_loop="true" />
@@ -344,10 +335,44 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Cargando canales..."
+                android:text="Cargando canales"
                 android:textColor="#000"
                 android:textSize="@dimen/h_40" />
-        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_screen_demo_expired"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/timer_animation"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="timer_lottie.json"
+                app:lottie_loop="true" />
+
+
+            <TextView
+                android:id="@+id/txt_screen_demo_expired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/timer_animation"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Tu demo ha expirado, por favor comunícate con soporte."
+                android:textColor="#fff"
+                android:textSize="@dimen/h_40" />
     </LinearLayout>
 
 
@@ -364,48 +389,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/rl_screen_nochannels"
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/tv_loading_animation"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="tv_loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/txt_nochannels"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/h_20">
+            android:layout_below="@+id/tv_loading_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Algo salió mal"
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40" />
+
+        <TextView
+            android:id="@+id/txt_nochannels_line2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_nochannels"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Intentando recuperar canales..."
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40" />
 
 
-            <ImageView
-                android:id="@+id/logo_nochannels"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/tv_nochannels"></ImageView>
-
-
-            <TextView
-                android:id="@+id/txt_nochannels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/logo_nochannels"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="No se puede acceder a los canales"
-                android:textColor="#fff"
-                android:textSize="@dimen/h_40" />
-
-            <TextView
-                android:id="@+id/txt_nochannels_line2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_nochannels"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Intentando recuperar canales..."
-                android:textColor="#fff"
-                android:textSize="@dimen/h_40" />
-
-        </RelativeLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_screen_nonet"
@@ -416,50 +436,182 @@
         android:orientation="vertical"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toStartOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/rl_screen_nonet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="@dimen/h_20">
 
-
-            <ImageView
-                android:id="@+id/nonet_logo"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/nowifi"></ImageView>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/no_net_animation"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/logo_cableoperador"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="scanwifi.json"
+            app:lottie_loop="true" />
 
 
             <TextView
                 android:id="@+id/txt_nonet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/nonet_logo"
+                android:layout_below="@+id/no_wifi_animation"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/segoe_ui_bold"
                 android:text="Por favor revisa tu conexión"
                 android:textColor="#fff"
                 android:textSize="@dimen/h_40" />
-
-            <TextView
-                android:id="@+id/txt_nonet_line2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_nonet"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="0dp"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text=""
-                android:textColor="#fff"
-                android:textSize="@dimen/h_40" />
-        </RelativeLayout>
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/ll_screen_suspended_for_payment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_screen_suspended_for_payment"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="disconnection.json"
+            app:lottie_loop="true" />
+
+
+        <TextView
+            android:id="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@+id/timer_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Error de conectividad"
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/txt_screen_suspended_for_payment"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Tu servicio está suspendido. Por favor regulariza el pago o comunícate con soporte. "
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40"
+            android:background="@drawable/text_view_card_bg"
+            android:padding="20dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_screen_technical_suspension"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_screen_technical_suspension"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="gear.json"
+            app:lottie_loop="true" />
+
+
+        <TextView
+            android:id="@+id/txt_title_screen_technical_suspension"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@+id/timer_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Suspensión Técnica"
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/txt_screen_technical_suspension"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Tu servicio está suspendido por afectación en la plataforma IPTV/OTT."
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40"
+            android:background="@drawable/text_view_card_bg"
+            android:padding="20dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_screen_socket_disconnect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_screen_socket_disconnect"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="sherlock.json"
+            app:lottie_loop="true" />
+
+
+        <TextView
+            android:id="@+id/txt_title_screen_socket_disconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@+id/timer_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="¿Sigues ahí?"
+            android:textColor="#fff"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/txt_screen_socket_disconnect"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Llevamos mucho tiempo sin saber de ti. Presiona 'OK' para continuar. Error SOKT-DISC"
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40"
+            android:background="@drawable/text_view_card_bg"
+            android:padding="20dp"
+            />
+    </LinearLayout>
 
 </RelativeLayout>
