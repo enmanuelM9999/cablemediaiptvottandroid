@@ -896,7 +896,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         int programNext = 0;
 
         if(channelIndex > (liveBean.getData().size() - 1))
-            channelIndex = 1;
+            channelIndex = 0;
         else if(channelIndex < 0)
             channelIndex = liveBean.getData().size() - 1;
 
@@ -1069,6 +1069,23 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
             });
 
+            socket.on("recargar_canales", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                restartApp(IMEI);
+                            }
+                            catch(Exception e){
+                                Log.d("error socket ", ""+e.toString());
+                            }
+                        }
+                    });
+                }
+            });
+
 
             socket.on("disconnect", new Emitter.Listener() {
                 @Override
@@ -1077,13 +1094,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         @Override
                         public void run() {
                             try{
-                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket desconectado",Toast.LENGTH_LONG).show();
+                                //Toast.makeText(VideoPlayerActivityBox.this, "SKT OFFLINE",Toast.LENGTH_SHORT).show();
                             }
                             catch(Exception e){
                                 Log.d("error socket ", ""+e.toString());
                             }
-
-
                         }
                     });
                 }
@@ -1097,8 +1112,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         public void run() {
                             try{
 
-                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket reconnect event",Toast.LENGTH_LONG).show();
-                                //socket.disconnect();
                                 socketEmitConnectAndPlayingChannel();
                             }
                             catch(Exception e){
@@ -1129,29 +1142,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     });
                 }
             });
-
-
-            socket.on("sincronizarConServidor", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                JSONObject data = (JSONObject) args[0];
-                                String id = data.getString("receptorNickname");
-                                restartApp(id);
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-
-
-                        }
-                    });
-                }
-            });
-
 
             socket.on("updateapp", new Emitter.Listener() {
                 @Override
@@ -1671,11 +1661,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     // Llenar Lista de Canales en interfaz
     private void adaptarListaCanales() {
         final ArrayList<LiveBean.DataBean> canales = new ArrayList<>();
-        for (int i = 0; i < liveBean.getData().size(); i++) {
-            if(!liveBean.getData().get(i).getId().equals(numCanalInformativo)){
-                canales.add(liveBean.getData().get(i));
+        for(LiveBean.DataBean item:liveBean.getData() ){
+            if(!item.getId().equals(numCanalInformativo)){
+                canales.add(item);
             }
         }
+
 
         ArrayAdapter<LiveBean.DataBean> cheeseAdapterA = new ArrayAdapter<LiveBean.DataBean>(this,
                 R.layout.lv_list_item,
@@ -2976,6 +2967,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void cambiarPorNumero(int i) {
         //Agregar el último canal visitado
         lastChannelIndex=channelIndex;
+
         for(int j = 0; j < liveBean.getData().size(); j++){
             if(i == Integer.parseInt(liveBean.getData().get(j).getNum())){
                 if (mediaPlayer.isPlaying()) {

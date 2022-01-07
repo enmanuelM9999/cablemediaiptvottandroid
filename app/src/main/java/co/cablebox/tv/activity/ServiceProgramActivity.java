@@ -343,8 +343,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         BASE_URI = ip;*/
         System.out.println("IP: "+BASE_URI);
 
-        setButtonsState(true);
-
         //Descargar Apk
         initDescarga();
 
@@ -579,9 +577,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 try {
                     String s = response.toString();
-
                     if (!TextUtils.isEmpty(s)) {
-                        System.out.println("++++++++++++++++++JSON by server"+s);
+                        System.out.println("++++++++++++++++++++++++JSON by server"+s);
                         liveBean = gson.fromJson(s, LiveBean.class);
 
                         File dirFile = new File(LIVE_DIR);
@@ -1504,18 +1501,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     }
 
-    public void toggleUrlType() {
-        if(url_type.equals("multicast")){
-            url_type = "unicast";
-        }
-        else{
-            url_type = "multicast";
-        }
-    }
-
-    public void openTechMode(){
-        openLiveC(this);
-    }
 
     public void technicianMode(){
         //ocultar panel de cargando canales
@@ -1529,8 +1514,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         //esconder el panel de wifi que se expandió
         exitWifi();
         onWifi=false;
-        //permitir usar botones
-        setButtonsState(true);
         //funciones de botones
         funciones();
         //tech mode
@@ -1641,7 +1624,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
         for (ResolveInfo ri: availableActivities){
-            Item app = new Item();
 
             if
             (   ri.activityInfo.packageName.equals("com.android.tv.settings") ||
@@ -1764,15 +1746,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(ServiceProgramActivity.this);
             builder.setTitle("Cambiar IP");
-            //builder.setMessage("");
+            //builder.setMessage(""); //Mensaje además del titulo
             inputNewIp= new EditText(ServiceProgramActivity.this);
 
-            //Pintar la ip configurada en el EditTExt
+            //Pintar la ip configurada en el EditText
             SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
             inputNewIp.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
             inputNewIp.setMaxLines(1);
             inputNewIp.setPadding(20,10,20,10);
-
             builder.setView(inputNewIp);
 
             //Set positive button

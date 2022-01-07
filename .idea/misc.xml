@@ -19,6 +19,9 @@
         <entry key="..\:/Users/enman/Desktop/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_service_list.xml" value="0.25" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/borde_volumen.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/borde_volumen_a.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/ic_arrow_bot.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/ic_arrow_left.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/ic_arrow_top.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-anydpi/ic_enter_num.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable-mdpi/rounded_corners.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/background_white.xml" value="0.22552083333333334" />
@@ -27,6 +30,10 @@
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/button_home_a.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/button_home_b.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/button_list.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/degradado_channel_name.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/degradado_panel_down.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/degradado_program_name.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/degradado_program_name_b.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/grid_view_item_selected.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/grid_view_row_item_bg.xml" value="0.1640625" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/drawable/ic_information.xml" value="0.22552083333333334" />
@@ -40,7 +47,7 @@
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_apps_list.xml" value="0.33" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_channel_list.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_live.xml" value="0.33" />
-        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_live_box.xml" value="0.33" />
+        <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_live_box.xml" value="0.5" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/activity_service_list.xml" value="0.25" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/cheese_name.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/src/main/res/layout/dialog_connectwifi.xml" value="0.209375" />

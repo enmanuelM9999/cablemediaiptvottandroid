@@ -125,11 +125,11 @@
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/h_160"
-
+        android:layout_height="@dimen/h_200"
         android:layout_alignParentBottom="true"
-
         android:layout_centerHorizontal="true"
+
+        android:layout_marginBottom="0dp"
         android:background="@drawable/degradado_panel_down"
         android:visibility="visible">
 
@@ -218,14 +218,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/h_60"
             android:layout_below="@+id/rl_channel_name"
-
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-
             android:layout_toStartOf="@+id/rl_program_b"
-
             android:layout_toEndOf="@+id/ll_logo"
-            android:background="@drawable/degradado_program_name">
+            android:background="@drawable/degradado_program_name_b">
 
             <TextView
                 android:id="@+id/tv_program_a"
@@ -305,6 +302,7 @@
                 android:textStyle="bold"
                 android:typeface="sans" />
         </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/ll_cableoperador"
             android:layout_width="67dp"
