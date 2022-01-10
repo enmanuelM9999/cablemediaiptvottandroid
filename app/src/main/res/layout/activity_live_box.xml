@@ -122,6 +122,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/rl_panel_up"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/h_140"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingHorizontal="60dp"
+        android:background="@drawable/degradado_panel_down"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Hi"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center_vertical"
+            ></TextView>
+
+
+    </LinearLayout>
+
+
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="wrap_content"
@@ -451,21 +475,23 @@
         android:id="@+id/tv_channel_number_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/rl_panel_num"
+
         android:layout_alignParentRight="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="@dimen/w_180"
         android:layout_marginBottom="@dimen/h_30"
-        android:textColor="#F16060"
-        android:textSize="@dimen/w_90"
+        android:textColor="#FFF"
+        android:textSize="@dimen/w_120"
         android:typeface="sans"
+        android:padding="5dp"
+        android:background="@drawable/degradado_panel_down"
         android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/rl_panel_num"
         android:layout_width="@dimen/w_450"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_options"
+        android:layout_below="@+id/tv_channel_number_change"
         android:layout_alignParentRight="true"
         android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/w_30"
@@ -703,8 +729,7 @@
             android:id="@+id/fondo_not"
             android:layout_width="match_parent"
             android:layout_height="@dimen/h_130"
-            android:layout_marginBottom="10dp">
-        </RelativeLayout>
+            android:layout_marginBottom="10dp"></RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
