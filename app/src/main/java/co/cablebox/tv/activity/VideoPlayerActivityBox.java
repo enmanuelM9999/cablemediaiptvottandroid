@@ -150,27 +150,22 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         TextView tvChannelNumber;
         @BindView(R.id.tv_channel_name)
         TextView tvChannelName;
-        @BindView(R.id.rl_channel_name)
-        RelativeLayout rlChannelName;
         @BindView(R.id.tv_channel_logo)
         ImageView tvChannelLogo;
         @BindView(R.id.tv_classification)
         ImageView tvClassification;
         @BindView(R.id.rl_panel_down)
         RelativeLayout rlDisplayDown;
+        @BindView(R.id.ll_panel_up)
+        LinearLayout llDisplayUp;
+
 
         SurfaceView surfaceview;
 
         @BindView(R.id.pb_error)
         TextView pbError;
-        @BindView(R.id.tv_program_a)
-        TextView tvProgramA;
-        @BindView(R.id.tv_horario_ini)
-        TextView tvHorarioIni;
-        @BindView(R.id.tv_horario_fin)
-        TextView tvHorarioFin;
-        @BindView(R.id.tv_program_b)
-        TextView tvProgramB;
+        @BindView(R.id.tv_quality)
+        TextView tvQuality;
         @BindView(R.id.tv_system_time)
         TextView tvSystemTime;
 
@@ -359,7 +354,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_HIDE_BLACK:
                     tvBlack.setVisibility(View.INVISIBLE);
                     delayExitInfoChannel = 3000;
-                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, delayExitInfoChannel);
+                    //handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, delayExitInfoChannel);
                     break;
 
                 case CODE_CHANGE_BY_NUM:
@@ -547,13 +542,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     changeChannel();
 
-                    if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                        ivFavorite.setImageResource(R.drawable.button_fav_b);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                    }else{
-                        ivFavorite.setImageResource(R.drawable.button_fav);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                    }
+
                 }
             });
             lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -971,13 +960,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         canalesAux = (ArrayList<LiveBean.DataBean>) liveBean.getData();
         organizarFavoritos();
 
-        if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-            ivFavorite.setImageResource(R.drawable.button_fav_b);
-            rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-        }else{
-            ivFavorite.setImageResource(R.drawable.button_fav);
-            rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-        }
+
 
         lvCanales.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
@@ -1783,31 +1766,26 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                                 if(existenFavs()){
                                     channelIndex = 0;
                                     liveBean.setData(canalesFavoritos);
+
+
                                     setIdProgramaActual();
                                     showProgramInfo();
                                     changeChannel();
-                                    ivFavorite.setImageResource(R.drawable.button_fav_b);
-                                    rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
+
                                 }else{
                                     acFavoritos = false;
 
                                     liveBean.setData(canalesAux);
 
-                                    ivFavorite.setImageResource(R.drawable.button_fav);
-                                    rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
 
                                 }
-                            }else{
-                                ivFavorite.setImageResource(R.drawable.button_fav);
-                                rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
                             }
                         }else{
                             //Agregar Fav por SQLite
                             registrarFavorito(liveBean.getData().get(channelIndex).getName());
                             organizarFavoritos();
 
-                            ivFavorite.setImageResource(R.drawable.button_fav_b);
-                            rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
+
                         }
 
                         break;
@@ -1852,13 +1830,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     showProgramInfo();
                     changeChannel();
 
-                    if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                        ivFavorite.setImageResource(R.drawable.button_fav_b);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                    }else{
-                        ivFavorite.setImageResource(R.drawable.button_fav);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                    }
+
                 }
             }
             public void onSwipeRight() {
@@ -1885,13 +1857,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     changeChannel();
 
 
-                    if(consultarFavorito(liveBean.getData().get(channelIndex).getName())) {
-                        ivFavorite.setImageResource(R.drawable.button_fav_b);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name_favorite));
-                    }else{
-                        ivFavorite.setImageResource(R.drawable.button_fav);
-                        rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
-                    }
+
                 }
             }
 
@@ -2221,7 +2187,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     clearScreen();
                 }
                 else if(!isSomeHudActive()){
-                    showChannelInfoAndHideLater();
+                    clearAndShowChannelInfo();
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
@@ -2231,8 +2197,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     lastChannelIndex=channelIndex;
 
                     handler.removeMessages(CODE_CLEAR_SCREEN);
-                   nextChannelInScreen();
-
+                    nextChannelInScreen();
 
                 }
                 break;
@@ -2518,13 +2483,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void showProgramInfo() {
         pbError.setText("");
         pbError.setVisibility(View.INVISIBLE);
-        tvProgramA.setText("");
-        tvProgramB.setText("CableEXITO");
-        tvHorarioIni.setText("");
-        tvHorarioFin.setText("");
+        tvQuality.setText("");
+        //tvHorarioIni.setText("");
+
 
         tvChannelName.setText(liveBean.getData().get(channelIndex).getName());
-        tvProgramA.setText(liveBean.getData().get(channelIndex).getCalidad());
+        tvQuality.setText(liveBean.getData().get(channelIndex).getCalidad());
         tvChannelNumber.setText(liveBean.getData().get(channelIndex).getNum());
         tvChannelNumber.setTextColor(Color.rgb(241,96,96));
         handler.removeMessages(CODE_COLOR_NUM);
@@ -2557,8 +2521,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             if(m == 0)
                 minuto = "00";
 
-            tvProgramA.setText(liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getNombreProgram());
-            tvHorarioIni.setText("Inicio "+hora+":"+minuto);
+            tvQuality.setText(liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getNombreProgram());
+            //tvHorarioIni.setText("Inicio "+hora+":"+minuto);
 
             h = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().get(Calendar.HOUR_OF_DAY);
             hora = Integer.toString(h);
@@ -2569,7 +2533,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             if(m == 0)
                 minuto = "00";
 
-            tvHorarioFin.setText("Fin "+hora+":"+minuto);
+           // tvHorarioFin.setText("Fin "+hora+":"+minuto);
 
             if (idProgramCurrent < (liveBean.getData().get(channelIndex).getProgramas().size() - 1)) {
                 /*h = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getCalendarInit().get(Calendar.HOUR_OF_DAY);
@@ -2581,9 +2545,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 if(m == 0)
                     minuto = "00";*/
 
-                tvProgramB.setText(liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getNombreProgram());
+
             } else {
-                tvProgramB.setText("");
+
             }
         }
 
@@ -3389,7 +3353,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     //-----enmanuel
 
     /*Cantidad de tiempo en milisegundos que debe pasar antes de que se oculte todo el hud */
-    public int HUD_HIDE_TIME=5000;
+    public int HUD_HIDE_TIME=4000;
     /*Cantidad de tiempo en milisegundos que debe durar las animaciones de mostrar y ocultar elementos del hud*/
     public int ANIM_TIME=1000;
 
@@ -3404,7 +3368,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         clearScreen();
         showChannelInfo();
         clearScreen(HUD_HIDE_TIME);
-
     }
 
     /**
@@ -3552,6 +3515,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 @Override
                 public void onAnimationStart(Animation animation) {
                     rlDisplayDown.setVisibility(View.VISIBLE);
+                    llDisplayUp.setVisibility(View.VISIBLE);
                     //tvChannelNumber.setVisibility(View.VISIBLE);
                 }
 
@@ -3573,6 +3537,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      */
     public void hideChannelInfo(){
         rlDisplayDown.setVisibility(View.INVISIBLE);
+        llDisplayUp.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -3693,17 +3658,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
 
     /**
-     *Método que muestra la barra inferior con la info del canal y se oculta despues de un tiempo prudente en milisegundos
-     * @return void
-     */
-    public void showChannelInfoAndHideLater(){
-        int tiempoPrudenteMilis=5000; //en milisegundos
-        showChannelInfo();
-        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,tiempoPrudenteMilis);
-    }
-
-
-    /**
      *Método que elimina los metodos con demora (delayed messages) que ocultan elementos hud
      * @return void
      */
@@ -3722,7 +3676,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         showProgramInfo();
         setIdProgramaActual();
         changeChannel();
-        showChannelInfo();
+
+        clearAndShowChannelInfo();
     }
 
     public void nextChannelInScreen(){

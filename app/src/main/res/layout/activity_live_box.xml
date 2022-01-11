@@ -123,24 +123,64 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:id="@+id/rl_panel_up"
+        android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
         android:layout_height="@dimen/h_140"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:paddingTop="20dp"
         android:paddingHorizontal="60dp"
         android:background="@drawable/degradado_panel_down"
-        android:visibility="invisible">
+        android:visibility="visible">
+
+
+            <RelativeLayout
+                android:layout_width="67dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+             >
+                <ImageView
+                    android:src="@drawable/cableoperador2"
+                    android:layout_width="67dp"
+                    android:layout_height="60dp"
+                    />
+
+            </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Hi"
+            android:text="Cable Éxito     |"
             android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:foregroundGravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:textSize="18dp"
             ></TextView>
+
+        <TextView
+            android:id="@+id/tv_system_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="09:31"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:typeface="sans" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:foregroundGravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:textSize="18dp"
+            android:layout_marginStart="20dp"
+            />
+
 
 
     </LinearLayout>
@@ -149,229 +189,151 @@
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/h_200"
+        android:layout_height="@dimen/h_170"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-
-        android:layout_marginBottom="0dp"
         android:background="@drawable/degradado_panel_down"
         android:visibility="visible">
 
 
         <LinearLayout
             android:id="@+id/ll_logo"
-            android:layout_width="@dimen/h_100"
-            android:layout_height="@dimen/h_160"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="@dimen/h_120"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/h_40"
-                android:src="@drawable/ic_arrow_top" />
-
-            <ImageView
                 android:id="@+id/tv_channel_logo"
-                android:layout_width="@dimen/h_90"
-                android:layout_height="@dimen/h_80"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_no_logo" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/h_40"
-                android:src="@drawable/ic_arrow_bot" />
         </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_channel_name"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/h_50"
-
+            android:id="@+id/ll_channel_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
-
             android:layout_marginEnd="@dimen/h_180"
-
-            android:layout_toEndOf="@+id/ll_logo"
-            android:background="@drawable/degradado_channel_name">
+            android:layout_toEndOf="@+id/ll_logo">
 
             <TextView
                 android:id="@+id/tv_channel_number"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:paddingStart="5dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
                 android:text="500"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:textSize="@dimen/h_30"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 android:typeface="sans" />
 
             <TextView
                 android:id="@+id/tv_channel_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/tv_channel_number"
-                android:paddingStart="10dp"
+                android:layout_toRightOf="@id/tv_channel_number"
+                android:background="#B33D3D3D"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
                 android:text="Canal Prueba"
                 android:textColor="#fff"
-                android:textSize="@dimen/h_30"
-                android:textStyle="bold"
+                android:textSize="18dp"
                 android:typeface="sans" />
 
-            <TextView
-                android:id="@+id/tv_system_time"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="10dp"
-                android:text="09:31"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="@dimen/h_25"
-                android:textStyle="bold"
-                android:typeface="sans" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_program_a"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/h_60"
-            android:layout_below="@+id/rl_channel_name"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_toStartOf="@+id/rl_program_b"
-            android:layout_toEndOf="@+id/ll_logo"
-            android:background="@drawable/degradado_program_name_b">
-
-            <TextView
-                android:id="@+id/tv_program_a"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/h_40"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:layout_toStartOf="@+id/tv_classification"
-                android:foregroundGravity="center"
-                android:gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:text="Canal"
-                android:textColor="#27292B"
-                android:textSize="@dimen/h_25"
-                android:textStyle="bold"
-                android:typeface="sans" />
-
-            <ImageView
-                android:id="@+id/tv_classification"
-                android:layout_width="@dimen/h_60"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginVertical="3dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/tv_pg" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_horario_ini"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_program_a"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/ll_logo"
-            android:text="Inicio 09:00"
-            android:textColor="#fff"
-            android:textSize="@dimen/h_25"
-            android:textStyle="bold"
-            android:typeface="sans" />
-
-        <TextView
-            android:id="@+id/tv_horario_fin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_program_a"
-            android:layout_marginEnd="5dp"
-            android:layout_toStartOf="@+id/rl_program_b"
-            android:text="Fin 10:00"
-            android:textColor="#fff"
-            android:textSize="@dimen/h_25"
-            android:textStyle="bold"
-            android:typeface="sans" />
-
-        <RelativeLayout
-            android:id="@+id/rl_program_b"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/h_40"
-            android:layout_below="@+id/rl_channel_name"
-            android:layout_alignParentEnd="true"
-
-            android:layout_marginEnd="@dimen/h_180"
-            android:layout_marginRight="@dimen/h_80"
-            android:background="@drawable/degradado_program_name_b">
-
-            <TextView
-                android:id="@+id/tv_program_b"
-                android:layout_width="@dimen/h_380"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:foregroundGravity="center"
-                android:gravity="center_vertical"
-                android:paddingStart="5dp"
-                android:text="cableoperador"
-                android:textColor="#27292B"
-                android:textSize="@dimen/h_25"
-                android:textStyle="bold"
-                android:typeface="sans" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_cableoperador"
-            android:layout_width="67dp"
-            android:layout_height="60dp"
-
-            android:layout_marginStart="-95dp"
-            android:layout_toEndOf="@+id/rl_program_b"
-            android:orientation="horizontal">
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/cableoperador" />
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-        <!--Para TvBox-->
-        <RelativeLayout
-            android:id="@+id/rl_opciones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_program_b"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="@dimen/h_180">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="Calidad:"
+                        android:textColor="#fff"
+                        android:textSize="18dp"
+                        android:typeface="sans" />
 
-            <ImageView
-                android:id="@+id/iv_opciones"
-                android:layout_width="@dimen/h_40"
-                android:layout_height="@dimen/h_40"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/ic_options" />
+                    <TextView
+                        android:id="@+id/tv_quality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="Calidad HD"
+                        android:textColor="#fff"
+                        android:textSize="18dp"
+                        android:typeface="sans" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_toEndOf="@+id/iv_opciones"
-                android:text="Opciones"
-                android:textSize="@dimen/h_25"
-                android:textStyle="bold"
-                android:typeface="sans" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/tv_classification"
+                    android:layout_width="@dimen/h_60"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/tv_pg" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_opciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rl_program_b"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginRight="@dimen/h_180">
+
+                    <ImageView
+                        android:id="@+id/iv_opciones"
+                        android:layout_width="@dimen/h_40"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_options" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="3dp"
+                        android:layout_toEndOf="@+id/iv_opciones"
+                        android:gravity="center"
+                        android:text="Canales"
+                        android:textSize="18dp"
+                        android:typeface="sans" />
+
+                </RelativeLayout>
+            </LinearLayout>
 
         </RelativeLayout>
+
 
     </RelativeLayout>
 
