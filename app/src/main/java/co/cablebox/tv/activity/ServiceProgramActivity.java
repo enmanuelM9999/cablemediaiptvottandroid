@@ -374,7 +374,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
-        tvVersion.setText("Copyrigth CableMEDIA® 2022");
+        versionLocal = BuildConfig.VERSION_NAME;
+        tvVersion.setText("V"+versionLocal+" - CableMEDIA® 2022");
         setLocationPermission();
         createWifiConnectorObject();
 
@@ -1705,15 +1706,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 }
 
                 if (ri.activityInfo.packageName.equals("tv.pluto.android")){
-                    bgColor="#FF000000";
-                    bgColorAlpha="#B3000000";}
+                    bgColor="#FF5F6A83";
+                    bgColorAlpha="#B35F6A83";}
                 if (ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid")) {
-                    bgColor = "#FFFC4135";
-                    bgColorAlpha="#B3FC4135";
+                    bgColor = "#FFB8463F";
+                    bgColorAlpha="#B3B8463F";
                 }
                 if (ri.activityInfo.packageName.equals("org.videolan.vlc")){
-                    bgColor="#FFF46E00";
-                    bgColorAlpha="#B3F46E00";
+                    bgColor="#FFB6631E";
+                    bgColorAlpha="#B3B6631E";
                 }
 
                 ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
