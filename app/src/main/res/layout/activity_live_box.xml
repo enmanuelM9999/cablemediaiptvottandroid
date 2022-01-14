@@ -188,7 +188,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_panel_down"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/h_170"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -201,7 +201,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/h_120"
-            android:gravity="center"
+            android:paddingTop="15dp"
             android:orientation="vertical">
 
             <ImageView
@@ -240,7 +240,7 @@
 
             <TextView
                 android:id="@+id/tv_channel_name"
-                android:layout_width="220dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
@@ -249,8 +249,10 @@
                 android:layout_toRightOf="@id/tv_channel_number"
                 android:background="#B33D3D3D"
                 android:gravity="center_vertical"
-                android:paddingLeft="15dp"
+                android:minWidth="220dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="10dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="20dp"
                 android:text="Canal Prueba"
                 android:textColor="#fff"
@@ -262,8 +264,10 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="right"
+                android:background="#B33D3D3D"
                 android:orientation="horizontal"
                 android:paddingTop="10dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="20dp">
 
                 <LinearLayout

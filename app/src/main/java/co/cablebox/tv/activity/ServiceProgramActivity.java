@@ -90,7 +90,6 @@ import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
 import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
-import co.cablebox.tv.bean.Item;
 import co.cablebox.tv.bean.LiveBean;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.socket.Notificaciones;
@@ -135,14 +134,21 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @BindView(R.id.tv_imei)
     TextView tvImei;
 
+    //Pantallas de error como "no hay conexión" y "cargando canales"
     @BindView(R.id.ll_loading_channels)
     LinearLayout llLoadingChannels;
-
+    @BindView(R.id.ll_screen_generic_failure)
+    LinearLayout llScreenGenericFailure;
     @BindView(R.id.ll_screen_nonet)
     LinearLayout llScreenNonet;
-
     @BindView(R.id.ll_screen_nochannels)
     LinearLayout llScreenNochannels;
+    @BindView(R.id.ll_screen_technical_suspension)
+    LinearLayout llScreenTechnicalSuspension;
+    @BindView(R.id.ll_screen_suspended_for_payment)
+    LinearLayout llScreenSuspendedForPayment;
+    @BindView(R.id.ll_screen_demo_expired)
+    LinearLayout llScreenDemoExpired;
 
     private TranslateAnimation animInListWifi;
     private TranslateAnimation exitAnimListWifi;
@@ -188,7 +194,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
         private static String ipmuxProtocol = "http://";
-        private static String ipmuxIP = "51.161.73.204";
+        private static String ipmuxIP = "51.161.73.214";
         private static String ipmuxPort = "5509";
         private static String ipmuxApiPath = "/api/RestController.php";
     // Leer y obtener informacion de los canales a traves de un JSON
@@ -228,12 +234,25 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     try {
                         openChannels();
                         if (canShowFailureScreens){
+                            String userStatus= getUserStatus();
+                            switch (userStatus){
+                                case "payment":
+                                    showSuspendedForPaymentScreen();
+                                    break;
+                                case "demo_expired":
+                                    showDemoExpiredScreen();
+                                    break;
+                                case "tech_suspension":
+                                    showTechnicalSuspensionScreen();
+                                    break;
+                                default:
+                                    showGenericFailureScreen();
+                                    break;
+                            }
                             if(!isNetDisponible()){
-                                showNonetNoti();
+                                showNonetScreen();
                             }
-                            else {
-                                showNochannelsNoti();
-                            }
+
                         }
                     }catch(Exception e){
                     }
@@ -288,8 +307,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //Actualizar APK
     MyReceiver myReceiver;
-    private String versionActual;
-    private String versionNueva;
+    private static String versionLocal;
+    private static String versionServer;
     private String urlApk;
 
     MCrypt mc = new MCrypt();
@@ -384,6 +403,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             list.add(n);
         }
 
+        //declarar las acciones de peticiones a la api
+        initVolleyCallback();
+
+        //buscar la version de la app del server
+        buscarVersion();
+
         //llActualizando.setVisibility(View.VISIBLE);
         handler.removeMessages(CODE_ACT);
         handler.sendEmptyMessageDelayed(CODE_ACT, 0);
@@ -397,10 +422,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         funciones();
 
         llLoadingChannels.setVisibility(View.INVISIBLE);
-        hideNonetAndNochannelsNotification();
+        hideAllFailureScreens();
         loadItemsToGridView();
         if(!isTechnician){ //usuario normal
-            llLoadingChannels.setVisibility(View.VISIBLE);
             guaranteeOpenChannelsWithBusyWaiting();
 
         }
@@ -409,8 +433,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     }
     private void inicio() {
-        initVolleyCallback();
-        mVolleyServiceTK = new VolleyService(mResultCallbackTK,this);
+        //generar token
+        generateToken();
+
         Date date= new Date();
         long time = date.getTime();
         StringBuilder aux = new StringBuilder();
@@ -469,6 +494,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void buscarVersion(){
+        generateToken();
         mVolleyServiceVersion = new VolleyService(mResultCallbackVersion,this);
         JSONObject sendObjV = null;
         try {
@@ -552,10 +578,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 Log.d(TAG, "Volley JSON post TK " + response);
                 try {
                     String res = response.getString("output");
-                    //Log.d("resultado: ",""+res);
                     tk=res;
                     System.out.println("Respuesta "+tk);
-                    buscarVersion();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -687,14 +711,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     String s=response.toString();
                     if (!TextUtils.isEmpty(s)) {
                         String[] verA = s.split("version\":\"");
-                        String versionActual = verA[1].substring(0, verA[1].length()-4);
-                        String versionThis = BuildConfig.VERSION_NAME;
-                        System.out.println("Version A "+versionThis+" - Version B "+versionActual);
+                        versionServer = verA[1].substring(0, verA[1].length()-4);
+                        versionLocal = BuildConfig.VERSION_NAME;
+                        System.out.println("Version server "+versionServer+" - Version local "+ versionLocal);
 
                         handler.removeMessages(CODE_ACT);
                         handler.sendEmptyMessageDelayed(CODE_ACT, 0);
 
-                        if(!versionThis.equals(versionActual)){
+                        if(!versionLocal.equals(versionLocal)){
                             System.out.println("requiere actualizacion");
                             handler.sendEmptyMessageDelayed(CODE_ACT_PLAN, 10000);
                             /*handler.removeMessages(CODE_ACT_PLAN);
@@ -915,6 +939,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
                 if (imei != null) {
                     VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, ipmuxIP);
+
                 }else{
                     imei = getSerialNumber();
                     VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort);
@@ -998,7 +1023,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         isTechnician=false;
         canShowFailureScreens=false;
         removeAllHandlerMessages();
-        hideNonetAndNochannelsNotification();
+        hideAllFailureScreens();
         actualizando=false;
         //finish();
     }
@@ -1019,7 +1044,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     aux.append(time);
                     JSONObject sendObj = null;
                     try {
-                        System.out.println("-------------holi");
                         String code = MCrypt.bytesToHex(mc.encrypt(aux.toString()));
                         Log.d("loca>",tk);
                         sendObj = new JSONObject("{'q':'channels','tk':'"+tk+"','url_type':'"+url_type+"'}");
@@ -1185,6 +1209,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 animInListWifi = new TranslateAnimation(-llRedes.getWidth(), 0f, 0f, 0f);
                 animInListWifi.setDuration(300);
             }
+
             animInListWifi.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -1476,37 +1501,61 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         handler.removeMessages(CODE_CAN_SHOW_FAILURE_SCREENS);
     }
 
-    public void hideNonetAndNochannelsNotification(){
+    public void hideAllFailureScreens(){
         handler.removeMessages(CODE_CAN_SHOW_FAILURE_SCREENS);
+
         llScreenNochannels.setVisibility(View.INVISIBLE);
         llScreenNonet.setVisibility(View.INVISIBLE);
+        llScreenTechnicalSuspension.setVisibility(View.INVISIBLE);
+        llScreenSuspendedForPayment.setVisibility(View.INVISIBLE);
+        llScreenDemoExpired.setVisibility(View.INVISIBLE);
+        llScreenGenericFailure.setVisibility(View.INVISIBLE);
     }
 
-    public void showNonetNoti(){
-        if(llScreenNochannels.getVisibility() == View.VISIBLE)
-        llScreenNochannels.setVisibility(View.INVISIBLE);
+    public void showGenericFailureScreen(){
+        hideAllFailureScreens();
+        llScreenGenericFailure.setVisibility(View.VISIBLE);
+    }
 
-        if(llScreenNonet.getVisibility() == View.INVISIBLE)
+    public void showNonetScreen(){
+        hideAllFailureScreens();
         llScreenNonet.setVisibility(View.VISIBLE);
     }
 
-    public void showNochannelsNoti(){
-        if(llScreenNochannels.getVisibility() == View.INVISIBLE){
-            llScreenNochannels.setVisibility(View.VISIBLE);
-        }
-
-
-        if(llScreenNonet.getVisibility() == View.VISIBLE)
-        {llScreenNonet.setVisibility(View.INVISIBLE);}
-
+    public void showNochannelsScreen(){
+        hideAllFailureScreens();
+        llScreenNonet.setVisibility(View.VISIBLE);
     }
 
+    public void showTechnicalSuspensionScreen(){
+        hideAllFailureScreens();
+        llScreenTechnicalSuspension.setVisibility(View.VISIBLE);
+    }
 
+    public void showSuspendedForPaymentScreen(){
+        hideAllFailureScreens();
+        llScreenSuspendedForPayment.setVisibility(View.VISIBLE);
+    }
+
+    public void showDemoExpiredScreen(){
+        hideAllFailureScreens();
+        llScreenDemoExpired.setVisibility(View.VISIBLE);
+    }
+
+    private String getUserStatus(){
+        String userStatus="inactivo";
+        return userStatus;
+    }
+
+    /**
+     * Permite abrir la app en modo técnico, en el cual se puede configurar la caja y abrir aplicaciones instaladas como PlutoTV, y configurar
+     * parámetros como el wifi y la ip del servidor.
+     */
     public void technicianMode(){
         //ocultar panel de cargando canales
         llLoadingChannels.setVisibility(View.INVISIBLE);
         //ocultar pantallas de error "no canales" y "sin conexión"
-        hideNonetAndNochannelsNotification();
+        hideAllFailureScreens();
         //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
         canShowFailureScreens=false;
         //dejar de intentar reproducir canales
@@ -1589,30 +1638,40 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         String text;
         String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION;
         String action;
+        String bgColor;
+        String bgColorAlpha;
 
         //verCanales
         icon = getResources().getDrawable(R.drawable.house);
         text="Ver canales";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+        bgColor="#FF349A93";
+        bgColorAlpha="#B3349A93";
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
-        //red
+        //net
         icon = getResources().getDrawable(R.drawable.wifi);
         text="Red";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+        bgColor="#FF6EAC98";
+        bgColorAlpha="#B36EAC98";
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //actualizar
         icon = getResources().getDrawable(R.drawable.download);
         text="Actualizar";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+        bgColor="#FFB7B68C";
+        bgColorAlpha="#B3B7B68C";
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //cambiarIp
         icon = getResources().getDrawable(R.drawable.settings);
         text="Cambiar IP";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action));
+        bgColor="#FFDB8A89";
+        bgColorAlpha="#B3DB8A89";
+        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
 
     }
@@ -1636,8 +1695,28 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 String text= ri.loadLabel(packageManager).toString();
                 String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_APP;
                 String action =ri.activityInfo.packageName;
+                String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+                String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
 
-                ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action);
+                //Cambiar el color de fondo segun la app
+                if (ri.activityInfo.packageName.equals("com.android.tv.settings")){
+                    bgColor="#FF688491";
+                    bgColorAlpha="#B3688491";
+                }
+
+                if (ri.activityInfo.packageName.equals("tv.pluto.android")){
+                    bgColor="#FF000000";
+                    bgColorAlpha="#B3000000";}
+                if (ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid")) {
+                    bgColor = "#FFFC4135";
+                    bgColorAlpha="#B3FC4135";
+                }
+                if (ri.activityInfo.packageName.equals("org.videolan.vlc")){
+                    bgColor="#FFF46E00";
+                    bgColorAlpha="#B3F46E00";
+                }
+
+                ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
                 gridViewItems.add(item);
             }
         }
@@ -1654,11 +1733,16 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     convertView.setClipToOutline(true);
                 }
 
+                View theItem = convertView.findViewById(R.id.grid_view_item);
+                theItem.setBackgroundColor(Color.parseColor(gridViewItems.get(position).getBgColorAlpha()));
+
                 ImageView appIcon = (ImageView) convertView.findViewById(R.id.image_app);
                 appIcon.setImageDrawable(gridViewItems.get(position).getIcon());
 
                 TextView appName = (TextView) convertView.findViewById(R.id.name_app);
                 appName.setText(gridViewItems.get(position).getText());
+
+
 
                 return convertView;
             }
@@ -1672,16 +1756,39 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      */
     private  void loadGridViewListeners(){
 
+        gridView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                setDefaultBackgroudInGridItems();
+
+                float scalingFactor = 0.9f; // scale down to half the size
+                view.setScaleX(scalingFactor);
+                view.setScaleY(scalingFactor);
+                view.startAnimation(getGridItemAnimation());
+                //view.setBackgroundColor(Color.parseColor(gridViewItems.get(position).getBgColor()));
+                //view.setTranslationY(-15.0f);
+                //view.setTranslationZ(3.0f);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
 
-                //********** Item clicked
-
                 gridViewAdapter.notifyDataSetChanged(); //fix para que el gridView se pueda clickear con los dedos y mouse, no solo con el control remoto
                 playUiSound();
 
-                //obtenemos el item seleccionado
+
+                //********** Item clicked
+
+
+                //obtenemos el item clickeado
                 ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
                 //obtenemos el tipo de accion del item
                 String theActionType = theItem.getActionType();
@@ -1713,6 +1820,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                 llDescarga.setVisibility(View.VISIBLE);
                                 myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
                             }
+                            else{
+                                Toast.makeText(ServiceProgramActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
+                            }
                             break;
                         case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
                             showChangeIpDialog();
@@ -1730,6 +1840,29 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
             }
         });
+    }
+
+    //
+    public TranslateAnimation getGridItemAnimation() {
+            TranslateAnimation anim= new TranslateAnimation(0f, 0.0f, 0f, -11.0f);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(Animation.INFINITE);
+            anim.setDuration(500);
+            return anim;
+    }
+
+    private void setDefaultBackgroudInGridItems(){
+        for(int i=0; i<gridViewItems.size();i++){
+            View theView= gridView.getChildAt(i);
+            //theView.setBackgroundColor(Color.parseColor(gridViewItems.get(i).getBgColorAlpha()));
+            theView.clearAnimation();
+            float scalingFactor = 1.0f; // scale down to half the size
+            theView.setScaleX(scalingFactor);
+            theView.setScaleY(scalingFactor);
+
+            //theView.setTranslationY(0.0f);
+            //theView.setTranslationZ(0.0f);
+        }
     }
 
     private void setFontOnTitle(){
@@ -1824,6 +1957,17 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         sp.play(sonido, 1,1,1,0,0);
         //Toast.makeText(ServiceProgramActivity.this,"sound", Toast.LENGTH_SHORT).show();
     }
+
+    private Boolean appNeedUpdate(){
+        //buscarVersion();
+        return !"3.11".equals("3.11");
+    }
+
+    private void generateToken(){
+        mVolleyServiceTK = new VolleyService(mResultCallbackTK,this);
+    }
+
+
 
 
 }

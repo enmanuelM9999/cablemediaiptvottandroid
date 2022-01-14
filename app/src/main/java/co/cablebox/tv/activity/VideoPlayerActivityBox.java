@@ -517,6 +517,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             setIdProgramaActual();
             showProgramInfo();
+            clearAndShowChannelInfo();
 
             adaptarListaCanales();
             //Celular
@@ -525,6 +526,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             // Elegir un canal en la lista de canales
             lvCanales.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    lastChannelIndex=channelIndex;
                     channelIndex = position;
                     try {
                         if (mediaPlayer.isPlaying()) {
@@ -535,7 +537,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     }
 
                     tvBlack.setVisibility(View.VISIBLE);
-                    toggleInfoChannel();
+                    clearAndShowChannelInfo();
                     exitList();
                     setIdProgramaActual();
                     showProgramInfo();
@@ -1036,12 +1038,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         @Override
                         public void run() {
                             try{
-                                //Toast.makeText(VideoPlayerActivityBox.this, "socket.on nuevoplan", Toast.LENGTH_SHORT).show();
                                 JSONObject data = (JSONObject) args[0];
                                 String id = data.getString("receptorNickname");
-                                //String myMsg = data.getString("msg");
-                                //Toast.makeText(VideoPlayerActivityBox.this, "imei: "+ id, Toast.LENGTH_SHORT).show();
-                                //Toast.makeText(VideoPlayerActivityBox.this, "Server: " +myMsg, Toast.LENGTH_SHORT).show();
                                 restartApp(id);
                             }
                             catch(Exception e){
@@ -3593,7 +3591,31 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      *Método que oculta la barra izquierda con la lista de canales
      */
     public void hideChannelList(){
-        llList.setVisibility(View.INVISIBLE);
+        if(llList.getVisibility() == View.VISIBLE && !enAnimacion){
+            enAnimacion = true;
+            if (exitAnimList == null) {
+                exitAnimList = new TranslateAnimation(0f, -llList.getWidth(), 0f, 0f);
+                exitAnimList.setDuration(1000);
+
+            }
+            exitAnimList.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    llList.setVisibility(View.INVISIBLE);
+                    enAnimacion = false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            llList.startAnimation(exitAnimList);
+        }
     }
 
     /**

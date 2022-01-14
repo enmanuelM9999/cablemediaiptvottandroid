@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back_01" />
+        android:background="@drawable/bg_nature" />
 
     <TextView
         android:id="@+id/tv_imei"
@@ -48,12 +48,12 @@
         android:layout_marginBottom="40dp"
         android:layout_marginHorizontal="40dp"
         android:gravity="center"
-        android:listSelector="@drawable/states_gridview"
-        android:footerDividersEnabled="false"
-        android:foregroundGravity="center"
-        android:padding="1dp"
-        android:columnWidth="250dp"
-        android:numColumns="auto_fit"
+        android:paddingVertical="20dp"
+        android:numColumns="4"
+        android:horizontalSpacing="25dp"
+        android:verticalSpacing="25dp"
+        android:translationZ="0dp"
+        android:listSelector="@drawable/transparent_bg"
         />
 
 
@@ -212,7 +212,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="17dp"
         android:alpha="0.5"
         android:fontFamily="@font/segoe_ui_bold"
         android:text="Version 1.0.0"
@@ -377,6 +377,54 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_screen_generic_failure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="#000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/tv_screen_generic_failure"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="tv_loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/txt_screen_generic_failure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_loading_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Algo salió mal"
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40" />
+
+        <TextView
+            android:id="@+id/txt_screen_generic_failure_line2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_nochannels"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="Intentando recuperar canales..."
+            android:textColor="#fff"
+            android:textSize="@dimen/h_40" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_screen_nochannels"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -422,8 +470,6 @@
             android:text="Intentando recuperar canales..."
             android:textColor="#fff"
             android:textSize="@dimen/h_40" />
-
-
     </LinearLayout>
 
 
@@ -605,13 +651,12 @@
             android:layout_below="@+id/txt_title_screen_suspended_for_payment"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:background="@drawable/text_view_card_bg"
             android:fontFamily="@font/segoe_ui_bold"
+            android:padding="20dp"
             android:text="Llevamos mucho tiempo sin saber de ti. Presiona 'OK' para continuar. Error SOKT-DISC"
             android:textColor="#fff"
-            android:textSize="@dimen/h_40"
-            android:background="@drawable/text_view_card_bg"
-            android:padding="20dp"
-            />
+            android:textSize="@dimen/h_40" />
     </LinearLayout>
 
 </RelativeLayout>

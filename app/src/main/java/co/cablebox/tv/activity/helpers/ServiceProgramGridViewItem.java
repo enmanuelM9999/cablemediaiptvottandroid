@@ -21,12 +21,15 @@ public class ServiceProgramGridViewItem {
     public static final String ACTION_START_CONFIGURATION_UPDATE ="startUpdate";
     public static final String ACTION_START_CONFIGURATION_CHANGE_IP ="startChangeIp";
 
+    public static final String DEFAULT_BG_COLOR ="#B35E7A9C";
 
 
     private Drawable icon;
     private String text;
     private String actionType;
     private String action;
+    private String bgColor;
+    private String bgColorAlpha;
 
     /**
      * Constructor
@@ -35,11 +38,30 @@ public class ServiceProgramGridViewItem {
      * @param actionType Es una de las siguientes constantes "ServiceProgramGridViewItem.ACTION_TYPE_START_APP" o "ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION"
      * @param action es la propia acción al darle clic a un elemento. Ejm: "openChannels", "org.videolan.lan", "openWifiConfigs", "openChangeIp"
      */
-    public ServiceProgramGridViewItem(Drawable icon, String text, String actionType, String action) {
+    public ServiceProgramGridViewItem(Drawable icon, String text, String actionType, String action, String bgColor, String bgColorAlpha) {
         this.icon = icon;
         this.text = text;
         this.actionType = actionType;
         this.action = action;
+        this.bgColor = bgColor;
+        this.bgColorAlpha = bgColorAlpha;
+    }
+
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public String getBgColorAlpha() {
+        return bgColorAlpha;
+    }
+
+    public void setBgColorAlpha(String bgColorAlpha) {
+        this.bgColorAlpha = bgColorAlpha;
     }
 
     public Drawable getIcon() {
