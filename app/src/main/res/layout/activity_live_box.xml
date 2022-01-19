@@ -96,8 +96,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_above="@+id/rl_panel_down"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/h_150"
+        android:layout_marginBottom="@dimen/h_200"
         android:background="@drawable/spped_length_bg"
         android:gravity="center"
         android:paddingLeft="10dp"
@@ -125,62 +126,60 @@
     <LinearLayout
         android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_140"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingHorizontal="60dp"
+        android:layout_height="@dimen/h_200"
         android:background="@drawable/degradado_panel_down"
+        android:orientation="horizontal"
+        android:paddingHorizontal="60dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
         android:visibility="visible">
 
 
-            <RelativeLayout
-                android:layout_width="67dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-             >
-                <ImageView
-                    android:src="@drawable/cableoperador2"
-                    android:layout_width="67dp"
-                    android:layout_height="60dp"
-                    />
+        <RelativeLayout
+            android:layout_width="67dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="67dp"
+                android:layout_height="60dp"
+                android:src="@drawable/cableoperador2" />
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Cable Éxito     |"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:foregroundGravity="center_vertical"
             android:layout_marginLeft="3dp"
-            android:textSize="18dp"
-            ></TextView>
+            android:foregroundGravity="center_vertical"
+            android:gravity="center"
+            android:text="Cable Éxito     |"
+            android:textSize="18dp"></TextView>
 
         <TextView
             android:id="@+id/tv_system_time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
             android:text="09:31"
             android:textAlignment="center"
             android:textSize="20dp"
-            android:gravity="center"
             android:typeface="sans" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text=""
             android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:foregroundGravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:textSize="18dp"
             android:layout_marginStart="20dp"
-            />
-
+            android:layout_marginLeft="3dp"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center"
+            android:text=""
+            android:textSize="18dp" />
 
 
     </LinearLayout>
@@ -189,7 +188,7 @@
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_170"
+        android:layout_height="@dimen/h_210"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/degradado_panel_down"
@@ -201,8 +200,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/h_120"
-            android:paddingTop="15dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="15dp">
 
             <ImageView
                 android:id="@+id/tv_channel_logo"
@@ -396,7 +395,7 @@
         android:layout_height="match_parent"
 
         android:layout_above="@+id/rl_panel_down"
-        android:layout_below="@+id/iv_bloquear"
+        android:layout_below="@+id/ll_panel_up"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
@@ -687,7 +686,7 @@
     <RelativeLayout
         android:id="@+id/rl_mensajes"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_130"
+        android:layout_height="@dimen/h_150"
         android:background="#000"
         android:visibility="invisible">
 

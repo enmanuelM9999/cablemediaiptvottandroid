@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -101,6 +102,8 @@ import co.cablebox.tv.utils.VolleyService;
 
 public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVideoLayoutListener {
     private static final String TAG = VideoPlayerActivityBox.class.getName();
+
+    private static boolean isSmartphoneMode =true;
 
     private static String ipmuxProtocol = "http://";
     private static String ipmuxIP = "51.161.73.204";
@@ -298,6 +301,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         private final static int CODE_NOTF_VIEW_OPC = 17;
 
+        private final static int CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW = 18;
+
 
     // Variable guardar No. de canal
         private final static String PROGRAM_KEY = "lastProIndex";
@@ -360,10 +365,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_CHANGE_BY_NUM:
                     if (numChange != "") {
                         cambiarPorNumero(Integer.parseInt(numChange));
-                        changeChannelInScreen();
 
-                        tvChannelNumberChange.setVisibility(View.INVISIBLE);
-                        exitPanelNum();
                     }
                     numChange = "";
                     writingNum = false;
@@ -441,6 +443,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_NOTF_VIEW_OPC:
                     mensajeNot.setVisibility(View.INVISIBLE);
                     fondoNot.setVisibility(View.INVISIBLE);
+                    break;
+
+                case CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW:
+                    tvChannelNumberChange.setVisibility(View.INVISIBLE);
                     break;
 
             }
@@ -537,12 +543,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     }
 
                     tvBlack.setVisibility(View.VISIBLE);
-                    clearAndShowChannelInfo();
-                    exitList();
-                    setIdProgramaActual();
-                    showProgramInfo();
-
-                    changeChannel();
+                    changeChannelInScreen();
 
 
                 }
@@ -550,14 +551,23 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,10000);
+                    clearScreen(10000);
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
                 }
             });
+
+            lvCanales.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    clearScreen(10000);
+                    return false;
+                }
+            });
+
+
         } else {
             //no conectado a internet
             ButterKnife.bind(this);
@@ -1496,7 +1506,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             tvChannelNumberChange.setVisibility(View.VISIBLE);
             tvChannelNumberChange.setText(numChange);
-            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, delayBusNum);
+            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, HUD_HIDE_TIME);
         }
     }
 
@@ -1796,67 +1806,19 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         // Panel que controla los toques en pantalla para cambiar canal o mostrar la interfaz
         ivNav.setOnTouchListener(new OnSwipeTouchListener(VideoPlayerActivityBox.this) {
             public void onClick() {
-                if(rlPanelNum.getVisibility() == View.VISIBLE) {
-                    exitPanelNum();
-                }else if(llList.getVisibility() == View.VISIBLE) {
-                    exitList();
-                }else if(llOptions.getVisibility() == View.INVISIBLE){
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    toggleInfoChannel();
-                    togglePanelNum();
-                    toggleOptions();
-                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
-                }
+                clearAndShowChannelInfo();
             }
 
             public void onSwipeTop() {
-                //
-                if(rlPanelNum.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
-                    change = true;
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    next();
-                    if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        toggleInfoChannel();
-                        togglePlaylist();
-                    }
-                    changeChannelList();
-                    setIdProgramaActual();
-                    showProgramInfo();
-
-                    change = false;
-                    setIdProgramaActual();
-                    showProgramInfo();
-                    changeChannel();
-
-
-                }
+                nextChannelInScreen();
             }
             public void onSwipeRight() {
             }
             public void onSwipeLeft() {
             }
             public void onSwipeBottom() {
-                //
-                if(rlPanelNum.getVisibility() == View.INVISIBLE && llList.getVisibility() == View.INVISIBLE){
-                    change = true;
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    previous();
-                    if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        toggleInfoChannel();
-                        togglePlaylist();
-                    }
-                    changeChannelList();
-                    setIdProgramaActual();
-                    showProgramInfo();
+                previousChannelInScreen();
 
-                    change = false;
-                    setIdProgramaActual();
-                    showProgramInfo();
-                    changeChannel();
-
-
-
-                }
             }
 
         });
@@ -2140,6 +2102,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         tiempo_canal.cancel();
         socket.disconnect();
+        isSmartphoneMode =false;
         finish();
 
         //System.exit(0);
@@ -2562,9 +2525,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     @Override
     public void onBackPressed() {
         if(rlPanelNum.getVisibility() == View.VISIBLE) {
-            exitPanelNum();
+            hidePanelNum();
         }else if(llList.getVisibility() == View.VISIBLE) {
-            exitList();
+            hideList();
         }else if(viewInfo){
             exitProgramList();
             exitInfoChannel();
@@ -2613,7 +2576,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void exitOptions() {
 
         if(llOptions.getVisibility() == View.VISIBLE && !enAnimacion){
-            enAnimacion = true;
             if (exitAnimOptions == null) {
                 exitAnimOptions = new TranslateAnimation(0f, 0f, 0f, -llOptions.getHeight());
                 exitAnimOptions.setDuration(1000);
@@ -2627,7 +2589,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     llOptions.setVisibility(View.INVISIBLE);
-                    enAnimacion = false;
+
                 }
 
                 @Override
@@ -2640,59 +2602,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     //Animacion de Panel de Numeros
-    public void togglePanelNum() {
-        if(rlPanelNum.getVisibility() == View.INVISIBLE){
-            if (animInPanelNum == null) {
-                animInPanelNum = new TranslateAnimation(rlPanelNum.getWidth(), 0f, 0f, 0f);
-                animInPanelNum.setDuration(300);
-            }
-            animInPanelNum.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    rlPanelNum.setVisibility(View.VISIBLE);
-                    enAnimacion = true;
-                }
+    public void showPanelNum() {
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    enAnimacion = false;
-                }
+        rlPanelNum.setVisibility(View.VISIBLE);
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            rlPanelNum.startAnimation(animInPanelNum);
-        }
     }
 
-    private void exitPanelNum() {
-        if(rlPanelNum.getVisibility() == View.VISIBLE && !enAnimacion){
-            enAnimacion = true;
-            if (exitAnimPanelNum == null) {
-                exitAnimPanelNum = new TranslateAnimation(0f, rlPanelNum.getWidth(), 0f, 0f);
-                exitAnimPanelNum.setDuration(1000);
+    private void hidePanelNum() {
 
-            }
-            exitAnimPanelNum.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+        rlPanelNum.setVisibility(View.INVISIBLE);
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    rlPanelNum.setVisibility(View.INVISIBLE);
-                    enAnimacion = false;
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            rlPanelNum.startAnimation(exitAnimPanelNum);
-        }
     }
 
     //Animacion de Lista de Canales
@@ -2707,12 +2626,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 @Override
                 public void onAnimationStart(Animation animation) {
                     llList.setVisibility(View.VISIBLE);
-                    enAnimacion = true;
+
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    enAnimacion = false;
+
                 }
 
                 @Override
@@ -2724,9 +2643,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         }
     }
 
-    private void exitList() {
-        if(llList.getVisibility() == View.VISIBLE && !enAnimacion){
-            enAnimacion = true;
+    private void hideList() {
+
+
             if (exitAnimList == null) {
                 exitAnimList = new TranslateAnimation(0f, -llList.getWidth(), 0f, 0f);
                 exitAnimList.setDuration(1000);
@@ -2740,8 +2659,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     llList.setVisibility(View.INVISIBLE);
-                    enAnimacion = false;
-
                     //TvBox
                     togglePlaylist();
                 }
@@ -2752,7 +2669,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
             });
             llList.startAnimation(exitAnimList);
-        }
+
     }
 
 
@@ -2925,26 +2842,28 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         nuevoCanal = true;
     }
 
-    // Metodo para cambiar canal ppor numero
-    private void cambiarPorNumero(int i) {
+    // Metodo para cambiar canal por numero
+    private void cambiarPorNumero(int channelNumber) {
         //Agregar el último canal visitado
         lastChannelIndex=channelIndex;
 
-        for(int j = 0; j < liveBean.getData().size(); j++){
-            if(i == Integer.parseInt(liveBean.getData().get(j).getNum())){
+        for(int i = 0; i < liveBean.getData().size(); i++){
+            if(channelNumber == Integer.parseInt(liveBean.getData().get(i).getNum())){
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 }
                 tvBlack.setVisibility(View.VISIBLE);
-                channelIndex = j;
-                changeChannel();
-
+                channelIndex = i;
+                changeChannelInScreen();
+                handler.sendEmptyMessageDelayed(CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW,HUD_HIDE_TIME);
                 return;
             }
         }
 
-        showNetworkInfo("No existe el canal " + i);
-        handler.sendEmptyMessageDelayed(CODE_HIDE_ERROR, 2000);
+        //showNetworkInfo("No existe el canal " + i);
+        //handler.sendEmptyMessageDelayed(CODE_HIDE_ERROR, 2000);
+        tvChannelNumberChange.setText("No existe el canal " + channelNumber);
+        handler.sendEmptyMessageDelayed(CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW,HUD_HIDE_TIME);
     }
 
     // Canal siguiente
@@ -3365,8 +3284,13 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public void clearAndShowChannelInfo(){
         clearScreen();
         showChannelInfo();
+        if (isSmartphoneMode){
+            showPanelNum();
+            showChannelList();
+        }
         clearScreen(HUD_HIDE_TIME);
     }
+
 
     /**
      *Este método limpia toda la pantalla y hace aparecer el menú superior de opciones y la barra inferior con la información del canal. Debe desaparecer en un tiempo definido
@@ -3485,7 +3409,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         hideOptions();
         hideChannelInfo();
         hideChannelList();
-        exitPanelNum();
+        hidePanelNum();
+        //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -3494,7 +3419,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      */
     public void clearScreen(int millis){
         handler.removeMessages(CODE_CLEAR_SCREEN);
-        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, HUD_HIDE_TIME);
+        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, millis);
     }
 
 
@@ -3503,31 +3428,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * Método que muestra la barra inferior con la información del canal
      */
     public void showChannelInfo(){
-        if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-            if (animInBot == null) {
-                animInBot = new TranslateAnimation(0f, 0f, rlDisplayDown.getHeight(), 0f);
-                animInBot.setDuration(300);
-            }
 
-            animInBot.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    rlDisplayDown.setVisibility(View.VISIBLE);
-                    llDisplayUp.setVisibility(View.VISIBLE);
-                    //tvChannelNumber.setVisibility(View.VISIBLE);
-                }
+        rlDisplayDown.setVisibility(View.VISIBLE);
+        llDisplayUp.setVisibility(View.VISIBLE);
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            rlDisplayDown.startAnimation(animInBot);
-        }
     }
 
     /**
@@ -3591,31 +3495,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      *Método que oculta la barra izquierda con la lista de canales
      */
     public void hideChannelList(){
-        if(llList.getVisibility() == View.VISIBLE && !enAnimacion){
-            enAnimacion = true;
-            if (exitAnimList == null) {
-                exitAnimList = new TranslateAnimation(0f, -llList.getWidth(), 0f, 0f);
-                exitAnimList.setDuration(1000);
+        llList.setVisibility(View.INVISIBLE);
 
-            }
-            exitAnimList.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    llList.setVisibility(View.INVISIBLE);
-                    enAnimacion = false;
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            llList.startAnimation(exitAnimList);
-        }
     }
 
     /**
@@ -3626,8 +3507,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         boolean isActive=false;
         if(
                 rlDisplayDown.getVisibility() == View.VISIBLE ||
-                        llOptions.getVisibility() == View.VISIBLE ||
-                        llList.getVisibility() == View.VISIBLE
+                llOptions.getVisibility() == View.VISIBLE ||
+                llList.getVisibility() == View.VISIBLE ||
+                rlPanelNum.getVisibility() == View.VISIBLE
         ){
             isActive= true;
         }

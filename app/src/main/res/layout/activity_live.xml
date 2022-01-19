@@ -450,7 +450,7 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/degradado_panel_top_cel"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"

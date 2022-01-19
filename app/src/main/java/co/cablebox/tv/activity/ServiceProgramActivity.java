@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -108,6 +109,7 @@ import co.cablebox.tv.utils.config.wifi.wificonnector.interfaces.WifiStateListen
 
 public class ServiceProgramActivity extends Activity implements WifiConnectorModel {
 
+    MediaPlayer mp;
 
     @BindView(R.id.cablebox_title)
     TextView tvCableboxTitle;
@@ -415,7 +417,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         handler.sendEmptyMessageDelayed(CODE_ACT, 0);
         if(rlMensajeWifi.getVisibility() == View.VISIBLE){
             onWifi = true;
-            toggleWifi();
+            showWifiPanel();
         }
 
 
@@ -430,7 +432,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         }
         else if(isTechnician){ //usuario técnico
-            exitWifi();
+            hideWifiPanel();
         }
     }
     private void inicio() {
@@ -868,7 +870,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             handler.sendEmptyMessageDelayed(CODE_ACT_PLAN, 10000);
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
-                exitWifi();
+                hideWifiPanel();
                 closeApp();
                 break;
 
@@ -939,7 +941,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
                 if (imei != null) {
-                    VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, ipmuxIP);
+                    //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, ipmuxIP);
+                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort);
 
                 }else{
                     imei = getSerialNumber();
@@ -1072,7 +1075,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(llIpNueva.getVisibility() == View.VISIBLE) {
             llIpNueva.setVisibility(View.INVISIBLE);
         } else if(llRedes.getVisibility() == View.VISIBLE){
-            exitWifi();
+            hideWifiPanel();
         }
     }
 
@@ -1087,7 +1090,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
-    // Hacer Ping, este metodo demora demaciado
+    // Hacer Ping, este metodo demora demasiado
     public Boolean isOnlineNet() {
 
         try {
@@ -1138,11 +1141,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
     }
 
-    // Inicializa la actividad AppsListActivity para ver la lista de aplicaciones instaladas en el dispositivo
-    private void viewListApps() {
-        AppsListActivity.openLive(this, liveBean);
-        finish();
-    }
 
     /* Metodos Boquear Barras */
     @SuppressLint("WrongConstant")
@@ -1203,7 +1201,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
 
     //Animacion de Lista de Wifi
-    public void toggleWifi() {
+    public void showWifiPanel() {
         if(llRedes.getVisibility() == View.INVISIBLE){
             //llProgramList.setVisibility(View.INVISIBLE);
             if (animInListWifi == null) {
@@ -1231,7 +1229,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         }
     }
 
-    private void exitWifi() {
+    private void hideWifiPanel() {
         if(llRedes.getVisibility() == View.VISIBLE){
             if (exitAnimListWifi == null) {
                 exitAnimListWifi = new TranslateAnimation(0f, -llRedes.getWidth(), 0f, 0f);
@@ -1562,7 +1560,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         //dejar de intentar reproducir canales
         handler.removeMessages(CODE_TRY_PLAYER);
         //esconder el panel de wifi que se expandió
-        exitWifi();
+        hideWifiPanel();
         onWifi=false;
         //funciones de botones
         funciones();
@@ -1632,6 +1630,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         loadAllArrayListsToGridView();
         loadGridViewListeners();
+
+        mp= MediaPlayer.create(ServiceProgramActivity.this,R.raw.ui_effect);
     }
 
     private void loadConfigurationsToArrayList(){
@@ -1763,10 +1763,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 setDefaultBackgroudInGridItems();
 
-                float scalingFactor = 0.9f; // scale down to half the size
+                float scalingFactor = 1.0f; // scale down to half the size
                 view.setScaleX(scalingFactor);
                 view.setScaleY(scalingFactor);
                 view.startAnimation(getGridItemAnimation());
+                //playUiSound();
                 //view.setBackgroundColor(Color.parseColor(gridViewItems.get(position).getBgColor()));
                 //view.setTranslationY(-15.0f);
                 //view.setTranslationZ(3.0f);
@@ -1783,7 +1784,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
 
                 gridViewAdapter.notifyDataSetChanged(); //fix para que el gridView se pueda clickear con los dedos y mouse, no solo con el control remoto
-                playUiSound();
 
 
                 //********** Item clicked
@@ -1806,11 +1806,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                 handler.removeMessages(CODE_ACT_PLAN);
                                 if(llRedes.getVisibility() == View.INVISIBLE) {
                                     onWifi = true;
-                                    toggleWifi();
+                                    showWifiPanel();
                                     rv.requestFocus();
                                 }else if(llRedes.getVisibility() == View.VISIBLE){
                                     onWifi = false;
-                                    exitWifi();
+                                    hideWifiPanel();
                                 }
                             }
                             break;
@@ -1952,10 +1952,17 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void playUiSound(){
+        /*
         int sonido;
         SoundPool sp= new SoundPool(1, AudioManager.STREAM_MUSIC,1);
         sonido=sp.load(this,R.raw.ui_effect,1);
         sp.play(sonido, 1,1,1,0,0);
+         */
+
+        //AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        // For example to set the volume of played media to maximum.
+        //audioManager.setStreamVolume (AudioManager.STREAM_MUSIC,  50,0);
+        mp.start();
         //Toast.makeText(ServiceProgramActivity.this,"sound", Toast.LENGTH_SHORT).show();
     }
 
