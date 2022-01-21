@@ -1,48 +1,34 @@
 package co.cablebox.tv.actualizacion;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.github.nkzawa.socketio.client.Url;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileFilter;
 
-import butterknife.ButterKnife;
 import co.cablebox.tv.R;
-import co.cablebox.tv.activity.ServiceProgramActivity;
-
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MyReceiver extends BroadcastReceiver {
 
     DownloadManager myDownloadManager;
-    long tamano;
+    long downloadedId;
     IntentFilter myIntentFilter;
 
     private Context myContext;
@@ -76,32 +62,88 @@ public class MyReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)){
-            intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-            DownloadManager.Query query = new DownloadManager.Query();
-            query.setFilterById(tamano);
 
-            Cursor cursor = myDownloadManager.query(query);
+            //obtener la ruta del apk descargado
+            DownloadManager downloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri apkUri = downloadManager.getUriForDownloadedFile(downloadedId);
 
-            if(cursor.moveToFirst()){
-                int columIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+            //abrir el apk descargado
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                    intent.setData(apkUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    myContext.startActivity(intent);
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    myContext.startActivity(intent);
+                }else {
+                    Toast.makeText(myContext, "File not found.", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                if(DownloadManager.STATUS_SUCCESSFUL == cursor.getInt(columIndex)){
-                    String uriString = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+            Log.e("MsjDescargar", "Se descargó sin problemas");
+            handler.sendEmptyMessageDelayed(CODE_DOWNLOAD_SUCCESES, 3000);
+        }
+    }
 
-                    File file = new File(uriString);
 
-                    System.out.println(file);
+    public void download (String ipmuxApksUrl, String fileName){
+        //definir la url del archivo a descargar
+        DownloadManager downloadmanager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(ipmuxApksUrl+"/"+fileName);
 
-                    Intent pantallaInstall = new Intent(Intent.ACTION_VIEW);
-                    pantallaInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    pantallaInstall.setDataAndType(Uri.parse(uriString), "application/vnd.android.package-archive");
-                    myActivity.startActivity(pantallaInstall);
+        //descargar archivo
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setTitle(fileName);
+        request.setDescription("Downloading");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);//donde se guarda el archivo descargado
+        downloadedId = downloadmanager.enqueue(request); //guardar el id de la descarga en una variable. Esto nos evita tener que borrar el apk del dispositivo si existe.
 
-                    Log.e("MsjDescargar", "Se descargo sin problemas");
-                    handler.sendEmptyMessageDelayed(CODE_DOWNLOAD_SUCCESES, 3000);
+        //informar al usuario de la descarga con una barra de progreso
+        final SeekBar mProgressBar = (SeekBar) myActivity.findViewById(R.id.sb_descarga);
+        final TextView mPorcentaje = (TextView) myActivity.findViewById(R.id.tv_por_descarga);
+        new Thread(new Runnable() {
+            @Override public void run() {
+                System.out.println("Entro");
+                myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                boolean downloading = true;
+                while (downloading) {
+                    DownloadManager.Query q = new DownloadManager.Query();
+                    q.setFilterById(downloadedId);
+                    Cursor cursor = myDownloadManager.query(q);
+                    cursor.moveToFirst();
+                    int bytes_downloaded = cursor.getInt(cursor .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                    int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+
+                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                        downloading = false;
+                    }
+                    final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
+
+                    myActivity.runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            mProgressBar.setProgress((int) dl_progress);
+                            mPorcentaje.setText(dl_progress+"%");
+                        }
+                    });
+
+                    Log.d("Progreso", statusMessage(cursor)+" - "+dl_progress);
+                    if(dl_progress == 100){
+                        //estadoBotones(true);
+                    }
+                    cursor.close();
+
+                    //cuando finaliza la descarga, se invoca el método onReceive de esta clase
                 }
             }
-        }
+        }).start();
     }
 
     public void Descargar(String dir){
@@ -120,9 +162,8 @@ public class MyReceiver extends BroadcastReceiver {
         //Crear la carpeta
         File myFile = new File(Environment.getExternalStorageDirectory(), "apk");
         boolean isCreate = myFile.exists();
-
         if(!isCreate){
-            isCreate = myFile.mkdirs();
+            myFile.mkdirs();
         }
 
         myRequest.setDestinationInExternalPublicDir("/apk", name);
@@ -132,7 +173,7 @@ public class MyReceiver extends BroadcastReceiver {
         Log.e("Ruta_apk", h);
         Log.e("Descargar", "Ok");
 
-        tamano = myDownloadManager.enqueue(myRequest);
+        downloadedId = myDownloadManager.enqueue(myRequest);
 
         final SeekBar mProgressBar = (SeekBar) myActivity.findViewById(R.id.sb_descarga);
         final TextView mPorcentaje = (TextView) myActivity.findViewById(R.id.tv_por_descarga);
@@ -142,7 +183,7 @@ public class MyReceiver extends BroadcastReceiver {
                 boolean downloading = true;
                 while (downloading) {
                     DownloadManager.Query q = new DownloadManager.Query();
-                    q.setFilterById(tamano);
+                    q.setFilterById(downloadedId);
                     Cursor cursor = myDownloadManager.query(q);
                     cursor.moveToFirst();
                     int bytes_downloaded = cursor.getInt(cursor .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
@@ -195,7 +236,7 @@ public class MyReceiver extends BroadcastReceiver {
         } return (msg);
     }
 
-    public static void eliminarPorExtension(String path, final String extension){
+    public static void eliminarPorExtension(String path, String extension){
         File[] archivos = new File(path).listFiles(new FileFilter() {
             public boolean accept(File archivo) {
                 if (archivo.isFile())

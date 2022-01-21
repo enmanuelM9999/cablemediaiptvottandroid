@@ -949,10 +949,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     /* Iniciar Variables necesarias para la actividad
-     * Se comprueba si la actividad es iniciada desde el panel de categorias o no,
      * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
     private void initData() {
-
 
         if (!deMosaico){
             channelIndex = PreUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
@@ -1014,21 +1012,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         //Socket
         socketNoti();
 
-        /*tiempo_canal.scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                if(nuevoCanal) {
-                    try {
-                        Thread.sleep(1*1000);
-                        nuevoCanal = false;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(!nuevoCanal)
-                    socket.emit("time_channel", IMEI,liveBean.getData().get(channelIndex).getName());
-            }
-        },0,1000);*/
     }
 
     //Notifaciones por Socket
@@ -1441,12 +1424,13 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Iniciar actividad VideoPlayerActivity
-    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String anIpmuxIp, String anIpmuxPort) {
+    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String anIpmuxIp, String anIpmuxPort, boolean anIsSmartPhoneMode) {
         VideoPlayerActivityBox.mensajeBean = mensajeBean;
         VideoPlayerActivityBox.liveBean = liveBean;
         VideoPlayerActivityBox.IMEI = IMEI;
         VideoPlayerActivityBox.ipmuxIP = anIpmuxIp;
         VideoPlayerActivityBox.ipmuxPort = anIpmuxPort;
+        VideoPlayerActivityBox.isSmartphoneMode=anIsSmartPhoneMode;
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
 
@@ -2732,32 +2716,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
 
-    public void toggleInfoChannel() {
-        if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-            if (animInBot == null) {
-                animInBot = new TranslateAnimation(0f, 0f, rlDisplayDown.getHeight(), 0f);
-                animInBot.setDuration(300);
-            }
-
-            animInBot.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    rlDisplayDown.setVisibility(View.VISIBLE);
-                    //tvChannelNumber.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            rlDisplayDown.startAnimation(animInBot);
-        }
-    }
 
     public void togglePlaylist() {
         //Desactivados para Celular
@@ -2855,7 +2813,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 tvBlack.setVisibility(View.VISIBLE);
                 channelIndex = i;
                 changeChannelInScreen();
-                handler.sendEmptyMessageDelayed(CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW,HUD_HIDE_TIME);
+                handler.sendEmptyMessageDelayed(CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW,0);
                 return;
             }
         }
@@ -3558,6 +3516,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         claveExit(number);
         writingNum = true;
         canalNum(number);
+        extendClearScreenTimeout();
     }
 
 
@@ -3636,6 +3595,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         socket.connect();
         socket.emit("join", IMEI);
         socketEmitPlayingChannel();
+    }
+
+    /*
+    * Sirve para extender el tiempo en que se ocultan los elementos en pantalla. Ejm: Cuando se presiona un boton del panel numérico,
+    * es necesario agregar más tiempo para que el usuario pueda presionar más números
+    * */
+    private void extendClearScreenTimeout(){
+        handler.removeMessages(CODE_CLEAR_SCREEN);
+        handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,HUD_HIDE_TIME);
     }
 
 }

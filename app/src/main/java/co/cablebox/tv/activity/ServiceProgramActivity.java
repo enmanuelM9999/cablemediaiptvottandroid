@@ -14,9 +14,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -114,6 +112,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @BindView(R.id.cablebox_title)
     TextView tvCableboxTitle;
 
+    @BindView(R.id.ll_open_tech_mode)
+    LinearLayout llOpenTechMode;
+
     @BindView(R.id.btn_ok)
     Button btnOK;
     @BindView(R.id.et_ip)
@@ -151,6 +152,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     LinearLayout llScreenSuspendedForPayment;
     @BindView(R.id.ll_screen_demo_expired)
     LinearLayout llScreenDemoExpired;
+
+    /*
+    * Controla si la app se está ejecutando en un teléfono o en una tablet
+    * */
+    private boolean isSmartphoneMode=false;
 
     private TranslateAnimation animInListWifi;
     private TranslateAnimation exitAnimListWifi;
@@ -235,6 +241,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 case CODE_TRY_PLAYER:
                     try {
                         openChannels();
+
                         if (canShowFailureScreens){
                             String userStatus= getUserStatus();
                             switch (userStatus){
@@ -272,14 +279,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 case CODE_SALIR_APP:
                     handler.removeMessages(CODE_ACT_PLAN);
                     if (wordKey.equals(Q15QSFD)) {
-                        technicianMode();
+                        turnOnTechnicianMode();
                     }
                     wordKey = "";
                     break;
 
                 case CODE_ACT:
                     llActualizando.setVisibility(View.INVISIBLE);
-                    actualizando = false;
+                    isUpdatingApp = false;
                     setButtonsState(true);
 
                     handler.removeMessages(CODE_ACT_PLAN);
@@ -329,7 +336,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //Actualizacion del plan
         public static boolean camPlan = false;
-        public boolean actualizando = true;
+        public boolean isUpdatingApp = true;
 
     private boolean conectado = false;
 
@@ -358,7 +365,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
         ipmuxIP = sharpref.getString("IP", ipmuxIP);// ipmux
         ipmuxPort = sharpref.getString("PORT", ipmuxPort);// ipmux
-        BASE_URI = generateAndReturnIpmuxUri();
+        BASE_URI = generateAndReturnIpmuxApiUrl();
 
         /*String ip = PreUtils.getString(ServiceProgramActivity.this, IP_KEY, "http://"+direcPag+":5509/api/RestController.php");
         BASE_URI = ip;*/
@@ -377,7 +384,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         builder.detectFileUriExposure();
 
         versionLocal = BuildConfig.VERSION_NAME;
-        tvVersion.setText("V"+versionLocal+" - CableMEDIA® 2022");
+        tvVersion.setText("v"+versionLocal+" - CableMEDIA® 2022");
         setLocationPermission();
         createWifiConnectorObject();
 
@@ -393,7 +400,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
             bloquearBarras();*/
         }else{
-            isCel = true;
+            isSmartphoneMode = true;
             tvImei.setText("IMEI: "+imei);
             tvImei.setVisibility(View.VISIBLE);
             //llConfigBo.setVisibility(View.VISIBLE);
@@ -455,7 +462,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
+        mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxApiUrl(), sendObj);
     }
 
     //Notifaciones por Socket
@@ -509,13 +516,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             System.out.println("Error VS 2 "+e);
             e.printStackTrace();
         }
-        mVolleyServiceVersion.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObjV);
+        mVolleyServiceVersion.postDataVolley("POSTCALL", generateAndReturnIpmuxApiUrl(), sendObjV);
 
     }
 
     private void openChannels(){
         inicio();
-        if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+        if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
             handler.removeMessages(CODE_ACT_PLAN);
             String localUrl = getServerFromFile(LOCAL_URL);
             if (!TextUtils.isEmpty(localUrl)) {
@@ -527,9 +534,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private void funciones(){
 
+        llOpenTechMode.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                turnOnTechnicianMode();
+            }
+        });
+
         btnOK.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
 
                     String myarray []=  getIpAndPortByText(etIP.getText().toString());
                     ipmuxIP=myarray[0];
@@ -540,7 +553,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     editor.putString("IP", ipmuxIP);
                     editor.putString("PORT", ipmuxPort);
                     editor.commit();
-                    BASE_URI = generateAndReturnIpmuxUri();
+                    BASE_URI = generateAndReturnIpmuxApiUrl();
 
                     PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
@@ -941,12 +954,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
                 if (imei != null) {
-                    //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, ipmuxIP);
-                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort);
+                    isSmartphoneMode=true;
+                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort, isSmartphoneMode);
 
                 }else{
                     imei = getSerialNumber();
-                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort);
+                    isSmartphoneMode=false;
+                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort, isSmartphoneMode);
 
                 }
 
@@ -1024,11 +1038,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     public void closeApp() {
         myReceiver.borrarRegistro(myReceiver);
         destroyWifiConnectorListeners();
-        isTechnician=false;
+        turnOffTechnicianMode();
         canShowFailureScreens=false;
         removeAllHandlerMessages();
         hideAllFailureScreens();
-        actualizando=false;
+        isUpdatingApp =false;
         //finish();
     }
 
@@ -1058,7 +1072,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         e.printStackTrace();
                     }
 
-                    mVolleyServiceCH.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
+                    mVolleyServiceCH.postDataVolley("POSTCALL", generateAndReturnIpmuxApiUrl(), sendObj);
 
                 } catch (Exception e) {
                     System.out.println("Error "+e);
@@ -1092,7 +1106,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Hacer Ping, este metodo demora demasiado
     public Boolean isOnlineNet() {
-
         try {
             Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
 
@@ -1180,14 +1193,14 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         start();
     }
 
-    /*
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isUpdatingApp=false;
         finish();
     }
 
-     */
 
     /**
      * Sirve para hacer clickeables los botones de la interfaz
@@ -1485,6 +1498,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      * Se pregunta cada tiempo en segs si es posible acceder a los canales (por si el cliente recién paga o por si el internet vuelve).
      */
     public void guaranteeOpenChannelsWithBusyWaiting(){
+
+        if (isSmartphoneMode)
+            llOpenTechMode.setVisibility(View.VISIBLE);
+
         llLoadingChannels.setVisibility(View.VISIBLE);
         handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
@@ -1550,11 +1567,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      * Permite abrir la app en modo técnico, en el cual se puede configurar la caja y abrir aplicaciones instaladas como PlutoTV, y configurar
      * parámetros como el wifi y la ip del servidor.
      */
-    public void technicianMode(){
+    public void turnOnTechnicianMode(){
         //ocultar panel de cargando canales
         llLoadingChannels.setVisibility(View.INVISIBLE);
         //ocultar pantallas de error "no canales" y "sin conexión"
         hideAllFailureScreens();
+        //ocultar el boton de abrir ajustes del modo smartphone
+        llOpenTechMode.setVisibility(View.INVISIBLE);
         //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
         canShowFailureScreens=false;
         //dejar de intentar reproducir canales
@@ -1566,16 +1585,30 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         funciones();
         //tech mode
         isTechnician=true;
-
     }
+
+    public void turnOffTechnicianMode(){
+        //tech mode
+        isTechnician=false;
+    }
+
 
     /**
     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort, ipmuxApiPath y construye una uri para que la app acceda al servidor ipmux y haga peticiones
     * */
-    public String generateAndReturnIpmuxUri(){
+    public String generateAndReturnIpmuxApiUrl(){
         String portNotation = ":";
         if (ipmuxPort.equals("")) portNotation="";
         return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
+    }
+
+    /**
+     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort,  y construye una url que es el host de la app
+     * */
+    public String generateAndReturnIpmuxApksUrl(){
+        String portNotation = ":";
+        if (ipmuxPort.equals("")) portNotation="";
+        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+"/file";
     }
 
     /**
@@ -1785,58 +1818,64 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 gridViewAdapter.notifyDataSetChanged(); //fix para que el gridView se pueda clickear con los dedos y mouse, no solo con el control remoto
 
-
                 //********** Item clicked
 
+                try {
+                    if (isUpdatingApp) throw new Exception("La aplicación se está actualizando, no es permitido acceder a los demás ajustes");
 
-                //obtenemos el item clickeado
-                ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
-                //obtenemos el tipo de accion del item
-                String theActionType = theItem.getActionType();
+                    //obtenemos el item clickeado
+                    ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
+                    //obtenemos el tipo de accion del item
+                    String theActionType = theItem.getActionType();
 
-                //si el tipo de acción es igual a iniciar configuración...
-                if (theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION)){
+                    //si el tipo de acción es igual a iniciar configuración...
+                    if (theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION)){
 
-                    switch (theItem.getAction()){
-                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
-                            guaranteeOpenChannelsWithBusyWaiting();
-                            break;
-                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED:
-                            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                                handler.removeMessages(CODE_ACT_PLAN);
-                                if(llRedes.getVisibility() == View.INVISIBLE) {
-                                    onWifi = true;
-                                    showWifiPanel();
-                                    rv.requestFocus();
-                                }else if(llRedes.getVisibility() == View.VISIBLE){
-                                    onWifi = false;
-                                    hideWifiPanel();
+                        switch (theItem.getAction()){
+                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
+                                guaranteeOpenChannelsWithBusyWaiting();
+                                break;
+                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED:
+                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
+                                    handler.removeMessages(CODE_ACT_PLAN);
+                                    if(llRedes.getVisibility() == View.INVISIBLE) {
+                                        onWifi = true;
+                                        showWifiPanel();
+                                        rv.requestFocus();
+                                    }else if(llRedes.getVisibility() == View.VISIBLE){
+                                        onWifi = false;
+                                        hideWifiPanel();
+                                    }
                                 }
-                            }
-                            break;
-                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
-                            if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
-                                setButtonsState(false);
-                                handler.removeMessages(CODE_ACT_PLAN);
-                                llDescarga.setVisibility(View.VISIBLE);
-                                myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
-                            }
-                            else{
-                                Toast.makeText(ServiceProgramActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
-                            }
-                            break;
-                        case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
-                            showChangeIpDialog();
-                            break;
+                                break;
+                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
+                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
+                                    handler.removeMessages(CODE_ACT_PLAN);
+                                    llDescarga.setVisibility(View.VISIBLE);
+                                    isUpdatingApp=true;
+                                    //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
+                                    myReceiver.download(generateAndReturnIpmuxApksUrl(),"CableBoxTv-TvBox.apk");
+
+                                }
+                                else{
+                                    Toast.makeText(ServiceProgramActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
+                                }
+                                break;
+                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
+                                showChangeIpDialog();
+                                break;
+                        }
+
                     }
 
-                }
+                    //si el tipo de acción es igual a iniciar app...
+                    else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_APP)){
+                        Intent i = packageManager.getLaunchIntentForPackage(theItem.getAction());
+                        startActivity(i);
+                    }
+                } catch(Exception e){System.out.println(e);}
 
-                //si el tipo de acción es igual a iniciar app...
-                else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_APP)){
-                    Intent i = packageManager.getLaunchIntentForPackage(theItem.getAction());
-                    startActivity(i);
-                }
+
 
 
             }
@@ -1874,7 +1913,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void showChangeIpDialog(){
-        if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+        if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
             handler.removeMessages(CODE_ACT_PLAN);
 
             EditText inputNewIp;
@@ -1896,7 +1935,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 public void onClick(DialogInterface dialog, int which) {
                     String txt= inputNewIp.getText().toString();
 
-                    if(llDescarga.getVisibility() == View.INVISIBLE && !actualizando){
+                    if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
 
                         String myarray []=  getIpAndPortByText(inputNewIp.getText().toString());
                         ipmuxIP=myarray[0];
@@ -1907,7 +1946,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         editor.putString("IP", ipmuxIP);
                         editor.putString("PORT", ipmuxPort);
                         editor.commit();
-                        BASE_URI = generateAndReturnIpmuxUri();
+                        BASE_URI = generateAndReturnIpmuxApiUrl();
 
                         PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
@@ -1919,8 +1958,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         llIpNueva.setVisibility(View.INVISIBLE);
                         Toast.makeText(ServiceProgramActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
 
-                        //mQueue = Volley.newRequestQueue(this);
-                        //volleyS = new VolleyS(mQueue);
+
                         inicio();
                         //socketNoti();
                         initData();
@@ -1945,6 +1983,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             //Create Dialog
             AlertDialog ad= builder.create();
             ad.show();
+
+            if (!isSmartphoneMode)
             ad.getWindow().setLayout(300, 180); //Controlling width and height.
 
 

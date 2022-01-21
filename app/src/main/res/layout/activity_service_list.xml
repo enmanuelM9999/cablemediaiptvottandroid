@@ -37,8 +37,6 @@
 
     </TextView>
 
-
-
     <GridView
         android:id="@+id/grid_view"
         android:layout_width="fill_parent"
@@ -58,9 +56,11 @@
 
 
 
+
+
     <LinearLayout
         android:id="@+id/ll_redes"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_version"
         android:layout_alignParentStart="true"
@@ -291,7 +291,7 @@
         android:background="#3B504E"
         android:fontFamily="@font/segoe_ui"
         android:padding="@dimen/h_28"
-        android:text="Si la instalacion Automática no se inició vaya a su almacenamiento interno y en la carpeta /apk encontrara CableBoxTv.apk para instalar.\nRecuerde permitir la instalacion de aplicaciones provenientes de fuentes desconocidas en la configuracion del celular."
+        android:text="Si la instalacion Automática no se inició, vaya a su almacenamiento interno y en la carpeta /apk encontrará CableBoxTv.apk para instalar.\nRecuerde permitir la instalación de aplicaciones de fuentes desconocidas en la configuración del dispositivo."
         android:textSize="@dimen/h_45"
         android:visibility="invisible"></TextView>
 
@@ -657,6 +657,44 @@
             android:text="Llevamos mucho tiempo sin saber de ti. Presiona 'OK' para continuar. Error SOKT-DISC"
             android:textColor="#fff"
             android:textSize="@dimen/h_40" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_open_tech_mode"
+        android:layout_width="140dp"
+        android:layout_height="120dp"
+        android:clipToPadding="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:visibility="invisible"
+        android:background="@drawable/bg_dark_alpha_rounded"
+        >
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/settings" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="-4dp"
+                android:text="Abrir ajustes"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="20dp" />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

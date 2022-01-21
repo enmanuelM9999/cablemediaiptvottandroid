@@ -1357,7 +1357,7 @@ public class ChannelListActivityBox extends Activity {
             lvCanales.setSelection(posCanal);
             selectListChannel = true;
         }else{
-            VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, IMEI, direcPag, ""); //fix this, needs a port
+            //VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, IMEI, direcPag, ""); //fix this, needs a port
             finish();
         }
     }
