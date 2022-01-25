@@ -123,6 +123,154 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:id="@+id/rl_panel_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/degradado_panel_down"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp">
+
+            <ImageView
+                android:id="@+id/iv_exit_app"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/ic_exit" />
+
+            <ImageView
+                android:id="@+id/iv_bloquear"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_bloq_b" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="0dp">
+
+            <ImageView
+                android:id="@+id/iv_return"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/ic_return"
+                android:visibility="gone" />
+
+            <!--<ImageView
+                android:id="@+id/iv_ver_favs"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_ver_fav" />-->
+
+            <ImageView
+                android:id="@+id/iv_informativo"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/ic_information" />
+
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_fav"
+                android:visibility="gone" />
+
+            <!--<RelativeLayout
+                android:id="@+id/iv_notificaciones"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:background="@drawable/borde_volumen">
+
+                <ImageView
+                    android:id="@+id/iv_noti"
+                    android:layout_width="@dimen/w_90"
+                    android:layout_height="@dimen/w_90"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/bell" />
+
+                <TextView
+                    android:id="@+id/tv_num_noti"
+                    android:layout_width="@dimen/w_60"
+                    android:layout_height="@dimen/w_60"
+                    android:layout_above="@+id/iv_noti"
+                    android:layout_alignEnd="@+id/iv_noti"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_marginBottom="-20dp"
+                    android:background="@mipmap/ic_fondo_not"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/w_40" />
+
+            </RelativeLayout>-->
+
+            <ImageView
+                android:id="@+id/iv_dig_num"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/ic_dig_numero" />
+
+            <ImageView
+                android:id="@+id/iv_list"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_list" />
+
+            <!--<ImageView
+                android:id="@+id/iv_categ"
+                android:layout_width="@dimen/w_120"
+                android:layout_height="@dimen/w_120"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_cat" />-->
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
     <LinearLayout
         android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
@@ -132,7 +280,7 @@
         android:paddingHorizontal="60dp"
         android:paddingTop="20dp"
         android:paddingBottom="10dp"
-        android:visibility="visible">
+        android:visibility="invisible">
 
 
         <RelativeLayout
@@ -188,7 +336,7 @@
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_210"
+        android:layout_height="@dimen/h_190"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/degradado_panel_down"
@@ -218,7 +366,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="@dimen/h_180"
+            android:layout_marginEnd="30dp"
             android:layout_toEndOf="@+id/ll_logo">
 
             <TextView
@@ -445,12 +593,12 @@
         android:layout_marginTop="7dp"
         android:layout_marginRight="@dimen/w_180"
         android:layout_marginBottom="@dimen/h_30"
+        android:background="@drawable/bg_dark_alpha_rounded"
+        android:padding="5dp"
         android:textColor="#FFF"
         android:textSize="@dimen/w_120"
         android:typeface="sans"
-        android:padding="5dp"
-        android:background="@drawable/degradado_panel_down"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/rl_panel_num"

@@ -21,7 +21,9 @@ public class ServiceProgramGridViewItem {
     public static final String ACTION_START_CONFIGURATION_UPDATE ="startUpdate";
     public static final String ACTION_START_CONFIGURATION_CHANGE_IP ="startChangeIp";
 
-    public static final String DEFAULT_BG_COLOR ="#B35E7A9C";
+    //public static final String DEFAULT_BG_COLOR ="#D92B2D2E";
+    public static final String DEFAULT_BG_COLOR ="#D909162A";
+
 
 
     private Drawable icon;

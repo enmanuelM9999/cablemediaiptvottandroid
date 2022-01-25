@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,10 +23,13 @@ import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -265,7 +269,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         }
                     }catch(Exception e){
                     }
-                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2500);
+                    handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,5000);
                     break;
                 case CODE_NETWORK_SUCCESS:
                     setLiveData();
@@ -355,8 +359,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         super.onCreate(savedInstanceState);
     }
 
-    private void
-    start(){
+    private void start(){
         setContentView(R.layout.activity_service_list);
         ButterKnife.bind(this);
 
@@ -366,9 +369,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         ipmuxIP = sharpref.getString("IP", ipmuxIP);// ipmux
         ipmuxPort = sharpref.getString("PORT", ipmuxPort);// ipmux
         BASE_URI = generateAndReturnIpmuxApiUrl();
-
-        /*String ip = PreUtils.getString(ServiceProgramActivity.this, IP_KEY, "http://"+direcPag+":5509/api/RestController.php");
-        BASE_URI = ip;*/
         System.out.println("IP: "+BASE_URI);
 
         //Descargar Apk
@@ -426,7 +426,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             onWifi = true;
             showWifiPanel();
         }
-
 
         //socketNoti();
         funciones();
@@ -1184,6 +1183,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         System.out.println("onPause service");
         closeApp();
 
+
     }
 
     @Override
@@ -1198,6 +1198,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     protected void onDestroy() {
         super.onDestroy();
         isUpdatingApp=false;
+
         finish();
     }
 
@@ -1679,32 +1680,26 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         icon = getResources().getDrawable(R.drawable.house);
         text="Ver canales";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
-        bgColor="#FF349A93";
-        bgColorAlpha="#B3349A93";
+        bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+        bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
         gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //net
         icon = getResources().getDrawable(R.drawable.wifi);
         text="Red";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED;
-        bgColor="#FF6EAC98";
-        bgColorAlpha="#B36EAC98";
         gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //actualizar
         icon = getResources().getDrawable(R.drawable.download);
         text="Actualizar";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
-        bgColor="#FFB7B68C";
-        bgColorAlpha="#B3B7B68C";
         gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //cambiarIp
-        icon = getResources().getDrawable(R.drawable.settings);
+        icon = getResources().getDrawable(R.drawable.icon_ip);
         text="Cambiar IP";
         action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
-        bgColor="#FFDB8A89";
-        bgColorAlpha="#B3DB8A89";
         gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
 
@@ -1732,23 +1727,22 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
                 String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
 
+
                 //Cambiar el color de fondo segun la app
                 if (ri.activityInfo.packageName.equals("com.android.tv.settings")){
-                    bgColor="#FF688491";
-                    bgColorAlpha="#B3688491";
+                    icon=getResources().getDrawable(R.drawable.settings);
                 }
 
                 if (ri.activityInfo.packageName.equals("tv.pluto.android")){
-                    bgColor="#FF5F6A83";
-                    bgColorAlpha="#B35F6A83";}
+                    icon=getResources().getDrawable(R.drawable.pluto_tv_white);
+                   }
                 if (ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid")) {
-                    bgColor = "#FFB8463F";
-                    bgColorAlpha="#B3B8463F";
+                    icon=getResources().getDrawable(R.drawable.anydesk_white);
                 }
                 if (ri.activityInfo.packageName.equals("org.videolan.vlc")){
-                    bgColor="#FFB6631E";
-                    bgColorAlpha="#B3B6631E";
+                    icon=getResources().getDrawable(R.drawable.vlc_white);
                 }
+
 
                 ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
                 gridViewItems.add(item);
@@ -1797,8 +1791,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 setDefaultBackgroudInGridItems();
 
                 float scalingFactor = 1.0f; // scale down to half the size
-                view.setScaleX(scalingFactor);
-                view.setScaleY(scalingFactor);
+                //view.setScaleX(scalingFactor);
+                //view.setScaleY(scalingFactor);
                 view.startAnimation(getGridItemAnimation());
                 //playUiSound();
                 //view.setBackgroundColor(Color.parseColor(gridViewItems.get(position).getBgColor()));
@@ -1854,7 +1848,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     llDescarga.setVisibility(View.VISIBLE);
                                     isUpdatingApp=true;
                                     //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
-                                    myReceiver.download(generateAndReturnIpmuxApksUrl(),"CableBoxTv-TvBox.apk");
+
+                                    String fileName="CableBoxTv-TvBox.apk";
+                                    if (isSmartphoneMode)
+                                        fileName="CableBoxTv-Smartphone.apk";
+                                    myReceiver.download(generateAndReturnIpmuxApksUrl(),fileName);
 
                                 }
                                 else{
@@ -1887,6 +1885,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             TranslateAnimation anim= new TranslateAnimation(0f, 0.0f, 0f, -11.0f);
             anim.setRepeatMode(Animation.REVERSE);
             anim.setRepeatCount(Animation.INFINITE);
+            anim.setFillAfter(true);
             anim.setDuration(500);
             return anim;
     }
@@ -2006,7 +2005,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         //Toast.makeText(ServiceProgramActivity.this,"sound", Toast.LENGTH_SHORT).show();
     }
 
-    private Boolean appNeedUpdate(){
+    private boolean appNeedUpdate(){
         //buscarVersion();
         return !"3.11".equals("3.11");
     }
@@ -2014,6 +2013,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void generateToken(){
         mVolleyServiceTK = new VolleyService(mResultCallbackTK,this);
     }
+
 
 
 

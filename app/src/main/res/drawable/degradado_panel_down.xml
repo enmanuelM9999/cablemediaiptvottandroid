@@ -14,6 +14,6 @@
             android:color="#FFFDBD"
             />
     </shape>
-    <corners android:radius="10dp"/>
+    <corners android:radius="0dp"/>
 
 </shape>

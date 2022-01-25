@@ -64,8 +64,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
 
+
+
+                <!--
+                Los siguientes 2 ajustes permiten que la app se conovierta
+                en la app de inicio del dispositivo (Launcher)
+
+                Remover para dispositivos móviles, Agregar para Tvbox
+                -->
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <!--
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                -->
+
 
                 <action android:name="com.longjingtech.ott.live" />
             </intent-filter>
