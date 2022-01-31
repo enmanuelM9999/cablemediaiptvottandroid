@@ -7,6 +7,10 @@
     <fraction name="video_mosaico">20%</fraction>
     <fraction name="quarter">25%</fraction>
 
+
+    <dimen name="activity_live_panel_up_min_height">100dp</dimen>
+    <dimen name="activity_live_panel_up_padding_top">10dp</dimen>
+
     <dimen name="px1">1.0px</dimen>
     <dimen name="px2">2.0px</dimen>
     <dimen name="px3">3.0px</dimen>

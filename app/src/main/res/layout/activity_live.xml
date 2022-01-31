@@ -862,6 +862,7 @@
         android:src="@drawable/button_bloq_a"
         android:visibility="invisible"/>
 
+
     <LinearLayout
         android:id="@+id/ll_actualizando"
         android:layout_width="@dimen/h_1000"

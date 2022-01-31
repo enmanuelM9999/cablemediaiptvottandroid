@@ -123,6 +123,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/iv_unlock"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/button_bloq_b"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"/>
+
     <RelativeLayout
         android:id="@+id/rl_panel_up"
         android:layout_width="match_parent"
@@ -130,17 +140,66 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/degradado_panel_down"
         android:orientation="horizontal"
+        android:paddingHorizontal="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
         android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp">
+            android:layout_marginVertical="0dp">
+
+            <RelativeLayout
+                android:layout_width="67dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="67dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/cableoperador2" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3dp"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center"
+                android:text="Cable Éxito     |"
+                android:textSize="18dp"></TextView>
+
+            <TextView
+                android:id="@+id/tv_system_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="09:31"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:typeface="sans" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_smartphone_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="0dp">
 
             <ImageView
                 android:id="@+id/iv_exit_app"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="@dimen/w_20"
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
@@ -148,22 +207,13 @@
                 android:src="@drawable/ic_exit" />
 
             <ImageView
-                android:id="@+id/iv_bloquear"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
+                android:id="@+id/iv_lock"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="@dimen/w_20"
                 android:layout_marginVertical="@dimen/w_10"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/button_bloq_b" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginVertical="5dp"
-            android:layout_marginEnd="0dp">
+                android:src="@drawable/button_bloq_a" />
 
             <ImageView
                 android:id="@+id/iv_return"
@@ -187,18 +237,19 @@
 
             <ImageView
                 android:id="@+id/iv_informativo"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="@dimen/w_20"
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
-                android:src="@drawable/ic_information" />
+                android:src="@drawable/ic_information"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_favorite"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="@dimen/w_20"
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
@@ -238,24 +289,25 @@
             </RelativeLayout>-->
 
             <ImageView
-                android:id="@+id/iv_dig_num"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
+                android:id="@+id/iv_list"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="@dimen/w_20"
+                android:layout_marginVertical="@dimen/w_10"
+                android:alpha="0.9"
+                android:background="@drawable/borde_volumen"
+                android:src="@drawable/button_list" />
+
+            <ImageView
+                android:id="@+id/iv_type_num"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="@dimen/w_20"
                 android:layout_marginVertical="@dimen/w_10"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen"
                 android:src="@drawable/ic_dig_numero" />
 
-            <ImageView
-                android:id="@+id/iv_list"
-                android:layout_width="@dimen/w_120"
-                android:layout_height="@dimen/w_120"
-                android:layout_marginHorizontal="@dimen/w_20"
-                android:layout_marginVertical="@dimen/w_10"
-                android:alpha="0.9"
-                android:background="@drawable/borde_volumen"
-                android:src="@drawable/button_list" />
 
             <!--<ImageView
                 android:id="@+id/iv_categ"
@@ -270,7 +322,6 @@
 
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
@@ -282,41 +333,6 @@
         android:paddingBottom="10dp"
         android:visibility="invisible">
 
-
-        <RelativeLayout
-            android:layout_width="67dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="67dp"
-                android:layout_height="60dp"
-                android:src="@drawable/cableoperador2" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:text="Cable Éxito     |"
-            android:textSize="18dp"></TextView>
-
-        <TextView
-            android:id="@+id/tv_system_time"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="09:31"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:typeface="sans" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -336,48 +352,50 @@
     <RelativeLayout
         android:id="@+id/rl_panel_down"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_190"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/degradado_panel_down"
+        android:minHeight="100dp"
         android:visibility="visible">
 
 
-        <LinearLayout
-            android:id="@+id/ll_logo"
+        <RelativeLayout
+            android:id="@+id/rl_logo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/h_120"
-            android:orientation="vertical"
-            android:paddingTop="15dp">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:minHeight="100dp"
+            android:paddingTop="10dp">
 
             <ImageView
                 android:id="@+id/tv_channel_logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_no_logo" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/ll_channel_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="30dp"
-            android:layout_toEndOf="@+id/ll_logo">
+            android:layout_toEndOf="@+id/rl_logo">
 
             <TextView
                 android:id="@+id/tv_channel_number"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="20dp"
+
                 android:text="500"
                 android:textAlignment="center"
                 android:textColor="#fff"
@@ -385,41 +403,64 @@
                 android:textStyle="bold"
                 android:typeface="sans" />
 
-            <TextView
-                android:id="@+id/tv_channel_name"
+
+
+            <LinearLayout
+                android:id="@+id/ll_channel_name"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_toEndOf="@+id/tv_channel_number"
                 android:layout_toRightOf="@id/tv_channel_number"
                 android:background="#B33D3D3D"
                 android:gravity="center_vertical"
                 android:minWidth="220dp"
+                android:minHeight="100dp"
+                android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="20dp"
+                android:paddingBottom="10dp"
+
                 android:text="Canal Prueba"
                 android:textColor="#fff"
                 android:textSize="18dp"
-                android:typeface="sans" />
+                android:typeface="sans" >
+
+
+                <TextView
+                    android:id="@+id/tv_channel_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+
+                    android:text="Canal Prueba"
+                    android:textColor="#fff"
+                    android:textSize="18dp"
+                    android:typeface="sans" />
+            </LinearLayout>
+
+
 
             <LinearLayout
+                android:id="@+id/panel_down_channel_info_2"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="right"
                 android:background="#B33D3D3D"
+                android:minHeight="100dp"
                 android:orientation="horizontal"
                 android:paddingTop="10dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -440,6 +481,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:gravity="center"
+
                         android:text="Calidad HD"
                         android:textColor="#fff"
                         android:textSize="18dp"
@@ -449,7 +491,7 @@
 
                 <ImageView
                     android:id="@+id/tv_classification"
-                    android:layout_width="@dimen/h_60"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
                     android:src="@drawable/tv_pg" />
@@ -465,7 +507,7 @@
 
                     <ImageView
                         android:id="@+id/iv_opciones"
-                        android:layout_width="@dimen/h_40"
+                        android:layout_width="20dp"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_options" />
@@ -485,7 +527,6 @@
 
         </RelativeLayout>
 
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -503,7 +544,7 @@
             android:layout_marginVertical="5dp">
 
             <ImageView
-                android:id="@+id/iv_informativo"
+                android:id="@+id/iv_informativo2"
                 android:layout_width="@dimen/w_120"
                 android:layout_height="@dimen/w_120"
                 android:layout_marginHorizontal="@dimen/w_20"
@@ -513,7 +554,7 @@
                 android:src="@drawable/ic_information" />
 
             <ImageView
-                android:id="@+id/iv_favorite"
+                android:id="@+id/iv_favorite2"
                 android:layout_width="@dimen/w_120"
                 android:layout_height="@dimen/w_120"
                 android:layout_marginHorizontal="@dimen/w_20"
@@ -524,7 +565,7 @@
                 android:visibility="gone" />
 
             <ImageView
-                android:id="@+id/iv_list"
+                android:id="@+id/iv_list2"
                 android:layout_width="@dimen/w_120"
                 android:layout_height="@dimen/w_120"
                 android:layout_marginHorizontal="@dimen/w_20"
@@ -539,20 +580,19 @@
 
     <LinearLayout
         android:id="@+id/ll_list"
-        android:layout_width="@dimen/h_600"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
-
         android:layout_above="@+id/rl_panel_down"
-        android:layout_below="@+id/ll_panel_up"
-        android:layout_marginStart="10dp"
+        android:layout_below="@+id/rl_panel_up"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/h_70"
+            android:layout_height="wrap_content"
             android:background="@drawable/bordes_suave_top">
 
             <TextView
@@ -562,12 +602,10 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="0dp"
-                android:layout_toStartOf="@+id/arrow_right"
-                android:layout_toEndOf="@+id/arrow_left"
                 android:gravity="center"
                 android:text="Lista de Canales"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_40"
+                android:textSize="15dp"
                 android:textStyle="bold"></TextView>
 
         </RelativeLayout>
@@ -602,7 +640,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_panel_num"
-        android:layout_width="@dimen/w_450"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_channel_number_change"
         android:layout_alignParentRight="true"
@@ -618,37 +656,37 @@
 
             <TextView
                 android:id="@+id/tv_num_one"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:gravity="center"
                 android:text="1"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_two"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_one"
 
                 android:gravity="center"
                 android:text="2"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_three"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_two"
 
                 android:gravity="center"
                 android:text="3"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -659,36 +697,36 @@
 
             <TextView
                 android:id="@+id/tv_num_four"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
                 android:gravity="center"
                 android:text="4"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_five"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_four"
 
                 android:gravity="center"
                 android:text="5"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_six"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_five"
 
                 android:gravity="center"
                 android:text="6"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -699,36 +737,36 @@
 
             <TextView
                 android:id="@+id/tv_num_seven"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
                 android:gravity="center"
                 android:text="7"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp"/>
 
             <TextView
                 android:id="@+id/tv_num_eight"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_seven"
 
                 android:gravity="center"
                 android:text="8"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_nine"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_eight"
 
                 android:gravity="center"
                 android:text="9"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -737,24 +775,24 @@
             android:layout_below="@+id/ll_panel_three">
 
             <TextView
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
                 android:gravity="center"
                 android:text=""
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/tv_num_zero"
-                android:layout_width="@dimen/w_150"
-                android:layout_height="@dimen/w_150"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
 
                 android:layout_toEndOf="@+id/tv_num_seven"
 
                 android:gravity="center"
                 android:text="0"
                 android:textAlignment="center"
-                android:textSize="@dimen/h_90" />
+                android:textSize="30dp" />
 
             <ImageView
                 android:id="@+id/iv_enter_num"

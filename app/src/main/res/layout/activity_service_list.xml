@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/h_200"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_blue_alpha"
         android:orientation="horizontal"
         android:paddingHorizontal="60dp"
@@ -27,7 +27,8 @@
         <RelativeLayout
             android:layout_width="67dp"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginRight="10dp">
 
             <ImageView
                 android:layout_width="67dp"
@@ -44,7 +45,7 @@
             android:layout_marginLeft="3dp"
             android:foregroundGravity="center_vertical"
             android:gravity="center"
-            android:text="CableBOX     |"
+            android:text="@string/app_name"
             android:textSize="22dp"></TextView>
 
         <TextView
@@ -55,7 +56,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:text="IMEI"
+            android:text=" |    IMEI"
             android:textAlignment="center"
             android:textSize="20dp"
             android:typeface="sans" />
@@ -77,7 +78,7 @@
 
     <GridView
         android:id="@+id/grid_view"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_panel_up"
         android:layout_marginTop="50dp"
@@ -155,10 +156,12 @@
                 android:text="Redes disponibles"
                 android:textColor="#3DA8C0"
                 android:textSize="13dp"></TextView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wifiRv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/tv_redes"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="1dp" />
 
@@ -230,7 +233,7 @@
             android:layout_centerVertical="true"
             android:fontFamily="@font/segoe_ui_bold"
             android:textSize="@dimen/h_40"
-            android:text="No hay una red conectada"></TextView>
+            android:text="No tienes conexión"></TextView>
 
         <ImageView
             android:layout_width="@dimen/h_40"
@@ -296,7 +299,7 @@
         android:layout_centerInParent="true"
         android:background="#CC3A4053"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -351,7 +354,7 @@
             <ImageView
                 android:id="@+id/logo_cableoperador"
                 android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_height="150dp"
                 android:src="@drawable/cableoperador"></ImageView>
 
             <com.airbnb.lottie.LottieAnimationView
@@ -364,16 +367,15 @@
                 app:lottie_loop="true" />
 
             <TextView
-                android:id="@+id/tv_cargando_canales"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/loading_animation"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Cargando canales"
+                android:text="@string/powered_by"
                 android:textColor="#000"
-                android:textSize="@dimen/h_40" />
+                android:textSize="13dp" />
     </LinearLayout>
 
 
@@ -405,10 +407,23 @@
                 android:layout_below="@+id/timer_animation"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
+                android:padding="20dp"
+                android:background="@drawable/text_view_card_bg"
                 android:fontFamily="@font/segoe_ui_bold"
                 android:text="Tu demo ha expirado, por favor comunícate con soporte."
                 android:textColor="#fff"
                 android:textSize="@dimen/h_40" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_screen_demo_expired"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
     </LinearLayout>
 
 
@@ -435,29 +450,54 @@
             app:lottie_fileName="tv_loading.json"
             app:lottie_loop="true" />
 
-        <TextView
-            android:id="@+id/txt_screen_generic_failure"
+        <LinearLayout
+            android:id="@+id/ll_text_screen_generic_failure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_loading_animation"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/text_view_card_bg"
+            android:padding="20dp"
             android:layout_marginTop="0dp"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="Algo salió mal"
-            android:textColor="#fff"
-            android:textSize="@dimen/h_40" />
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:id="@+id/txt_screen_generic_failure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Algo salió mal"
+                android:textColor="#fff"
+                android:textSize="@dimen/h_40" />
+
+            <TextView
+                android:id="@+id/txt_screen_generic_failure_line2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Estamos recuperando tus canales"
+                android:textColor="#fff"
+                android:textSize="@dimen/h_40" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/txt_screen_generic_failure_line2"
+            android:id="@+id/tv_cargando_canal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_nochannels"
+            android:layout_below="@+id/ll_text_screen_generic_failure"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/segoe_ui_bold"
-            android:text="Intentando recuperar canales..."
+            android:text="@string/powered_by"
             android:textColor="#fff"
-            android:textSize="@dimen/h_40" />
+            android:textSize="13dp" />
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -537,11 +577,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/no_wifi_animation"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
+                android:padding="10dp"
+                android:background="@drawable/text_view_card_bg"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/segoe_ui_bold"
                 android:text="Por favor revisa tu conexión"
                 android:textColor="#fff"
                 android:textSize="@dimen/h_40" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_nonet"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
     </LinearLayout>
 
 
@@ -565,20 +618,6 @@
             app:lottie_fileName="disconnection.json"
             app:lottie_loop="true" />
 
-
-        <TextView
-            android:id="@+id/txt_title_screen_suspended_for_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_below="@+id/timer_animation"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="Error de conectividad"
-            android:textColor="#fff"
-            android:textSize="25sp" />
-
-
         <TextView
             android:id="@+id/txt_screen_suspended_for_payment"
             android:layout_width="400dp"
@@ -593,6 +632,17 @@
             android:background="@drawable/text_view_card_bg"
             android:padding="20dp"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_screen_suspended_for_payment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
 
     </LinearLayout>
 
@@ -616,27 +666,13 @@
             app:lottie_fileName="gear.json"
             app:lottie_loop="true" />
 
-
-        <TextView
-            android:id="@+id/txt_title_screen_technical_suspension"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_below="@+id/timer_animation"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="Suspensión Técnica"
-            android:textColor="#fff"
-            android:textSize="25sp" />
-
-
         <TextView
             android:id="@+id/txt_screen_technical_suspension"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_below="@+id/animation_screen_technical_suspension"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="-30dp"
             android:fontFamily="@font/segoe_ui_bold"
             android:text="Tu servicio está suspendido por afectación en la plataforma IPTV/OTT."
             android:textColor="#fff"
@@ -644,6 +680,17 @@
             android:background="@drawable/text_view_card_bg"
             android:padding="20dp"
             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_screen_technical_suspension"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -668,68 +715,72 @@
 
 
         <TextView
-            android:id="@+id/txt_title_screen_socket_disconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_below="@+id/timer_animation"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="¿Sigues ahí?"
-            android:textColor="#fff"
-            android:textSize="25sp" />
-
-
-        <TextView
             android:id="@+id/txt_screen_socket_disconnect"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_title_screen_suspended_for_payment"
+            android:layout_below="@+id/animation_screen_socket_disconnect"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/text_view_card_bg"
             android:fontFamily="@font/segoe_ui_bold"
             android:padding="20dp"
             android:text="Llevamos mucho tiempo sin saber de ti. Presiona 'OK' para continuar. Error SOKT-DISC"
             android:textColor="#fff"
             android:textSize="@dimen/h_40" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_screen_socket_disconnect"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_open_tech_mode"
-        android:layout_width="140dp"
-        android:layout_height="120dp"
+        android:id="@+id/ll_info_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
         android:clipToPadding="true"
-        android:gravity="center"
         android:orientation="vertical"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
         android:visibility="invisible"
-        android:background="@drawable/bg_dark_alpha_rounded"
         >
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/settings" />
-
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center">
-
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
             <TextView
+                android:id="@+id/tv_info_imei"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="-4dp"
-                android:text="Abrir ajustes"
-                android:textAlignment="center"
+                android:text="ID: 1231232YGY"
                 android:textColor="#fff"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_info_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-4dp"
+                android:text="Server: 51.111.11.11:1111"
+                android:textColor="#fff"
+                android:textSize="15dp" />
         </RelativeLayout>
     </LinearLayout>
 
