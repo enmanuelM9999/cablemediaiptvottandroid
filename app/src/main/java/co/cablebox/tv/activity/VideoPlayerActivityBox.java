@@ -2277,6 +2277,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         tiempo_canal.cancel();
         socket.disconnect();
+        socket.off();
+
         isSmartphoneMode =false;
         finish();
 
