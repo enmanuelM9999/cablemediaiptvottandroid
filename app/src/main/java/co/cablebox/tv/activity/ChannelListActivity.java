@@ -51,9 +51,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.android.volley.VolleyError;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -96,6 +94,9 @@ import co.cablebox.tv.utils.NetWorkUtils;
 import co.cablebox.tv.utils.PreUtils;
 import co.cablebox.tv.utils.Utilidades;
 import co.cablebox.tv.utils.VolleyService;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class ChannelListActivity extends Activity {
     private static final String TAG = ChannelListActivity.class.getName();

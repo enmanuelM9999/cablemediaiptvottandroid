@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.leanback:leanback:1.0.0@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/09807ba3eae031411fedcf5766961cd8/transformed/leanback-1.0.0/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2e01f676ebeb530dde7199d2a8bb46bd/transformed/leanback-1.0.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/09807ba3eae031411fedcf5766961cd8/transformed/leanback-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/09807ba3eae031411fedcf5766961cd8/transformed/leanback-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/09807ba3eae031411fedcf5766961cd8/transformed/leanback-1.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2e01f676ebeb530dde7199d2a8bb46bd/transformed/leanback-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2e01f676ebeb530dde7199d2a8bb46bd/transformed/leanback-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2e01f676ebeb530dde7199d2a8bb46bd/transformed/leanback-1.0.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

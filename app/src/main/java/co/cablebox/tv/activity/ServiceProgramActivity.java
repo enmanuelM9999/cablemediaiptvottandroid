@@ -63,9 +63,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -361,7 +358,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private boolean conectado = false;
 
     //Socket Notificaciones
-        private Socket socket;
         public static String Nickname;
 
         public static String IMEI = "";
@@ -476,44 +472,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             e.printStackTrace();
         }
         mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxApiUrl(), sendObj);
-    }
-
-    //Notifaciones por Socket
-    private void socketNoti(){
-        //connect you socket client to the server
-        try {
-            Nickname = IMEI;
-            System.out.println("NickSocket "+Nickname);
-            socket = IO.socket("http://"+ ipmuxIP +":4010/");
-            socket.connect();
-            socket.emit("join", Nickname);
-
-            socket.on("updateapp", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            JSONObject data = (JSONObject) args[0];
-                            try {
-                                //Iniciar Update
-                                ServiceProgramActivity.openLive(ServiceProgramActivity.this);
-                                finish();
-                            } catch (Exception e) {
-                                Log.d("error socket ", ""+e.toString());
-                                //e.printStackTrace();
-                            }
-
-                        }
-                    });
-                }
-            });
-
-        } catch (URISyntaxException e) {
-            Log.d("error socket2 ", ""+e.toString());
-            //e.printStackTrace();
-        }
-
     }
 
     private void buscarVersion(){

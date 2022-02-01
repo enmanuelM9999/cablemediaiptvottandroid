@@ -2,10 +2,6 @@ package co.cablebox.tv.activity;
 
 import static co.cablebox.tv.utils.ToolBox.convertDpToPx;
 
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-import java.net.URI;
-import java.net.URISyntaxException;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -60,9 +56,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.android.volley.VolleyError;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
 
@@ -103,6 +96,9 @@ import co.cablebox.tv.utils.PreUtils;
 import co.cablebox.tv.utils.Utilidades;
 
 import co.cablebox.tv.utils.VolleyService;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 
 public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVideoLayoutListener {
@@ -371,9 +367,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     private static boolean deMosaico = false; // Controla si la Actividad es iniciada al elegir un canal desde el mosaico de Categorias o no
     private static boolean failNet = false; // Controla cualquier fallo de conexion
-
-    //sockets
-    private  WebSocketClient mWebSocketClient;
 
     // Eventos
     private Handler handler = new Handler() {
@@ -3832,52 +3825,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void restartMuteVariables(){
         wasMuted=false;
         wasUnmuted=false;
-    }
-
-    //sockets methods
-
-    public void connectWebSocket(String ipmuxSocketServer) {
-        URI uri;
-        try {
-            uri = new URI(ipmuxSocketServer);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        mWebSocketClient = new WebSocketClient(uri) {
-            @Override
-            public void onOpen(ServerHandshake serverHandshake) {
-                Log.i("Websocket", "Opened");
-                mWebSocketClient.send("Hello from " + Build.MANUFACTURER + " " + Build.MODEL);
-            }
-
-            @Override
-            public void onMessage(String s) {
-                final String message = s;
-
-                switch (message){
-                    case "nuevoplan":
-                        restartApp(IMEI);
-                        break;
-                }
-            }
-
-            @Override
-            public void onClose(int i, String s, boolean b) {
-                Log.i("Websocket", "Closed " + s);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.e("Websocket", "Error " + e.getMessage());
-            }
-        };
-        mWebSocketClient.connect();
-    }
-
-    public  void sendMessage(String eventToSend) {
-        mWebSocketClient.send(eventToSend);
     }
 
 

@@ -69,7 +69,8 @@
                 en la app de inicio del dispositivo (Launcher).
                 Remover para dispositivos móviles, Agregar para Tvbox
                 -->
-
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <!--
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
