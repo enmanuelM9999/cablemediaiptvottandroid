@@ -40,6 +40,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.BaseInputConnection;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -57,7 +58,6 @@ import androidx.annotation.RequiresApi;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-
 
 
 import org.json.JSONException;
@@ -191,8 +191,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         RelativeLayout rlVolumenA;
         @BindView(R.id.sb_volumenA)
         SeekBar sbVolumenA;
-        /*@BindView(R.id.tv_volumen)
-        TextView tvVolumen;*/
+
+
 
         @BindView(R.id.iv_mute)
         ImageView ivMute;
@@ -353,6 +353,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         WindowManager wmanager;
         LinearLayout llayout;
 
+    //Audio manager
+    AudioManager audioManager;
+
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
     private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321"; // Ajustes de la app
@@ -428,9 +431,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     break;
 
                 case CODE_HIDE_VOLUMEN:
-                    if (!onVolumen){
-                        rlVolumenA.setVisibility(View.INVISIBLE);
-                    }
                     break;
 
                 case CODE_HIDE_OPTION:
@@ -603,6 +603,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
             });
 
+            initVolumeControl();
+
             //si es modo smartphone, habilitar los botones del panel superior
             if (isSmartphoneMode)
                 llSmartphoneButtons.setVisibility(View.VISIBLE);
@@ -619,6 +621,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 llChannelName.setMinimumHeight(convertDpToPx(70,this));
                 panelDownChannelInfo2.setMinimumHeight(convertDpToPx(70,this));
             }
+
 
 
 
@@ -1049,7 +1052,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 @Override
                 public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
                 {
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+
                     //tvVolumen.setText(""+progress);
                 }
             });
@@ -2344,7 +2347,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 if(llList.getVisibility() == View.INVISIBLE){
                     //Agregar el último canal visitado
                     lastChannelIndex=channelIndex;
-
                     handler.removeMessages(CODE_CLEAR_SCREEN);
                     previousChannelInScreen();
 
@@ -2360,12 +2362,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }else{
                     onVolumen = true;
                     //Accion Barra de Volumen DOWN
-                    handler.removeMessages(CODE_HIDE_VOLUMEN);
-                    final AudioManager audioManagerB = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-                    rlVolumenA.setVisibility(View.VISIBLE);
-                    sbVolumenA.setProgress(audioManagerB.getStreamVolume(AudioManager.STREAM_MUSIC) - 1);
-                    ivMute.setVisibility(View.INVISIBLE);
+                    downVolume();
+                    ivMute.setVisibility(View.INVISIBLE); // eliminar indicador de mute
                 }
                 break;
 
@@ -2378,11 +2376,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }else{
                     onVolumen = true;
                     //Accion Barra de Volumen UP
-                    handler.removeMessages(CODE_HIDE_VOLUMEN);
-                    final AudioManager audioManagerA = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-                    rlVolumenA.setVisibility(View.VISIBLE);
-                    sbVolumenA.setProgress(audioManagerA.getStreamVolume(AudioManager.STREAM_MUSIC) + 1);
+                    upVolume();
                     ivMute.setVisibility(View.INVISIBLE);
                 }
                 break;
@@ -2448,25 +2442,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 break;
 
             case KeyEvent.KEYCODE_VOLUME_UP:
-                onVolumen = true;
-                //Accion Barra de Volumen UP
-                handler.removeMessages(CODE_HIDE_VOLUMEN);
-                final AudioManager audioManagerA = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-                rlVolumenA.setVisibility(View.VISIBLE);
-                sbVolumenA.setProgress(audioManagerA.getStreamVolume(AudioManager.STREAM_MUSIC) + 1);
-
                 break;
 
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                onVolumen = true;
-                //Accion Barra de Volumen DOWN
-                handler.removeMessages(CODE_HIDE_VOLUMEN);
-                final AudioManager audioManagerB = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-                rlVolumenA.setVisibility(View.VISIBLE);
-                sbVolumenA.setProgress(audioManagerB.getStreamVolume(AudioManager.STREAM_MUSIC) - 1);
-
                 break;
 
             case KeyEvent.KEYCODE_VOLUME_MUTE:
@@ -2499,7 +2477,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
 
-
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if(llOptions.getVisibility() == View.INVISIBLE){
                     onVolumen = false;
@@ -2507,22 +2484,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 }
                 break;
 
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                if(llOptions.getVisibility() == View.INVISIBLE){
-                    onVolumen = false;
-                    handler.sendEmptyMessageDelayed(CODE_HIDE_VOLUMEN, 3000);
-                }
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                onVolumen = false;
-                handler.sendEmptyMessageDelayed(CODE_HIDE_VOLUMEN, 3000);
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                onVolumen = false;
-                handler.sendEmptyMessageDelayed(CODE_HIDE_VOLUMEN, 3000);
-                break;
         }
         return super.onKeyUp(keyCode, event);
     }
@@ -3142,6 +3103,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         mediaPlayer.pause();
                     }
                 }catch ( Exception e){}
+
+
+                /*
+                BUG IMPORTANTE: El usuario puede evadir el control del servidor.
+                Si el usuario está reproduciendo canales, se queda sin conexión, luego en el servidor suspenden al usuario,
+                luego el usuario recupera la conexión, la app no recibió ningun evento socket mientras estaba desconectada.
+
+                La siguiente linea de código asegura que la app vuelva a preguntar por el estado del usuario (Activo o Suspendido)
+                 */
+                openServiceActivity(); // NO BORRAR, leer arriba
             } else {
                 failNet = false;
                 hideNetworkInfo();
@@ -3166,7 +3137,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         return (actNetInfo != null && actNetInfo.isConnected());
     }
 
-    // Hacer Ping, este metodo demora demaciado
+    // Hacer Ping, este metodo demora demasiado
     public Boolean isOnlineNet() {
 
         try {
@@ -3828,6 +3799,30 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         wasMuted=false;
         wasUnmuted=false;
     }
+
+    private void initVolumeControl(){
+      audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    }
+
+    private void upVolume(){
+        simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
+    }
+    private void downVolume(){
+        simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
+    }
+
+    public void simulateKeyPress(int key){
+        Activity a = (Activity) VideoPlayerActivityBox.this;
+        a.getWindow().getDecorView().getRootView();
+        BaseInputConnection inputConnection = new BaseInputConnection(a.getWindow().getDecorView().getRootView(),
+                true);
+        KeyEvent downEvent = new KeyEvent(KeyEvent.ACTION_DOWN, key);
+        inputConnection.sendKeyEvent(downEvent);
+    }
+
+
+
+
 
 
 

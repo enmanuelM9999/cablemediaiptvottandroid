@@ -1,0 +1,305 @@
+[33mcommit 2fb909c317b64e480092e0629d8e6d285aea02d1[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Tue Feb 1 09:59:53 2022 -0500
+
+    Fix: Bug en sockets que creaba una conexión cuando la tvbox era suspendida o cuando en smartphone la app estaba en la multitarea
+
+[33mcommit b2bedac4066b3061554951781092eda620276897[m[33m ([m[1;31morigin/master[m[33m)[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Tue Feb 1 08:03:39 2022 -0500
+
+    V 4.01 con sockets estables
+
+[33mcommit 5338342930ffd451a2a88f6a513a6e7bf54e982a[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Mon Jan 31 16:03:11 2022 -0500
+
+    ok
+
+[33mcommit b8c248685eb332f3ec6b49588305cfc67013ea8a[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Tue Jan 25 14:39:49 2022 -0500
+
+    antes del agregar botones salir app y bloquear pantalla para movil
+
+[33mcommit 929a88259b2dd95be5bdfbafc4c56b9cb10a3c35[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Fri Jan 21 09:28:26 2022 -0500
+
+    Nueva interfaz colorida completada
+
+[33mcommit 897a3a1a6d1714707bce7a29325f2e72b7a94110[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Tue Jan 18 19:06:36 2022 -0500
+
+    Vista de telefono actualizada con todos los cambios hasta la fecha, falta corregir cambiar ip
+
+[33mcommit 32601e48e68e61c044bf52335fbf656cbc8d7267[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Fri Jan 14 15:12:13 2022 -0500
+
+    ok
+
+[33mcommit 815bab8b2dc9a94f9091521bdee57a3ec49d42ba[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Fri Jan 14 11:20:16 2022 -0500
+
+    new view with a nature background
+
+[33mcommit ffe65ebe58caae5b0e7cd7775417304a9451e5b0[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Tue Jan 11 10:52:02 2022 -0500
+
+    nueva interfaz por canal
+
+[33mcommit 674413787142d18ff9d5aa43b52431e655a3240a[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Mon Jan 10 09:08:31 2022 -0500
+
+    ok
+
+[33mcommit 9fc81f12996be6ccafca5b1e0d8bd51bb29ee42c[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Fri Jan 7 12:20:36 2022 -0500
+
+    antes de modificar ui como tigo une
+
+[33mcommit ba07bd19f9e75fda560c19d95113cfb66c7b8f2e[m
+Author: Enmanuel Martínez <cmedia.enmanuel.martinez@gmail.com>
+Date:   Wed Jan 5 18:58:11 2022 -0500
+
+    new failure screens
+
+[33mcommit 83d47bd8d6525da0f9db5b6b7616b84784d7c127[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Fri Dec 31 11:05:50 2021 -0500
+
+    ok
+
+[33mcommit 9dd5eb3d3133a43b9688f4ef13b80854b4151766[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Thu Dec 30 18:26:20 2021 -0500
+
+    todo ok
+
+[33mcommit 02ce05405531aa25f8517f0392210ae737961912[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Thu Dec 30 12:06:11 2021 -0500
+
+    Terminando grid view
+
+[33mcommit 45f4a59641f619a0b5b9db69aa6db557c310536f[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Wed Dec 29 18:59:20 2021 -0500
+
+    ok
+
+[33mcommit f479b2ef8859b21099ae439df030e4244bad6487[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Tue Dec 28 09:14:39 2021 -0500
+
+    ok
+
+[33mcommit 8bec3017896a5f1e2ada5cc7f352c92b78eb8cf1[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Fri Dec 24 12:35:29 2021 -0500
+
+    removidos botones cambiar ip, cambiar modo multicast
+
+[33mcommit c1a507393e8ef8cd3c2c9b2866e6b0cb8e914ebe[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Fri Dec 24 11:30:13 2021 -0500
+
+    ok
+
+[33mcommit af9db5f10f8890664d4345fb20fa3ff3f1811970[m
+Author: enmanuelM9999 <enmanuelcamilo9999@gmail.com>
+Date:   Tue Dec 21 09:58:10 2021 -0500
+
+    ok
+
+[33mcommit fd28f161959e82489535106b4677280f6ab545eb[m
+Author: Camilo Obando <camiloabrilth1999@gmail.com>
+Date:   Tue Dec 7 09:34:47 2021 -0500
+
+    todo ok
+
+[33mcommit 97a3ff73a45585e481af8ae3a320e20dcc3b2076[m
+Author: Camilo Obando <camiloabrilth1999@gmail.com>
+Date:   Mon Dec 6 16:17:58 2021 -0500
+
+    todo ok
+
+[33mcommit cdd8f860bb17e1bfb30231bb4e6f319d22ba98f9[m
+Author: Camilo Obando <camiloabrilth1999@gmail.com>
+Date:   Mon Dec 6 08:16:09 2021 -0500
+
+    todo ok
+
+[33mcommit 4dc0308745764fe026d309ccdceb52ff6270b21d[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Fri Dec 3 12:20:35 2021 -0500
+
+    ok
+
+[33mcommit 4e364a65d76c3283736fd6ce1338c5a0d3171029[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Fri Dec 3 10:42:03 2021 -0500
+
+    todo ok
+
+[33mcommit 0703b1bd7540cfa5c1812841e7e079ec8d86ead4[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Fri Dec 3 09:25:34 2021 -0500
+
+    todo ok
+
+[33mcommit 71d9c0b06f78601ac9895af83beafb1b4eb513ac[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Wed Dec 1 15:47:52 2021 -0500
+
+    ok
+
+[33mcommit 7e61c38fc1b46906852e101f9c6ba0f555d2b351[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Tue Nov 30 15:43:28 2021 -0500
+
+    todo ok, la primera vez carga 2 veces el canal actual
+
+[33mcommit 525a2610346adcd05765ba550afd4dcbe33640a9[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Tue Nov 30 08:43:15 2021 -0500
+
+    todo ok
+
+[33mcommit d6a0283dbfc297f8d894ba5a8e207fe15abf7cd6[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Mon Nov 29 17:34:21 2021 -0500
+
+    todo ok, se deshabilitó la vista de informacion de canales
+
+[33mcommit 729bd9c0a03a9b8c7b6bbab9da3c80375961eecb[m
+Author: enmanuelM9999 <48193636+enmanuelM9999@users.noreply.github.com>
+Date:   Fri Nov 26 15:30:48 2021 -0500
+
+    todo ok
+
+[33mcommit b7852677824dfd9c9745fb2024aaf61a6b25ddc1[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Tue Nov 9 12:14:55 2021 -0500
+
+    Estable
+
+[33mcommit 29dc7ba82bfb60c7646a32b80271a68a4bc7820d[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Tue Nov 9 10:59:21 2021 -0500
+
+    todo ok
+
+[33mcommit d1999d3d97361cbfa7727b91c54aa3a08dc63d3b[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Mon Nov 8 23:20:25 2021 -0500
+
+    todo ok
+
+[33mcommit 396a5f32f9e400be345dec6e3eade2e483cd208f[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Mon Nov 8 16:08:25 2021 -0500
+
+    todo ok, con la primera implementacion de la pantalla cargando canales
+
+[33mcommit 2d89d027455cbe7204b8b05cb0f3a7d6ce0c416d[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Fri Nov 5 10:25:10 2021 -0500
+
+    todo ok
+
+[33mcommit 50f3f0088790ff2462453c18f5d3706d8b54517d[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Wed Nov 3 12:36:06 2021 -0500
+
+    Update: paquete actualizado de co.cablebox_box.tv a co.cablebox.tv
+
+[33mcommit c27df0db542c5c7c0a33074817ad6dd5d1eb476e[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Wed Nov 3 11:19:10 2021 -0500
+
+    Fix del siguiente bug: la lista izq de canales se oculta rapido impidiendo que se puedan buscar canales;ahora dura 10 segs en ocultarse
+
+[33mcommit a7fc7bcd3df37956d185e7b4379041e97be5e61c[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Wed Nov 3 09:11:46 2021 -0500
+
+    Fix: El commit anterior no arregló el problema de la vista informativa, ahora sí quedó arreglado.Bug: aún existe el bug de que el canal 2 no aparece en a lista informativa.
+
+[33mcommit 878e1e5499291309b4a5b2015e9b1e12d175215e[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Tue Nov 2 16:23:30 2021 -0500
+
+    Fix: La vista informatica creaba error al reproducir algunos canales. New: Ahora al desplazarse por la lista de canales de la vista informativa se reproduce el canal en un pequeño mosaico
+
+[33mcommit 09646b5084d8f453ef226401a8e0dc83c1a5c3d4[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Sun Oct 31 16:29:32 2021 -0500
+
+    Fix. Pequeños bugs en animaciones del hud, arreglados
+
+[33mcommit ce93e5428e8f421b9fcb5ffcb470fa0a6bd57be3[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Sun Oct 31 13:26:01 2021 -0500
+
+    Fix del ultimo commit. Olvidé quitar mensajes Toast que usé para desarrollo. Ya no aparecen los toast
+
+[33mcommit aaf005e03555ff3cf1d5e7f9d9e1e59b09e7aa4a[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Sun Oct 31 13:22:14 2021 -0500
+
+    Arreglado bug de opciones que se mezclaba con alguna funcion del SO para el boton multitarea. El boton opciones ya está arreglado
+
+[33mcommit 811f169c22b4bab4099fb61b35a06ac34727485a[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Wed Oct 27 21:26:25 2021 -0500
+
+    la tvbox abría activity de ott, arreglado. Las opciones sin el favoritos no funcionaban bien, arreglad
+
+[33mcommit 51c7f9096821b704db63cf1dc755cd094ce37071[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Tue Oct 12 22:26:17 2021 -0500
+
+    las options y la info del canal se abren con 1 solo touch en movil, ya no se necesitan 2. Se puede ver el nombre del cableoperador. Se cambió la imagen inicial por unos dispositivos. La IP acepta dominios. Cambios testeados en móvil no más
+
+[33mcommit 71b11c50a5348d9c7b8ef0fef4da2843250befa5[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Mon Oct 11 02:49:14 2021 -0500
+
+    actualizacion de logos de :vista informativa, lista de canales, digitar numero, bloquear app, cerrar app. Todo en la vista movil, ninguna prueba en vista box
+
+[33mcommit 11b2de17a4b0bdcab5c04cd41465973b0442407a[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Sat Oct 2 22:23:08 2021 -0500
+
+    Quitar favoritos de smartphone y tvbox. Quitar boton flecha de smartphone (la que desaparece el hud)
+
+[33mcommit ee8399910191a89c02c48079b0d19d8ab2a15fe5[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Wed Sep 29 20:11:24 2021 -0500
+
+    version lista para subir a github
+
+[33mcommit f1c1eeb0a21b2344ae00a52a8b572406cc16f2f1[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Mon Sep 27 19:29:51 2021 -0500
+
+    todo funciona bien, error en getSerialNumber
+
+[33mcommit ad5d0e95b81b8270672a2c274a5a1a08be03e17b[m
+Author: Skipper <enmanuelcamilo9999@gmail.com>
+Date:   Mon Sep 27 18:37:35 2021 -0500
+
+    casi todo bien, pero esta el error de api 26 requerida (min 23)
+
+[33mcommit e51ed8981072aa5d5bf16648f8c5a18507adcd22[m
+Author: skipper <enmanuelcamilo9999@gmail.com>
+Date:   Sun Sep 26 23:13:14 2021 -0500
+
+    first commit todo funciona

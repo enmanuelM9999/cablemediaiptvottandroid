@@ -10,8 +10,8 @@ android {
         applicationId "co.cablebox.tv"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 15
-        versionName "4.01"
+        versionCode 16
+        versionName "4.03"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -83,6 +83,13 @@ dependencies {
 
     //texto justificado
     implementation 'com.codesgood:justifiedtextview:1.1.0'
+
+    //Barra de progreso redondeada
+    implementation files('libs/croller.aar')
+
+
+
+
 
 
 }

@@ -155,6 +155,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     LinearLayout llScreenSuspendedForPayment;
     @BindView(R.id.ll_screen_demo_expired)
     LinearLayout llScreenDemoExpired;
+    @BindView(R.id.ll_screen_admin_suspension)
+    LinearLayout llScreenAdminSuspension;
+
 
     /*
     * Controla si la app se está ejecutando en un teléfono o en una tablet
@@ -268,6 +271,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     break;
                                 case "Suspension_tecnica":
                                     showTechnicalSuspensionScreen();
+                                    break;
+                                case "Suspension_administrativa":
+                                    showAdminScreen();
                                     break;
                                 default:
                                     showGenericFailureScreen();
@@ -1086,7 +1092,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     /**
-     * Abrir la activity mostrando los ajustes, y también mostrando ajustes importantes. Leer sobre la variable needsImportantSettings.
+     * Abrir la activity mostrando los ajustes, y también mostrando ajustes de alto riesgo. Leer sobre la variable needsImportantSettings.
      * @param context
      */
     public static void openLiveD(Context context) {
@@ -1492,6 +1498,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         llScreenSuspendedForPayment.setVisibility(View.INVISIBLE);
         llScreenDemoExpired.setVisibility(View.INVISIBLE);
         llScreenGenericFailure.setVisibility(View.INVISIBLE);
+        llScreenAdminSuspension.setVisibility(View.INVISIBLE);
     }
 
     public void showGenericFailureScreen(){
@@ -1502,6 +1509,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     public void showNonetScreen(){
         hideAllFailureScreens();
         llScreenNonet.setVisibility(View.VISIBLE);
+    }
+    public void showAdminScreen(){
+        hideAllFailureScreens();
+        llScreenAdminSuspension.setVisibility(View.VISIBLE);
     }
 
     public void showNochannelsScreen(){

@@ -5,6 +5,7 @@ buildscript {
         jcenter()
         mavenCentral()
         google()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.0'
@@ -17,8 +18,10 @@ allprojects {
         jcenter()
         maven { url "https://dl.bintray.com/videolan/Android" }
         google()
+        maven { url 'https://jitpack.io' }
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
