@@ -1078,7 +1078,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             Nickname = IMEI;
             System.out.println("NickSocket "+Nickname);
             socket = IO.socket("http://"+ ipmuxIP +":4010/");
-            socketEmitConnectAndPlayingChannel();
+            socketEmitConnect();
 
             socket.on("nuevoplan", new Emitter.Listener() {
                 @Override
@@ -3766,6 +3766,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         socket.connect();
         socket.emit("join", IMEI);
         socketEmitPlayingChannel();
+    }
+
+    private void socketEmitConnect(){
+        socket.connect();
+        socket.emit("join", IMEI);
     }
 
     /*

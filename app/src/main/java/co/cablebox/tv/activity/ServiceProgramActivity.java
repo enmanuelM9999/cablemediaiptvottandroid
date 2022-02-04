@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -75,7 +76,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -124,6 +124,35 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     EditText etIP;
     @BindView(R.id.ll_ip_nueva)
     LinearLayout llIpNueva;
+
+
+    //Panel de Numeros
+    @BindView(R.id.ll_type_num)
+    LinearLayout llTypeNum;
+    @BindView(R.id.rl_panel_num)
+    RelativeLayout rlPanelNum;
+
+    @BindView(R.id.tv_num_one)
+    TextView numOne;
+    @BindView(R.id.tv_num_two)
+    TextView numTwo;
+    @BindView(R.id.tv_num_three)
+    TextView numThree;
+    @BindView(R.id.tv_num_four)
+    TextView numFour;
+    @BindView(R.id.tv_num_five)
+    TextView numFive;
+    @BindView(R.id.tv_num_six)
+    TextView numSix;
+    @BindView(R.id.tv_num_seven)
+    TextView numSeven;
+    @BindView(R.id.tv_num_eight)
+    TextView numEight;
+    @BindView(R.id.tv_num_nine)
+    TextView numNine;
+    @BindView(R.id.tv_num_zero)
+    TextView numZero;
+
 
     @BindView(R.id.ll_redes)
     LinearLayout llRedes;
@@ -259,6 +288,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         }
 
                         if (canShowFailureScreens){
+
+                            if(isSmartphoneMode)llTypeNum.setVisibility(View.VISIBLE);
+
                             tvInfoServer.setTextColor(Color.WHITE);
                             tvInfoImei.setTextColor(Color.WHITE);
                             String aDeviceState= getDeviceState();
@@ -296,12 +328,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     break;
 
                 case CODE_SALIR_APP:
+                    llTypeNum.setVisibility(View.INVISIBLE); //ocultar boton que muestra el panel de números
+                    rlPanelNum.setVisibility(View.INVISIBLE); //ocultar panel de números
                     handler.removeMessages(CODE_ACT_PLAN);
                     if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
                         turnOnTechnicianMode();
                     } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
                         needsImportantSettings=true;
                         turnOnTechnicianMode();
+
                     }
                     wordKey = "";
                     break;
@@ -446,6 +481,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         //socketNoti();
         funciones();
 
+        //panel numérico para smartphones
+        numberTypingOnActionTouch();
+
         llLoadingChannels.setVisibility(View.INVISIBLE);
         hideAllFailureScreens();
 
@@ -545,6 +583,216 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
 
     }
+
+    /**
+     * Acciones para el evento touch para todos los elementos que conforman el entorno del panel numérico
+     */
+    private void numberTypingOnActionTouch(){
+        //boton que hace visible el panel numérico
+        llTypeNum.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        llTypeNum.setBackground(getDrawable(R.drawable.bordes_suave_act));
+
+                        if (rlPanelNum.getVisibility()==View.VISIBLE){
+                            rlPanelNum.setVisibility(View.INVISIBLE);
+                        }
+                        else{
+                            rlPanelNum.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        llTypeNum.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        // Cada uno de los numeros del panel para digitar el numero del canal buscado
+        numOne.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numOne.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("1");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numOne.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numTwo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numTwo.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("2");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numTwo.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numThree.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numThree.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("3");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numThree.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numFour.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numFour.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("4");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numFour.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numFive.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numFive.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("5");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numFive.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numSix.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numSix.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("6");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numSix.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numSeven.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numSeven.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("7");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numSeven.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numEight.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numEight.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("8");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numEight.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numNine.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numNine.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("9");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numNine.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numZero.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numZero.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("0");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numZero.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+    }
+
+    /**
+     *Método para decir a la app que se presionó un número
+     * @return void
+     */
+    public void pressNumber(String number){
+        claveExit(number);
+    }
+
 
     private void initDescarga(){
         myReceiver = new MyReceiver(ServiceProgramActivity.this);
@@ -1116,6 +1364,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         wordKey += letra;
 
         handler.removeMessages(CODE_ACT_PLAN);
+        handler.removeMessages(CODE_SALIR_APP);
         handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
     }
 
