@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "co.cablebox.tv",
+  "applicationId": "co.ipmux.smartphone.tv",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 14,
-      "versionName": "2.95",
+      "versionCode": 17,
+      "versionName": "4.08",
       "outputFile": "CableBoxTv.apk"
     }
   ],

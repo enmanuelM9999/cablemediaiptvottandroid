@@ -7,11 +7,11 @@ android {
     //buildToolsVersion '26.0.3'
 
     defaultConfig {
-        applicationId "co.cablebox.tv"
+        applicationId "co.ipmux.smartphone.tv"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 16
-        versionName "4.03"
+        versionCode 21
+        versionName "4.09"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8

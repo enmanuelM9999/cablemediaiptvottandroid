@@ -241,8 +241,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
         private static String ipmuxProtocol = "http://";
-        private static String ipmuxIP = "51.161.73.214";
-        private static String ipmuxPort = "5509";
+        private static String ipmuxIP = "51.161.73.217";
+        private static String ipmuxPort = "5508";
         private static String ipmuxApiPath = "/api/RestController.php";
     // Leer y obtener informacion de los canales a traves de un JSON
         private static String BASE_URI = "http://"+ ipmuxIP +":5509/api/RestController.php";
