@@ -1354,7 +1354,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                             if(!controlError || numCurrent != channelIndex){
                                 hideLoading();
                                 Log.i(TAG, "onEvent: buffer success...");
-                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 500);
+                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 2500);
                                 numCurrent = channelIndex;
                                 getCodec();
                             }else {
@@ -1609,7 +1609,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             llCpuRam.setVisibility(View.INVISIBLE);
             handler.removeCallbacks(d);
         }
-
     }
 
     //Actualizar los datos de descarga

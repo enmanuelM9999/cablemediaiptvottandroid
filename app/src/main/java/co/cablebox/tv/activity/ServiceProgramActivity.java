@@ -1724,7 +1724,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
 
         llLoadingChannels.setVisibility(View.VISIBLE);
-        handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,10000);
+        handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,20000);
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
     }
 
@@ -1836,7 +1836,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     /**
-     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort,  y construye una url que es el host de la app
+     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort,  y construye una url que es el host de las apks
      * */
     public String generateAndReturnIpmuxApksUrl(){
         String portNotation = ":";
