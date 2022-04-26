@@ -1354,7 +1354,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                             if(!controlError || numCurrent != channelIndex){
                                 hideLoading();
                                 Log.i(TAG, "onEvent: buffer success...");
-                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 2500);
+                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 2300); // Desaparecer la pantalla negra con retraso despues de que el buffer del canal está al 100%
                                 numCurrent = channelIndex;
                                 getCodec();
                             }else {
