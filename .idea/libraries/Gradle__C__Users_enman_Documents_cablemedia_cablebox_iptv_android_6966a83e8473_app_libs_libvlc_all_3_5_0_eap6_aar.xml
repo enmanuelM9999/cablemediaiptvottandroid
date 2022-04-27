@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: C./Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473/app/libs/libvlc-all-3.5.0-eap6.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d3aaa078b0358b0f587296bd495e8192/transformed/jetified-libvlc-all-3.5.0-eap6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d3aaa078b0358b0f587296bd495e8192/transformed/jetified-libvlc-all-3.5.0-eap6/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d3aaa078b0358b0f587296bd495e8192/transformed/jetified-libvlc-all-3.5.0-eap6/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

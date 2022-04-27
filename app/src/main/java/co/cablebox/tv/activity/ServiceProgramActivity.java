@@ -1724,7 +1724,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
 
         llLoadingChannels.setVisibility(View.VISIBLE);
-        handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,20000);
+        handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,20000); // se pueden mostrar mensajes de error despues de 20 segundos sin respuesta del servidor
         handler.sendEmptyMessageDelayed(CODE_TRY_PLAYER,2000);
     }
 
