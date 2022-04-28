@@ -57,7 +57,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.videolan.libvlc.IVLCVout;
+import org.videolan.libvlc.interfaces.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;

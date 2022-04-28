@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 21
-        versionName "4.09"
+        versionName "4.11"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -55,7 +55,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:7.0.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'*/
 
-    implementation 'org.videolan.android:libvlc-all:3.1.12'
+    //implementation 'org.videolan.android:libvlc-all:3.1.12'
+    implementation files('libs/libvlc-all-3.5.0-eap6.aar')
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

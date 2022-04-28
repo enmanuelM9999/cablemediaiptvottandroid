@@ -1841,7 +1841,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     public String generateAndReturnIpmuxApksUrl(){
         String portNotation = ":";
         if (ipmuxPort.equals("")) portNotation="";
-        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+"/file";
+        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+"/file/subidas";
     }
 
     /**
