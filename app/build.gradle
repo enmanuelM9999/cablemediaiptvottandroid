@@ -10,8 +10,8 @@ android {
         applicationId "co.ipmux.smartphone.tv"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 21
-        versionName "4.12"
+        versionCode 30
+        versionName "4.30"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8

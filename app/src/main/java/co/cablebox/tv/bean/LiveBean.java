@@ -70,17 +70,10 @@ public class LiveBean {
 
         public String getLogo() {
             String logo2 = logo
-                    .replace("&", "-")
-                    .replace("+", "");
-            String[] part_logo = logo2.split("-");
-            logo2 = "";
-            for(int i = 0; i < part_logo.length; i++){
-                if(i > 0)
-                    if(part_logo[i].equals("tv") || part_logo[i].contains("d]"))
-                        break;
-                logo2 += part_logo[i]+"_";
-            }
-            logo2 = logo2.substring(0, logo2.length()-1);
+                    .replace("&", "_")
+                    .replace("+", "_")
+                    .replace("-", "_");
+
             return logo2;
         }
 
