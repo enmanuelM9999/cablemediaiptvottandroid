@@ -169,7 +169,28 @@
                 android:layout_marginLeft="3dp"
                 android:foregroundGravity="center_vertical"
                 android:gravity="center"
-                android:text="Cable Éxito     |"
+                android:text="Cable Éxito"
+                android:textSize="18dp"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center"
+                android:text="GO    "
+                android:textColor="#f54542"
+                android:textSize="18dp"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3dp"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center"
+                android:text="   |   "
                 android:textSize="18dp"></TextView>
 
             <TextView
@@ -184,6 +205,8 @@
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:typeface="sans" />
+
+
 
 
         </LinearLayout>

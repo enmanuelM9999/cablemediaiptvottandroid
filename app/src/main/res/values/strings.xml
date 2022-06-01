@@ -4,5 +4,7 @@
     <string name="si">Si</string>
     <string name="no">No</string>
     <string name="powered_by">Powered By IpMUX</string>
+    <string name="cableoperador">Cable Éxito</string>
+    <string name="cableoperador_go">Cable Éxito GO</string>
 
 </resources>
