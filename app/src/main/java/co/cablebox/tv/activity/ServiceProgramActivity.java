@@ -80,6 +80,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 //import butterknife.Bind;
 import butterknife.BindView;
@@ -446,6 +447,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if(imei == null){
             isCel = false;
             imei = getSerialNumber();
+            imei=imei.toLowerCase();
+
             imeiMsg="ID: "+imei;
             tvImei.setText(imeiMsg);
             tvImei.setVisibility(View.VISIBLE);
@@ -455,6 +458,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
             bloquearBarras();*/
         }else{
+            imei= imei.toLowerCase();
             isSmartphoneMode = true;
             imeiMsg="ID: "+imei;
             tvImei.setText(imeiMsg);
@@ -1006,6 +1010,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         } else {
             imei = obtenerIMEI();
+
         }
     }
 
@@ -1166,6 +1171,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                 }else{
                     imei = getSerialNumber();
+                    imei=imei.toLowerCase();
                     isSmartphoneMode=false;
                     VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort, isSmartphoneMode);
 

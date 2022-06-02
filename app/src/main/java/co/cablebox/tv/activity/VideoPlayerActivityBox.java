@@ -1077,7 +1077,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         try {
             Nickname = IMEI;
             System.out.println("NickSocket "+Nickname);
-            socket = IO.socket("http://"+ ipmuxIP +":4010/");
+            socket = IO.socket("http://"+ ipmuxIP +":4010");
+
             socketEmitConnect();
 
             socket.on("nuevoplan", new Emitter.Listener() {
@@ -3755,6 +3756,13 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         String portNotation = ":";
         if (ipmuxPort.equals("")) portNotation="";
         return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
+    }
+
+    public String generateAndReturnSocketUri(){
+
+        String portNotation = ":";
+        if (ipmuxPort.equals("")) portNotation="";
+        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort;
     }
 
     private void socketEmitPlayingChannel(){
