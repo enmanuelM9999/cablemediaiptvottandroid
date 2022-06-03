@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -20,7 +19,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,36 +59,29 @@ import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 //import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.cablebox.tv.R;
-import co.cablebox.tv.bean.LiveBean;
+import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.bean.Programa;
 import co.cablebox.tv.utils.ConexionSQLiteHelper;
 import co.cablebox.tv.utils.IResult;
 import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
-import co.cablebox.tv.utils.PreUtils;
 import co.cablebox.tv.utils.Utilidades;
 import co.cablebox.tv.utils.VolleyService;
 import io.socket.client.IO;
@@ -123,10 +113,10 @@ public class ChannelListActivity extends Activity {
 
     //Listas de Canales y id del canal actual
         public static MensajeBean mensajeBean;
-        private static LiveBean liveBean;
+        private static Channels channels;
         public static int channelIndex = 0;
 
-    private List<List<LiveBean.DataBean>> canalesCategorias; // Lista de canales por categorias
+    private List<List<Channels.Channel>> canalesCategorias; // Lista de canales por categorias
     private List<String> categorias; // Lista de Categorias
     private List<Programa> programasFiltrados; // Lista de programas del canal actual
 
@@ -493,10 +483,10 @@ public class ChannelListActivity extends Activity {
 
     // Organiza la lista de canales por categorias y las categorias
     private void organizarCanales() {
-        ArrayList<LiveBean.DataBean> canalesLiveBean = new ArrayList<>();
-        for (int i = 0; i < liveBean.getData().size(); i++) {
-            if(!liveBean.getData().get(i).getNum().equals(numCanalInformativo)){
-                canalesLiveBean.add(liveBean.getData().get(i));
+        ArrayList<Channels.Channel> canalesLiveBean = new ArrayList<>();
+        for (int i = 0; i < channels.getChannels().size(); i++) {
+            if(!channels.getChannels().get(i).getNum().equals(numCanalInformativo)){
+                canalesLiveBean.add(channels.getChannels().get(i));
             }
         }
 
@@ -515,7 +505,7 @@ public class ChannelListActivity extends Activity {
         }
 
         for (int j = 0; j < categorias.size(); j++) {
-            List<LiveBean.DataBean> canales = new ArrayList<>();
+            List<Channels.Channel> canales = new ArrayList<>();
             for (int i = 0; i < canalesLiveBean.size(); i++) {
                 if (categorias.get(j).equals(canalesLiveBean.get(i).getCategoria())) {
                     canales.add(canalesLiveBean.get(i));
@@ -539,7 +529,7 @@ public class ChannelListActivity extends Activity {
                         null,
                         null);
 
-        ArrayList<LiveBean.DataBean> canales = new ArrayList<>();
+        ArrayList<Channels.Channel> canales = new ArrayList<>();
         System.out.println("Numero de Favoritos "+c.getCount());
         if(c.getCount() < 1){
             canalesCategorias.add(canales);
@@ -548,9 +538,9 @@ public class ChannelListActivity extends Activity {
                 String name = c.getString(c.getColumnIndex(Utilidades.CAMPO_NOMBRE));
                 System.out.println("Favorito "+name);
                 // Acciones...
-                for(int i = 0; i < liveBean.getData().size(); i++){
-                    if(name.equals(liveBean.getData().get(i).getName())){
-                        canales.add(liveBean.getData().get(i));
+                for(int i = 0; i < channels.getChannels().size(); i++){
+                    if(name.equals(channels.getChannels().get(i).getName())){
+                        canales.add(channels.getChannels().get(i));
                     }
                 }
             }
@@ -562,7 +552,7 @@ public class ChannelListActivity extends Activity {
     // Actualiza en interfaz la lista de canales cada que se cambia la categoria
     private void actualizarListaCanales() {
 
-        ArrayAdapter<LiveBean.DataBean> cheeseAdapterA = new ArrayAdapter<LiveBean.DataBean>(this,
+        ArrayAdapter<Channels.Channel> cheeseAdapterA = new ArrayAdapter<Channels.Channel>(this,
                 R.layout.lv_channel_item,
                 canalesCategorias.get(posCategoria)) {
             @NonNull
@@ -610,8 +600,8 @@ public class ChannelListActivity extends Activity {
                 Calendar currentTime = Calendar.getInstance();
 
                 long horaActual = currentTime.getTimeInMillis();
-                long horaA = liveBean.getData().get(channelIndex).getProgramas().get(i).getCalendarInit().getTimeInMillis();
-                long horaB = liveBean.getData().get(channelIndex).getProgramas().get(i).getCalendarFinish().getTimeInMillis();
+                long horaA = channels.getChannels().get(channelIndex).getProgramas().get(i).getCalendarInit().getTimeInMillis();
+                long horaB = channels.getChannels().get(channelIndex).getProgramas().get(i).getCalendarFinish().getTimeInMillis();
 
                 if(horaActual >= horaA && horaActual <= horaB){
                     System.out.println("Agrego Programa");
@@ -755,7 +745,7 @@ public class ChannelListActivity extends Activity {
         boolean encontro = false;
         for(int i = 0; i < canalesCategorias.size(); i++){
             for(int j = 0; j < canalesCategorias.get(i).size(); j++){
-                if(liveBean.getData().get(channelIndex).getNum().equals(canalesCategorias.get(i).get(j).getNum())){
+                if(channels.getChannels().get(channelIndex).getNum().equals(canalesCategorias.get(i).get(j).getNum())){
                     posCategoria = i;
                     posCanal = j;
                     numRepro = canalesCategorias.get(posCategoria).get(posCanal).getNum();
@@ -1125,17 +1115,17 @@ public class ChannelListActivity extends Activity {
     }
 
     // Iniciar actividad ChannelListActivity
-    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String direcPag) {
+    public static void openLive(Context context, Channels channels, MensajeBean mensajeBean, String IMEI, String direcPag) {
         ChannelListActivity.mensajeBean = mensajeBean;
         ChannelListActivity.IMEI = IMEI;
-        ChannelListActivity.liveBean = liveBean;
+        ChannelListActivity.channels = channels;
         ChannelListActivity.direcPag = direcPag;
         context.startActivity(new Intent(context, ChannelListActivity.class));
     }
 
     // Inicia la actividad VideoPlayerActivity con el canal elegido
     private void openChannel() {
-        if (liveBean != null) {
+        if (channels != null) {
             try {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
@@ -1144,7 +1134,7 @@ public class ChannelListActivity extends Activity {
 
             surfaceView.setVisibility(View.INVISIBLE);
 
-            VideoPlayerActivity.openLiveB(this, liveBean, numRepro, mensajeBean, IMEI);
+            VideoPlayerActivity.openLiveB(this, channels, numRepro, mensajeBean, IMEI);
             finish();
         }
     }
@@ -1367,7 +1357,7 @@ public class ChannelListActivity extends Activity {
             lvCanales.setSelection(posCanal);
             selectListChannel = true;
         }else{
-            VideoPlayerActivity.openLive(this, liveBean, mensajeBean, IMEI, direcPag);
+            VideoPlayerActivity.openLive(this, channels, mensajeBean, IMEI, direcPag);
             finish();
         }
     }
@@ -1387,7 +1377,7 @@ public class ChannelListActivity extends Activity {
     // Metodo para cambiar canal por numero
     private void cambiarPorNumero(int i) {
         System.out.println("num A "+i);
-        if (i > liveBean.getData().size() || i <= 0) {
+        if (i > channels.getChannels().size() || i <= 0) {
             showNetworkInfo("No existe el canal " + i);
             handler.sendEmptyMessageDelayed(CODE_HIDE_ERROR, 2000);
         } else {
@@ -1396,8 +1386,8 @@ public class ChannelListActivity extends Activity {
             }
             //}
             tvBlack.setVisibility(View.VISIBLE);
-            for(int j = 0; j < liveBean.getData().size(); j++){
-                int num = Integer.parseInt(liveBean.getData().get(j).getNum());
+            for(int j = 0; j < channels.getChannels().size(); j++){
+                int num = Integer.parseInt(channels.getChannels().get(j).getNum());
                 System.out.println("num "+i+" = "+num);
                 if (i == num){
                     channelIndex = j;
@@ -1408,7 +1398,7 @@ public class ChannelListActivity extends Activity {
             boolean encontro = false;
             for(int ki = 0; ki < canalesCategorias.size(); ki++){
                 for(int j = 0; j < canalesCategorias.get(ki).size(); j++){
-                    if(liveBean.getData().get(channelIndex).getNum().equals(canalesCategorias.get(ki).get(j).getNum())){
+                    if(channels.getChannels().get(channelIndex).getNum().equals(canalesCategorias.get(ki).get(j).getNum())){
                         posCategoria = ki;
                         posCanal = j;
                         numRepro = canalesCategorias.get(posCategoria).get(posCanal).getNum();
@@ -1994,7 +1984,7 @@ public class ChannelListActivity extends Activity {
     }
 
     private void openServiceActivity() {
-        if (liveBean != null) {
+        if (channels != null) {
             try {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();

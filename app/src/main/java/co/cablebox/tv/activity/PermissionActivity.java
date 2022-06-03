@@ -1,6 +1,7 @@
 package co.cablebox.tv.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -32,7 +33,8 @@ public class PermissionActivity extends AppCompatActivity {
         verificarYPedirPermisosDeTelefono();
 
         if(tienePermisoAlmacenamiento && tienePermisoTelefono && tienePermisoUbicacion) {
-            ServiceProgramActivity.openLive(PermissionActivity.this);
+            //ServiceProgramActivity.openLive(PermissionActivity.this);
+            openMainActivity();
             finish();
         }
     }
@@ -65,7 +67,8 @@ public class PermissionActivity extends AppCompatActivity {
             case CODIGO_PERMISOS_ALMACENAMIENTO:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     permisoDeAlmacenamientoConcedido();
-                    ServiceProgramActivity.openLive(PermissionActivity.this);
+                    //ServiceProgramActivity.openLive(PermissionActivity.this);
+                    openMainActivity();
                     finish();
                 } else {
                     permisoDeAlmacenamientoDenegado();
@@ -104,7 +107,8 @@ public class PermissionActivity extends AppCompatActivity {
         int estadoDePermiso = ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (estadoDePermiso == PackageManager.PERMISSION_GRANTED) {
             permisoDeAlmacenamientoConcedido();
-            ServiceProgramActivity.openLive(PermissionActivity.this);
+            //ServiceProgramActivity.openLive(PermissionActivity.this);
+            openMainActivity();
             finish();
         } else {
             ActivityCompat.requestPermissions(PermissionActivity.this,
@@ -145,6 +149,12 @@ public class PermissionActivity extends AppCompatActivity {
         Toast.makeText(PermissionActivity.this, "Permiso Almacenamiento está denegado", Toast.LENGTH_SHORT).show();
         Toast.makeText(PermissionActivity.this, "Porfavor vaya a los permisos de la aplicacion en las configuracion " +
                 "o desinstale e instale de nuevo la aplicacion", Toast.LENGTH_LONG).show();
+    }
+
+    private void openMainActivity(){
+        Intent i= new Intent(this, MainActivity.class);
+        //i.putExtra("errorType",errorType); //pass props to the activity
+        startActivity(i);
     }
 
 }

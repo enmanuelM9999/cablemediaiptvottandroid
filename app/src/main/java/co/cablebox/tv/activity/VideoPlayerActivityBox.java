@@ -27,7 +27,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -56,24 +55,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.videolan.libvlc.interfaces.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,21 +74,15 @@ import java.util.Timer;
 //import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
-import co.cablebox.tv.bean.LiveBean;
+import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.utils.ConexionSQLiteHelper;
-import co.cablebox.tv.utils.IResult;
-import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
 import co.cablebox.tv.utils.OnSwipeTouchListener;
 import co.cablebox.tv.utils.PreUtils;
 import co.cablebox.tv.utils.Utilidades;
-
-import co.cablebox.tv.utils.VolleyService;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 
 public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVideoLayoutListener {
@@ -106,31 +90,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     private static boolean isSmartphoneMode =false;
 
-    private static String ipmuxProtocol = "http://";
-    private static String ipmuxIP = "51.161.73.204";
-    private static String ipmuxPort = "5509";
-    private static String ipmuxApiPath = "/api/RestController.php";
-    //Volley
-    private Gson gson;
-
-    MCrypt mc = new MCrypt();
-    IResult mResultCallbackTK = null;
-    VolleyService mVolleyServiceTK;
-
-    IResult mResultCallbackMS = null;
-    IResult mResultChangeMS = null;
-    VolleyService mVolleyServiceMS;
-
-    private static String tk = "";
-
     private static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
     private static final String LOCAL_MESSAGES_FILE = "messageList.xml";
 
     //Listas de Canales, Favoritos y Todos los Canales
-        public static LiveBean liveBean;
+        public static Channels channels;
         public static MensajeBean mensajeBean;
-        public static ArrayList<LiveBean.DataBean> canalesFavoritos;
-        public static ArrayList<LiveBean.DataBean> canalesAux;
+        public static ArrayList<Channels.Channel> canalesFavoritos;
+        public static ArrayList<Channels.Channel> canalesAux;
 
     // Variables de Interfaz
         /*@BindView(R.id.ll_program_list)
@@ -170,12 +137,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         RelativeLayout rlLogo;
         @BindView(R.id.ll_channel_name)
         LinearLayout llChannelName;
-
-
-
-
-
-
 
 
         SurfaceView surfaceview;
@@ -221,8 +182,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         @BindView(R.id.iv_type_num)
         ImageView ivTypeNum;
 
-        private int numNot = 0;
-        private int posNot = 0;
 
         //Panel de Numeros
         @BindView(R.id.rl_panel_num)
@@ -368,7 +327,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         private static int lastChannelIndex=0; //el último canal que se reprodujo, esto para volver al canal anterior con el botón "atrás"
         private boolean isScreenLocked = false; // true significa Bloqueada, la pantalla no recibe gestos ni eventos touch
 
-    private static boolean deMosaico = false; // Controla si la Actividad es iniciada al elegir un canal desde el mosaico de Categorias o no
     private static boolean failNet = false; // Controla cualquier fallo de conexion
 
     // Eventos
@@ -469,7 +427,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 case CODE_NOTF_VIEW:
                     mensajeNot.setVisibility(View.INVISIBLE);
                     fondoNot.setVisibility(View.INVISIBLE);
-                    setServiceMessage(mensajeBean.getData().get(0).getId_dispositivo(), mensajeBean.getData().get(0).getId_mensaje());
+
                     break;
 
                 case CODE_NOTF_VIEW_OPC:
@@ -525,10 +483,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
         private boolean cambCanal = false;
 
-    //Socket
-        private Socket socket;
-        public static String Nickname;
-        public static String IMEI = "";
 
     //Canal Informativo
     private String numCanalInformativo = "-1";
@@ -543,262 +497,124 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_box);
 
-        if (isNetDisponible()) {
-            //Conectado a internet
-            ButterKnife.bind(this);
-
-            toggleHideyBar(); // Oculta Barras de Navegacion y Notificaciones
-            //inicio();
-            initData();
-            initPlayer();
-
-            // Control de tiempo, la app muentras constantemente la hora y fecha configurada en el dispositivo
-            re = new RefresfClock();
-            initClock = new Thread(re);
-            initClock.start();
-
-            setIdProgramaActual();
-            showProgramInfo();
-            clearAndShowChannelInfo();
-
-            adaptarListaCanales();
-            //Celular
-            onActionTouch();
-
-            // Elegir un canal en la lista de canales
-            lvCanales.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    lastChannelIndex=channelIndex;
-                    channelIndex = position;
-                    try {
-                        if (mediaPlayer.isPlaying()) {
-                            mediaPlayer.pause();
-                        }
-                    }catch (Exception e){
-                        System.out.println("ERROR PAUSE");
-                    }
-
-                    tvBlack.setVisibility(View.VISIBLE);
-                    changeChannelInScreen();
-
-
-                }
-            });
-            lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    clearScreen(10000);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-
-            lvCanales.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    clearScreen(10000);
-                    return false;
-                }
-            });
-
-            initVolumeControl();
-
-            //si es modo smartphone, habilitar los botones del panel superior
-            if (isSmartphoneMode)
-                llSmartphoneButtons.setVisibility(View.VISIBLE);
-            else
-                llSmartphoneButtons.setVisibility(View.INVISIBLE);
-
-            //fix para que las barras superiores e inferiores no ocupen tanto espacio para telefonos. Hice que ocuparan mucho espacio porque
-            //   los televisores recortan la imagen en los extremos.
-
-            if (isSmartphoneMode){
-                rlPanelUp.setPadding(convertDpToPx(40,this),convertDpToPx(5,this),convertDpToPx(40,this),convertDpToPx(5,this));
-                rlDisplayDown.setMinimumHeight(convertDpToPx(70,this));
-                rlLogo.setMinimumHeight(convertDpToPx(70,this));
-                llChannelName.setMinimumHeight(convertDpToPx(70,this));
-                panelDownChannelInfo2.setMinimumHeight(convertDpToPx(70,this));
-            }
-
-
-
-
-        } else {
-            //no conectado a internet
-            ButterKnife.bind(this);
-            Toast.makeText(this, "Sin conexión", Toast.LENGTH_LONG).show();
-            pbError.setVisibility(View.VISIBLE);
-            tvBlack.setVisibility(View.VISIBLE);
-            pbError.setText("Sin conexión");
-
-            new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Fallo de conexión!")
-                .setMessage("")
-                .setNegativeButton(null, null)
-                .setPositiveButton(R.string.reintentar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Reintentar
-                        Intent intent=new Intent();
-                        intent.setClass(VideoPlayerActivityBox.this, VideoPlayerActivityBox.this.getClass());
-                        VideoPlayerActivityBox.this.startActivity(intent);
-                        VideoPlayerActivityBox.this.finish();
-                    }
-                })
-                .show();
-        }
-    }
-
-
-    //Volley
-    private void inicio() {
-        initVolleyCallback();
-        mVolleyServiceTK = new VolleyService(mResultCallbackTK,this);
-        Date date= new Date();
-        long time = date.getTime();
-        System.out.println("IMEI: "+IMEI);
-        StringBuilder aux = new StringBuilder();
-        aux.append(IMEI);
-        aux.append("___");
-        aux.append(time);
-        //mVolleyService.getDataVolley("GETCALL","http://"+direcPag+":5509/api/RestController.php?q=client&tk=cf4da3d85afbe06c32828ac371a7c036f31f0e55ac4a4515e630baf56096a085");
-        JSONObject sendObj = null;
         try {
-            String code = MCrypt.bytesToHex(mc.encrypt(aux.toString()));
-            sendObj = new JSONObject("{'q':'client','tk':'"+code+"'}");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mVolleyServiceTK.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
-    }
+            /*Recover props*/
+            VideoPlayerActivityBox.channels = (Channels) getIntent().getSerializableExtra("channels");
+            VideoPlayerActivityBox.isSmartphoneMode= getIntent().getBooleanExtra("isSmartphoneMode",false);
 
-    void initVolleyCallback(){
-        mResultCallbackTK = new IResult() {
-            @Override
-            public void notifySuccess(String requestType, JSONObject response) {
-                Log.d(TAG, "Volley requester TK " + requestType);
-                Log.d(TAG, "Volley JSON post TK " + response);
-                try {
-                    String res = response.getString("output");
-                    //Log.d("resultado: ",""+res);
-                    tk=res;
-                    getServiceMessage();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void notifyError(String requestType, VolleyError error) {
-                Log.d(TAG, "Volley requester " + requestType);
-                Log.d(TAG, "Volley JSON post" + "That didn't work!");
-            }
-        };
+            if (isNetDisponible()) {
+                //Conectado a internet
+                ButterKnife.bind(this);
 
-        mResultCallbackMS = new IResult() {
-            @Override
-            public void notifySuccess(String requestType, final JSONObject response) {
-                Log.d(TAG, "Volley requester MS " + requestType);
-                Log.d(TAG, "Volley JSON post MS " + response);
+                toggleHideyBar(); // Oculta Barras de Navegacion y Notificaciones
+                //inicio();
+                initData();
+                initPlayer();
 
-                try {
-                    String s=response.toString();
-                    if (!TextUtils.isEmpty(s)) {
-                        mensajeBean = gson.fromJson(s, MensajeBean.class);
+                // Control de tiempo, la app muentras constantemente la hora y fecha configurada en el dispositivo
+                re = new RefresfClock();
+                initClock = new Thread(re);
+                initClock.start();
 
-                        //----
-                        translateNotf();
-                        //----
+                setIdProgramaActual();
+                showProgramInfo();
+                clearAndShowChannelInfo();
 
-                        File dirFile = new File(MESSAGE_DIR);
+                adaptarListaCanales();
+                //Celular
+                onActionTouch();
 
-                        if (dirFile.exists()) {
-                            dirFile.delete();
-                        }
-                        if (!dirFile.exists()) {
-                            dirFile.mkdirs();
-                        }
-
-                        File file = new File(MESSAGE_DIR, LOCAL_MESSAGES_FILE);
-                        FileOutputStream stream = null;
+                // Elegir un canal en la lista de canales
+                lvCanales.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                        lastChannelIndex=channelIndex;
+                        channelIndex = position;
                         try {
-                            stream = new FileOutputStream(file, false);
-                            stream.write(s.getBytes());
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            if (mediaPlayer.isPlaying()) {
+                                mediaPlayer.pause();
+                            }
+                        }catch (Exception e){
+                            System.out.println("ERROR PAUSE");
                         }
+
+                        tvBlack.setVisibility(View.VISIBLE);
+                        changeChannelInScreen();
+
+
+                    }
+                });
+                lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        clearScreen(10000);
                     }
 
-                    if (!TextUtils.isEmpty(s)) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
                     }
-                    String res = response.getString("data");
-                    //Log.d("resultado: ",""+res);
-                    //tk=res;
-                } catch (Exception e) {
-                    e.printStackTrace();
+                });
+
+                lvCanales.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        clearScreen(10000);
+                        return false;
+                    }
+                });
+
+                initVolumeControl();
+
+                //si es modo smartphone, habilitar los botones del panel superior
+                if (isSmartphoneMode)
+                    llSmartphoneButtons.setVisibility(View.VISIBLE);
+                else
+                    llSmartphoneButtons.setVisibility(View.INVISIBLE);
+
+                //fix para que las barras superiores e inferiores no ocupen tanto espacio para telefonos. Hice que ocuparan mucho espacio porque
+                //   los televisores recortan la imagen en los extremos.
+
+                if (isSmartphoneMode){
+                    rlPanelUp.setPadding(convertDpToPx(40,this),convertDpToPx(5,this),convertDpToPx(40,this),convertDpToPx(5,this));
+                    rlDisplayDown.setMinimumHeight(convertDpToPx(70,this));
+                    rlLogo.setMinimumHeight(convertDpToPx(70,this));
+                    llChannelName.setMinimumHeight(convertDpToPx(70,this));
+                    panelDownChannelInfo2.setMinimumHeight(convertDpToPx(70,this));
                 }
+
+
+
+
+            } else {
+                //no conectado a internet
+                ButterKnife.bind(this);
+                Toast.makeText(this, "Sin conexión", Toast.LENGTH_LONG).show();
+                pbError.setVisibility(View.VISIBLE);
+                tvBlack.setVisibility(View.VISIBLE);
+                pbError.setText("Sin conexión");
+
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Fallo de conexión!")
+                        .setMessage("")
+                        .setNegativeButton(null, null)
+                        .setPositiveButton(R.string.reintentar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Reintentar
+                                Intent intent=new Intent();
+                                intent.setClass(VideoPlayerActivityBox.this, VideoPlayerActivityBox.this.getClass());
+                                VideoPlayerActivityBox.this.startActivity(intent);
+                                VideoPlayerActivityBox.this.finish();
+                            }
+                        })
+                        .show();
             }
-            @Override
-            public void notifyError(String requestType, VolleyError error) {
-                Log.d(TAG, "Volley requester MS GET" + requestType);
-                Log.d(TAG, "Volley JSON post MS GET" + error);
-            }
-        };
-
-
-        mResultChangeMS = new IResult() {
-            @Override
-            public void notifySuccess(String requestType, final JSONObject response) {
-                Log.d(TAG, "Volley requester MS Change" + requestType);
-                Log.d(TAG, "Volley JSON post MS Change" + response);
-
-                getServiceMessage();
-            }
-            @Override
-            public void notifyError(String requestType, VolleyError error) {
-                Log.d(TAG, "Volley requester MS Change" + requestType);
-                Log.d(TAG, "Volley JSON post MS Change" + "That didn't work!");
-            }
-        };
-
-    }
-
-    public void getServiceMessage() {
-        mVolleyServiceMS = new VolleyService(mResultCallbackMS,this);
-        JSONObject sendObj = null;
-        try {
-            sendObj = new JSONObject("{'q':'messages','tk':'"+tk+"'}");
-        } catch (JSONException e) {
-            System.out.println("Error MS 1 "+e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error MS 2 "+e);
+        }catch(Exception e){
             e.printStackTrace();
         }
-        mVolleyServiceMS.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
     }
 
 
-    public void setServiceMessage(final int idDispo, final int idMensaje) {
-        mVolleyServiceMS = new VolleyService(mResultChangeMS,this);
-        JSONObject sendObj = null;
-        try {
-            sendObj = new JSONObject("{'q':'messagesview','tk':'"+tk+"','idmensaje':'"+idMensaje+"', 'iddispo':'"+idDispo+"'}");
-        } catch (JSONException e) {
-            System.out.println("Error MS 1 "+e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Error MS 2 "+e);
-            e.printStackTrace();
-        }
-        mVolleyServiceMS.postDataVolley("POSTCALL", generateAndReturnIpmuxUri(), sendObj);
-    }
     public void translateNotf() {
         if(mensajeBean.getData() != null) {
             if (mensajeNot.getVisibility() == View.INVISIBLE) {
@@ -866,8 +682,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             }
         }
     }
-
-
 
 
     // Oculta Barras de Navegacion y Notificaciones
@@ -953,35 +767,35 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         int programBack = 0;
         int programNext = 0;
 
-        if(channelIndex > (liveBean.getData().size() - 1))
+        if(channelIndex > (channels.getChannels().size() - 1))
             channelIndex = 0;
         else if(channelIndex < 0)
-            channelIndex = liveBean.getData().size() - 1;
+            channelIndex = channels.getChannels().size() - 1;
 
         programNext = channelIndex + 1;
         programBack = channelIndex - 1;
 
-        if(programNext > (liveBean.getData().size() - 1))
+        if(programNext > (channels.getChannels().size() - 1))
             programNext = 0;
         else if(programNext < 0)
-            programNext = liveBean.getData().size() - 1;
+            programNext = channels.getChannels().size() - 1;
 
-        if(programBack > (liveBean.getData().size() - 1))
+        if(programBack > (channels.getChannels().size() - 1))
             programBack = 0;
         else if(programBack < 0)
-            programBack = liveBean.getData().size() - 1;
+            programBack = channels.getChannels().size() - 1;
 
-        /*tv_program_name_list_top.setText(liveBean.getData().get(programBack).getNum() + "    " +
-                liveBean.getData().get(programBack).getName());
-        selecImg(tv_program_logo_list_top, liveBean.getData().get(programBack).getLogo());
+        /*tv_program_name_list_top.setText(channels.getData().get(programBack).getNum() + "    " +
+                channels.getData().get(programBack).getName());
+        selecImg(tv_program_logo_list_top, channels.getData().get(programBack).getLogo());
 
-        tv_program_name_list_center.setText(liveBean.getData().get(channelIndex).getNum() + "    " +
-                liveBean.getData().get(channelIndex).getName());
-        selecImg(tv_program_logo_list_center, liveBean.getData().get(channelIndex).getLogo());
+        tv_program_name_list_center.setText(channels.getData().get(channelIndex).getNum() + "    " +
+                channels.getData().get(channelIndex).getName());
+        selecImg(tv_program_logo_list_center, channels.getData().get(channelIndex).getLogo());
 
-        tv_program_name_list_bot.setText(liveBean.getData().get(programNext).getNum() + "    " +
-                liveBean.getData().get(programNext).getName());
-        selecImg(tv_program_logo_list_bot, liveBean.getData().get(programNext).getLogo());*/
+        tv_program_name_list_bot.setText(channels.getData().get(programNext).getNum() + "    " +
+                channels.getData().get(programNext).getName());
+        selecImg(tv_program_logo_list_bot, channels.getData().get(programNext).getLogo());*/
     }
 
     // Buscar imagen en la drawable y actualizar imagen en la interfaz
@@ -1009,22 +823,22 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
     private void initData() {
 
-        if (!deMosaico){
-            channelIndex = PreUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
-            if (channelIndex == (liveBean.getData().size()-1))
-                channelIndex = 0;
-        }
 
-        if (channelIndex >= liveBean.getData().size() || channelIndex < 0)
+            channelIndex = PreUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
+            if (channelIndex == (channels.getChannels().size()-1))
+                channelIndex = 0;
+
+
+        if (channelIndex >= channels.getChannels().size() || channelIndex < 0)
             channelIndex = 1;
 
         numCurrent = channelIndex;
         changeChannelList();
-        deMosaico = false;
+
 
         rlDisplayDown.setVisibility(View.VISIBLE);
         //llProgramList.setVisibility(View.VISIBLE);
-        canalesAux = (ArrayList<LiveBean.DataBean>) liveBean.getData();
+        canalesAux = (ArrayList<Channels.Channel>) channels.getChannels();
         organizarFavoritos();
 
 
@@ -1066,190 +880,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         rlVolumenA.setVisibility(View.INVISIBLE);
         ivMute.setVisibility(View.INVISIBLE);
 
-        //Socket
-        socketNoti();
 
     }
-
-    //Notifaciones por Socket
-    private void socketNoti(){
-        //connect you socket client to the server
-        try {
-            Nickname = IMEI;
-            System.out.println("NickSocket "+Nickname);
-            socket = IO.socket("http://"+ ipmuxIP +":4010");
-
-            socketEmitConnect();
-
-            socket.on("nuevoplan", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                JSONObject data = (JSONObject) args[0];
-                                String id = data.getString("receptorNickname");
-                                restartApp(id);
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-                        }
-                    });
-                }
-            });
-
-            socket.on("recargar_canales", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                restartApp(IMEI);
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-                        }
-                    });
-                }
-            });
-
-
-            socket.on("disconnect", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                //Toast.makeText(VideoPlayerActivityBox.this, "SKT OFFLINE",Toast.LENGTH_SHORT).show();
-                                socketEmitConnectAndPlayingChannel();
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-                        }
-                    });
-                }
-            });
-
-            socket.on("reconnect", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-
-                                socketEmitConnectAndPlayingChannel();
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-
-
-                        }
-                    });
-                }
-            });
-
-            socket.on("connect", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try{
-                                //Toast.makeText(VideoPlayerActivityBox.this, "Socket connect event",Toast.LENGTH_LONG).show();
-                            }
-                            catch(Exception e){
-                                Log.d("error socket ", ""+e.toString());
-                            }
-
-
-                        }
-                    });
-                }
-            });
-
-            socket.on("updateapp", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            JSONObject data = (JSONObject) args[0];
-                            try {
-                                //Iniciar Update
-                                openServiceActivity();
-                            } catch (Exception e) {
-                                Log.d("error socket ", ""+e.toString());
-                                //e.printStackTrace();
-                            }
-
-                        }
-                    });
-                }
-            });
-
-            socket.on("message", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            JSONObject data = (JSONObject) args[0];
-                            try {
-                                String message = data.getString("message");
-                                translateNotfOp(message);
-                                getServiceMessage();
-
-                            } catch (JSONException e) {
-                                Log.d("error socket ", ""+e.toString());
-                                //e.printStackTrace();
-                            }
-
-                        }
-                    });
-                }
-            });
-
-
-            socket.on("mensajeprivado", new Emitter.Listener() {
-                @Override
-                public void call(final Object... args) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            JSONObject data = (JSONObject) args[0];
-                            try {
-                                //extract data from fired event
-                                String id = data.getString("receptorNickname");
-                                if(id.equals(IMEI)) {
-                                    String message = data.getString("message");
-                                    translateNotfOp(message);
-                                    getServiceMessage();
-                                }
-
-                            } catch (JSONException e) {
-                                Log.d("error socket ", ""+e.toString());
-                                //e.printStackTrace();
-                            }
-
-                        }
-                    });
-                }
-            });
-        } catch (URISyntaxException e) {
-            Log.d("error socket2 ", ""+e.toString());
-            //e.printStackTrace();
-        }
-
-    }
-
 
     // Verificar si los favoritos guardados en la base SQLite existe en la lista de canales actual
     private void organizarFavoritos(){
@@ -1271,10 +903,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             String name = c.getString(c.getColumnIndex(Utilidades.CAMPO_NOMBRE));
             System.out.println("Favorito "+name);
             // Acciones...
-            for(int i = 0; i < liveBean.getData().size(); i++){
-                if(name.equals(liveBean.getData().get(i).getName())){
+            for(int i = 0; i < channels.getChannels().size(); i++){
+                if(name.equals(channels.getChannels().get(i).getName())){
                     encontro = true;
-                    canalesFavoritos.add(liveBean.getData().get(i));
+                    canalesFavoritos.add(channels.getChannels().get(i));
                 }
             }
             if(!encontro)
@@ -1289,10 +921,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void setIdProgramaActual() {
         Calendar c = Calendar.getInstance();
 
-        for (int i = 0; i < liveBean.getData().get(channelIndex).getProgramas().size(); i++) {
+        for (int i = 0; i < channels.getChannels().get(channelIndex).getProgramas().size(); i++) {
             long horaActual = c.getTimeInMillis();
-            long horaA = liveBean.getData().get(channelIndex).getProgramas().get(i).getCalendarInit().getTimeInMillis();
-            long horaB = liveBean.getData().get(channelIndex).getProgramas().get(i).getCalendarFinish().getTimeInMillis();
+            long horaA = channels.getChannels().get(channelIndex).getProgramas().get(i).getCalendarInit().getTimeInMillis();
+            long horaB = channels.getChannels().get(channelIndex).getProgramas().get(i).getCalendarFinish().getTimeInMillis();
 
             if (horaActual >= horaA && horaActual <= horaB) {
                 idProgramCurrent = i;
@@ -1355,7 +987,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                             if(!controlError || numCurrent != channelIndex){
                                 hideLoading();
                                 Log.i(TAG, "onEvent: buffer success...");
-                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 1000); // Desaparecer la pantalla negra con retraso despues de que el buffer del canal está al 100%
+                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 2300); // Desaparecer la pantalla negra con retraso despues de que el buffer del canal está al 100%
                                 numCurrent = channelIndex;
                                 getCodec();
                             }else {
@@ -1365,7 +997,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                             if (!wasUnmuted){
                                 handler.removeMessages(CODE_MEDIA_PLAYER_UNMUTE);
-                                handler.sendEmptyMessageDelayed(CODE_MEDIA_PLAYER_UNMUTE,2500);
+                                handler.sendEmptyMessageDelayed(CODE_MEDIA_PLAYER_UNMUTE,1500);
                                 wasUnmuted=true;
                             }
                             //mediaPlayer.play();
@@ -1486,31 +1118,25 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             }
         });
 
-        media = new Media(libvlc, Uri.parse(liveBean.getData().get(channelIndex).getUrl()));
+        media = new Media(libvlc, Uri.parse(channels.getChannels().get(channelIndex).getUrl()));
         mediaPlayer.setMedia(media);
         changeChannel();
 
     }
 
     // Iniciar actividad VideoPlayerActivity
-    public static void openLive(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String anIpmuxIp, String anIpmuxPort, boolean anIsSmartPhoneMode) {
-        VideoPlayerActivityBox.mensajeBean = mensajeBean;
-        VideoPlayerActivityBox.liveBean = liveBean;
-        VideoPlayerActivityBox.IMEI = IMEI;
-        VideoPlayerActivityBox.ipmuxIP = anIpmuxIp;
-        VideoPlayerActivityBox.ipmuxPort = anIpmuxPort;
+    public static void openLive(Context context, Channels channels, boolean anIsSmartPhoneMode) {
+        VideoPlayerActivityBox.channels = channels;
         VideoPlayerActivityBox.isSmartphoneMode=anIsSmartPhoneMode;
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
 
     // Iniciar actividad VideoPlayerActivity desde la vista de Categorias
-    public static void openLiveB(Context context, LiveBean liveBean, MensajeBean mensajeBean,  String num, String IMEI) {
-        VideoPlayerActivityBox.IMEI = IMEI;
-        deMosaico = true;
+    public static void openLiveB(Context context, Channels channels, MensajeBean mensajeBean, String num, String IMEI) {
         VideoPlayerActivityBox.mensajeBean = mensajeBean;
-        VideoPlayerActivityBox.liveBean = liveBean;
-        for (int i = 0; i < VideoPlayerActivityBox.liveBean.getData().size(); i++) {
-            if (liveBean.getData().get(i).getNum().equals(num)) {
+        VideoPlayerActivityBox.channels = channels;
+        for (int i = 0; i < VideoPlayerActivityBox.channels.getChannels().size(); i++) {
+            if (channels.getChannels().get(i).getNum().equals(num)) {
                 VideoPlayerActivityBox.channelIndex = i;
                 break;
             }
@@ -1519,14 +1145,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Iniciar actividad VideoPlayerActivity desde la vista de Categorias pero sin errores como openLiveB.
-    public static void openLiveC(Context context, LiveBean liveBean, MensajeBean mensajeBean, String IMEI, String num) {
+    public static void openLiveC(Context context, Channels channels, MensajeBean mensajeBean, String IMEI, String num) {
         VideoPlayerActivityBox.mensajeBean = mensajeBean;
-        VideoPlayerActivityBox.liveBean = liveBean;
-        VideoPlayerActivityBox.IMEI = IMEI;
+        VideoPlayerActivityBox.channels = channels;
+
         //encontrar el index del canal elegido
         int indexOfChannel=0;
-        for (int i = 0; i < VideoPlayerActivityBox.liveBean.getData().size(); i++) {
-            if (liveBean.getData().get(i).getNum().equals(num)) {
+        for (int i = 0; i < VideoPlayerActivityBox.channels.getChannels().size(); i++) {
+            if (channels.getChannels().get(i).getNum().equals(num)) {
                 indexOfChannel=i;
                 VideoPlayerActivityBox.channelIndex = indexOfChannel;
                 break;
@@ -1541,7 +1167,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void play(int position) {
         reproduccion = (Reproduccion) new Reproduccion().execute();
 
-        /*Uri parse = Uri.parse(liveBean.getData().get(position).getUrl());
+        /*Uri parse = Uri.parse(channels.getData().get(position).getUrl());
         media = new Media(libvlc, parse);
         mediaPlayer.setMedia(media);
         ivlcVout.setVideoView(surfaceview);
@@ -1581,7 +1207,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         surfaceview.setVisibility(View.INVISIBLE);
         mSubtitlesSurface.setVisibility(View.INVISIBLE);
 
-        AppsListActivity.openLive(this, liveBean);
+        AppsListActivity.openLive(this, channels);
         finish();
     }
 
@@ -1661,7 +1287,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     /* Inicializa la actividad ChannelListActivity en esta vista se listan los canales
      * por categorias y muestra la programacion de cada canal*/
     private void getChannelListActivity() {
-        if (liveBean != null) {
+        if (channels != null) {
             try {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
@@ -1671,7 +1297,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             surfaceview.setVisibility(View.INVISIBLE);
             mSubtitlesSurface.setVisibility(View.INVISIBLE);
 
-            socket.disconnect();
             handler.removeMessages(CODE_SHOWLOADING);
             handler.removeMessages(CODE_STOP_SHOWLOADING);
             handler.removeMessages(CODE_HIDE_BLACK);
@@ -1690,7 +1315,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             //ChannelListActivityBox.channelIndex = channelIndex;
             ChannelListActivityBox.channelIndex = 0;
             PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
-            ChannelListActivityBox.openLive(this, liveBean, IMEI, mensajeBean, ipmuxIP);
+            //ChannelListActivityBox.openLive(this, channels, IMEI, mensajeBean, ipmuxIP);
             finish();
         }
     }
@@ -1703,15 +1328,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Llenar Lista de Canales en interfaz
     private void adaptarListaCanales() {
-        final ArrayList<LiveBean.DataBean> canales = new ArrayList<>();
-        for(LiveBean.DataBean item:liveBean.getData() ){
-            if(!item.getId().equals(numCanalInformativo)){
+        final ArrayList<Channels.Channel> canales = new ArrayList<>();
+        for(Channels.Channel item: channels.getChannels() ){
+            if(!item.getNum().equals(numCanalInformativo)){
                 canales.add(item);
             }
         }
 
 
-        ArrayAdapter<LiveBean.DataBean> cheeseAdapterA = new ArrayAdapter<LiveBean.DataBean>(this,
+        ArrayAdapter<Channels.Channel> cheeseAdapterA = new ArrayAdapter<Channels.Channel>(this,
                 R.layout.lv_list_item,
                 canales) {
             @NonNull
@@ -1922,7 +1547,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         if(!enAnimacion) {
                             ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
                             exitOptions();
-                            channelIndex = liveBean.getData().size()-1;
+                            channelIndex = channels.getChannels().size()-1;
                             changeChannel();
                         }
                         break;
@@ -1943,15 +1568,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     case MotionEvent.ACTION_UP:
                         ivFavorite.setBackground(getDrawable(R.drawable.borde_volumen));
 
-                        if(consultarFavorito(liveBean.getData().get(channelIndex).getName())){
+                        if(consultarFavorito(channels.getChannels().get(channelIndex).getName())){
                             //Remover Fav por SQLite
-                            eliminarFavorito(liveBean.getData().get(channelIndex).getName());
+                            eliminarFavorito(channels.getChannels().get(channelIndex).getName());
                             organizarFavoritos();
 
                             if(acFavoritos){
                                 if(existenFavs()){
                                     channelIndex = 0;
-                                    liveBean.setData(canalesFavoritos);
+                                    channels.setChannels(canalesFavoritos);
 
 
                                     setIdProgramaActual();
@@ -1961,14 +1586,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                                 }else{
                                     acFavoritos = false;
 
-                                    liveBean.setData(canalesAux);
+                                    channels.setChannels(canalesAux);
 
 
                                 }
                             }
                         }else{
                             //Agregar Fav por SQLite
-                            registrarFavorito(liveBean.getData().get(channelIndex).getName());
+                            registrarFavorito(channels.getChannels().get(channelIndex).getName());
                             organizarFavoritos();
 
 
@@ -2279,8 +1904,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         handler.removeCallbacks(d);
 
         tiempo_canal.cancel();
-        socket.disconnect();
-        socket.off();
 
         isSmartphoneMode =false;
         finish();
@@ -2530,15 +2153,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             /*
             case 2:
-                if(consultarFavorito(liveBean.getData().get(channelIndex).getName())){
+                if(consultarFavorito(channels.getData().get(channelIndex).getName())){
                     //Remover Fav por SQLite
-                    eliminarFavorito(liveBean.getData().get(channelIndex).getName());
+                    eliminarFavorito(channels.getData().get(channelIndex).getName());
                     organizarFavoritos();
 
                     if(acFavoritos){
                         if(existenFavs()){
                             channelIndex = 0;
-                            liveBean.setData(canalesFavoritos);
+                            channels.setData(canalesFavoritos);
                             setIdProgramaActual();
                             showProgramInfo();
                             changeChannel();
@@ -2547,7 +2170,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         }else{
                             acFavoritos = false;
 
-                            liveBean.setData(canalesAux);
+                            channels.setData(canalesAux);
 
                             ivFavorite.setImageResource(R.drawable.button_fav);
                             rlChannelName.setBackground(getDrawable(R.drawable.degradado_channel_name));
@@ -2559,7 +2182,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     }
                 }else{
                     //Agregar Fav por SQLite
-                    registrarFavorito(liveBean.getData().get(channelIndex).getName());
+                    registrarFavorito(channels.getData().get(channelIndex).getName());
                     organizarFavoritos();
 
                     ivFavorite.setImageResource(R.drawable.button_fav_b);
@@ -2572,7 +2195,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             case 2:
                 ivInformation.setBackground(getDrawable(R.drawable.borde_volumen));
                 exitOptions();
-                channelIndex = liveBean.getData().size()-1;
+                channelIndex = channels.getChannels().size()-1;
                 changeChannel();
                 break;
         }
@@ -2586,60 +2209,60 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         //tvHorarioIni.setText("");
 
 
-        tvChannelName.setText(liveBean.getData().get(channelIndex).getName());
-        tvQuality.setText(liveBean.getData().get(channelIndex).getCalidad());
-        tvChannelNumber.setText(liveBean.getData().get(channelIndex).getNum());
+        tvChannelName.setText(channels.getChannels().get(channelIndex).getName());
+        tvQuality.setText(channels.getChannels().get(channelIndex).getCalidad());
+        tvChannelNumber.setText(channels.getChannels().get(channelIndex).getNum());
         tvChannelNumber.setTextColor(Color.rgb(241,96,96));
         handler.removeMessages(CODE_COLOR_NUM);
         handler.sendEmptyMessageDelayed(CODE_COLOR_NUM, 2000);
 
-        if(!liveBean.getData().get(channelIndex).getName().equals("N/D")){
-            tvChannelName.setText(liveBean.getData().get(channelIndex).getName());
-            tvChannelNumber.setText(liveBean.getData().get(channelIndex).getNum());
+        if(!channels.getChannels().get(channelIndex).getName().equals("N/D")){
+            tvChannelName.setText(channels.getChannels().get(channelIndex).getName());
+            tvChannelNumber.setText(channels.getChannels().get(channelIndex).getNum());
             tvChannelNumber.setTextColor(Color.rgb(241,96,96));
             handler.removeMessages(CODE_COLOR_NUM);
             handler.sendEmptyMessageDelayed(CODE_COLOR_NUM, 2000);
 
-            selecImg(tvChannelLogo, liveBean.getData().get(channelIndex).getLogo());
+            selecImg(tvChannelLogo, channels.getChannels().get(channelIndex).getLogo());
         }else{
             tvChannelName.setText("No disponible");
-            tvChannelNumber.setText(liveBean.getData().get(channelIndex).getNum());
+            tvChannelNumber.setText(channels.getChannels().get(channelIndex).getNum());
             tvChannelLogo.setImageResource(R.drawable.ic_mantenimiento);
         }
 
-        if(idProgramCurrent < (liveBean.getData().get(channelIndex).getProgramas().size() - 1)){
+        if(idProgramCurrent < (channels.getChannels().get(channelIndex).getProgramas().size() - 1)){
 
-            selecImg(tvClassification, liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getClasificacion());
+            selecImg(tvClassification, channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getClasificacion());
 
-            int h = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarInit().get(Calendar.HOUR_OF_DAY);
+            int h = channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarInit().get(Calendar.HOUR_OF_DAY);
             String hora = Integer.toString(h);
             if(h == 0)
                 hora = "00";
-            int m = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarInit().get(Calendar.MINUTE);
+            int m = channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarInit().get(Calendar.MINUTE);
             String minuto = Integer.toString(m);
             if(m == 0)
                 minuto = "00";
 
-            tvQuality.setText(liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getNombreProgram());
+            tvQuality.setText(channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getNombreProgram());
             //tvHorarioIni.setText("Inicio "+hora+":"+minuto);
 
-            h = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().get(Calendar.HOUR_OF_DAY);
+            h = channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().get(Calendar.HOUR_OF_DAY);
             hora = Integer.toString(h);
             if(h == 0)
                 hora = "00";
-            m = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().get(Calendar.MINUTE);
+            m = channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().get(Calendar.MINUTE);
             minuto = Integer.toString(m);
             if(m == 0)
                 minuto = "00";
 
            // tvHorarioFin.setText("Fin "+hora+":"+minuto);
 
-            if (idProgramCurrent < (liveBean.getData().get(channelIndex).getProgramas().size() - 1)) {
-                /*h = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getCalendarInit().get(Calendar.HOUR_OF_DAY);
+            if (idProgramCurrent < (channels.getChannels().get(channelIndex).getProgramas().size() - 1)) {
+                /*h = channels.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getCalendarInit().get(Calendar.HOUR_OF_DAY);
                 hora = Integer.toString(h);
                 if(h == 0)
                     hora = "00";
-                m = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getCalendarInit().get(Calendar.MINUTE);
+                m = channels.getData().get(channelIndex).getProgramas().get(idProgramCurrent + 1).getCalendarInit().get(Calendar.MINUTE);
                 minuto = Integer.toString(m);
                 if(m == 0)
                     minuto = "00";*/
@@ -2925,7 +2548,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         /*
         //ivlcVout.detachViews();
 
-        if(liveBean.getData().get(channelIndex).getId().equals(numCanalInformativo)){
+        if(channels.getData().get(channelIndex).getId().equals(numCanalInformativo)){
             pbError.setText("Seccion Informativo");
             getChannelListActivity();
         }else{
@@ -2933,7 +2556,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             play(channelIndex);
         }
 
-        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+        socket.emit("vivo_channel", IMEI,channels.getData().get(channelIndex).getName(),channels.getData().get(channelIndex).getNum(),channels.getData().get(channelIndex).getId());
         nuevoCanal = true;
 
          */
@@ -2941,7 +2564,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
 
 
-        if(liveBean.getData().get(channelIndex).getId().equals(numCanalInformativo)){
+        if(channels.getChannels().get(channelIndex).getNum().equals(numCanalInformativo)){
             channelIndex=0;
         }
 
@@ -2959,8 +2582,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         //Agregar el último canal visitado
         lastChannelIndex=channelIndex;
 
-        for(int i = 0; i < liveBean.getData().size(); i++){
-            if(channelNumber == Integer.parseInt(liveBean.getData().get(i).getNum())){
+        for(int i = 0; i < channels.getChannels().size(); i++){
+            if(channelNumber == Integer.parseInt(channels.getChannels().get(i).getNum())){
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 }
@@ -2990,7 +2613,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         tvBlack.setVisibility(View.VISIBLE);
         channelIndex++;
 
-        if (channelIndex >= liveBean.getData().size()) {
+        if (channelIndex >= channels.getChannels().size()) {
             channelIndex = 0;
         }
     }
@@ -3009,7 +2632,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         channelIndex--;
 
         if (channelIndex < 0) {
-            channelIndex = liveBean.getData().size() - 1;
+            channelIndex = channels.getChannels().size() - 1;
         }
     }
 
@@ -3290,7 +2913,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
                     Calendar c = Calendar.getInstance();
                     long horaActual = c.getTimeInMillis();
-                    long horaB = liveBean.getData().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().getTimeInMillis();
+                    long horaB = channels.getChannels().get(channelIndex).getProgramas().get(idProgramCurrent).getCalendarFinish().getTimeInMillis();
 
                     if (horaActual >= horaB) {
                         idProgramCurrent++;
@@ -3320,7 +2943,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private class Reproduccion extends AsyncTask<Void, Integer, Media> {
         @Override
         protected Media doInBackground(Void... params) {
-            Uri parse = Uri.parse(liveBean.getData().get(channelIndex).getUrl());
+            Uri parse = Uri.parse(channels.getChannels().get(channelIndex).getUrl());
             media = new Media(libvlc, parse);
             System.out.println("SET MEDIAAAAAAAAAAAAA");
             mediaPlayer.setMedia(media);
@@ -3455,7 +3078,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         tvBlack.setVisibility(View.VISIBLE);
         channelIndex++;
 
-        if (channelIndex >= liveBean.getData().size()) {
+        if (channelIndex >= channels.getChannels().size()) {
             channelIndex = 0;
         }
     }
@@ -3474,7 +3097,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         channelIndex--;
 
         if (channelIndex < 0) {
-            channelIndex = liveBean.getData().size() - 1;
+            channelIndex = channels.getChannels().size() - 1;
         }
     }
 
@@ -3505,7 +3128,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             surfaceview.setVisibility(View.INVISIBLE);
             mSubtitlesSurface.setVisibility(View.INVISIBLE);
 
-            socket.disconnect();
+
             handler.removeMessages(CODE_SHOWLOADING);
             handler.removeMessages(CODE_STOP_SHOWLOADING);
             handler.removeMessages(CODE_HIDE_BLACK);
@@ -3726,59 +3349,12 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     }
 
-    /**
-     *El servidor Ipmux envía un evento para que las cajas se actualicen con información nueva.
-     * Este método reinicia la app para que consulte la información actualizada
-     * @param : El id/IMEI es para verificar que el dispositivo sea el mismo
-     * @return void
-     */
-    public void restartApp(String id){
 
-        channelIndex=0;
-
-        try {
-            if(id.equals(IMEI)) {
-                //Actualizar
-                llActualizando.setVisibility(View.VISIBLE);
-                handler.removeMessages(CODE_RESTART_APP);
-                handler.sendEmptyMessageDelayed(CODE_RESTART_APP, 3000);
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-
-    /**
-     * Método que lee las variables ipmuxProtocol, ipmuxIP, ipmuxPort, ipmuxApiPath y construye una uri para que la app acceda al servidor ipmux y haga peticiones
-     * */
-    public String generateAndReturnIpmuxUri(){
-        String portNotation = ":";
-        if (ipmuxPort.equals("")) portNotation="";
-        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
-    }
-
-    public String generateAndReturnSocketUri(){
-
-        String portNotation = ":";
-        if (ipmuxPort.equals("")) portNotation="";
-        return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort;
-    }
 
     private void socketEmitPlayingChannel(){
-        socket.emit("vivo_channel", IMEI,liveBean.getData().get(channelIndex).getName(),liveBean.getData().get(channelIndex).getNum(),liveBean.getData().get(channelIndex).getId());
+        AppState.getSocketConn().socketEmitPlayingChannel(channels,channelIndex);
     }
 
-    private void socketEmitConnectAndPlayingChannel(){
-        socket.connect();
-        socket.emit("join", IMEI);
-        socketEmitPlayingChannel();
-    }
-
-    private void socketEmitConnect(){
-        socket.connect();
-        socket.emit("join", IMEI);
-    }
 
     /*
     * Sirve para extender el tiempo en que se ocultan los elementos en pantalla. Ejm: Cuando se presiona un boton del panel numérico,

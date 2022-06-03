@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cablemedia-cablebox_iptv_android-6966a83e8473.iml" filepath="$PROJECT_DIR$/.idea/modules/cablemedia-cablebox_iptv_android-6966a83e8473.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cablemedia-cablebox_iptv_android-6966a83e8473.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cablemedia-cablebox_iptv_android-6966a83e8473.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libvlc/cablemedia-cablebox_iptv_android-6966a83e8473.libvlc.iml" filepath="$PROJECT_DIR$/.idea/modules/libvlc/cablemedia-cablebox_iptv_android-6966a83e8473.libvlc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.iml" filepath="$PROJECT_DIR$/.idea/modules/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libvlc/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.libvlc.iml" filepath="$PROJECT_DIR$/.idea/modules/libvlc/cablemedia-cablebox_iptv_android-6966a83e8473_-_copia.libvlc.iml" />
     </modules>
   </component>
 </project>

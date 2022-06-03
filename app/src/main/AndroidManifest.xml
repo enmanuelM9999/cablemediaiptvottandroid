@@ -98,6 +98,29 @@
             android:screenOrientation="landscape"/>
 
         <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".activity.ErrorActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name=".activity.TvboxLoadingChannelsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+
+
+        <activity
             android:name=".activity.VideoPlayerActivityBox"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" />

@@ -80,7 +80,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 //import butterknife.Bind;
 import butterknife.BindView;
@@ -89,7 +88,7 @@ import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
 import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
-import co.cablebox.tv.bean.LiveBean;
+import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.socket.Notificaciones;
 import co.cablebox.tv.utils.IResult;
@@ -218,7 +217,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Resultados obtenidos del JSON enviado del servidor
     private Gson gson;
-    private LiveBean liveBean;
+    private Channels channels;
     private MensajeBean mensajeBean;
     /**
      * Define el estado del dispositivo.
@@ -444,11 +443,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         //informacion del imei del dispositivo
         consultarPermiso(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
+        imei="eb329baf1";
         if(imei == null){
             isCel = false;
             imei = getSerialNumber();
-            imei=imei.toLowerCase();
-
+            imei="eb329baf1";
             imeiMsg="ID: "+imei;
             tvImei.setText(imeiMsg);
             tvImei.setVisibility(View.VISIBLE);
@@ -458,7 +457,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
             bloquearBarras();*/
         }else{
-            imei= imei.toLowerCase();
             isSmartphoneMode = true;
             imeiMsg="ID: "+imei;
             tvImei.setText(imeiMsg);
@@ -843,7 +841,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                         if (!TextUtils.isEmpty(channel_list)) {
                             System.out.println("++++++++++++++++++++++++JSON by server"+channel_list);
-                            liveBean = gson.fromJson(channel_list, LiveBean.class);
+                            channels = gson.fromJson(channel_list, Channels.class);
                             what = CODE_NETWORK_SUCCESS;
                         }
                     }
@@ -852,7 +850,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         String channel_list = response.toString();
                         if (!TextUtils.isEmpty(channel_list)) {
                             System.out.println("++++++++++++++++++++++++JSON by server"+channel_list);
-                            liveBean = gson.fromJson(channel_list, LiveBean.class);
+                            channels = gson.fromJson(channel_list, Channels.class);
                             what = CODE_NETWORK_SUCCESS;
                         }
                     }
@@ -863,7 +861,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     Log.d("Error1","");
                     e.printStackTrace();
                     what = CODE_NETWORK_ERROR;
-                    if (liveBean != null) {
+                    if (channels != null) {
                         what = CODE_NETWORK_SUCCESS;
                     }
                 } finally {
@@ -1010,7 +1008,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         } else {
             imei = obtenerIMEI();
-
         }
     }
 
@@ -1140,23 +1137,23 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Iniciar la Actividad VideoPlayerActivity
     private void setLiveData() {
-        if (liveBean != null || !viewApp) {
+        if (channels != null || !viewApp) {
             try{
-                for (int i = 0; i < liveBean.getData().size(); i++){
-                    for(int j = 0; j < liveBean.getData().get(i).getProgramas().size(); j++){
-                        String date = liveBean.getData().get(i).getProgramas().get(j).getTimeDateInit();
+                for (int i = 0; i < channels.getChannels().size(); i++){
+                    for(int j = 0; j < channels.getChannels().get(i).getProgramas().size(); j++){
+                        String date = channels.getChannels().get(i).getProgramas().get(j).getTimeDateInit();
                         Calendar calendar = Calendar.getInstance();
                         String datereip = date.replace("/Date(", "").replace(")/", "");
                         Long timeInMillis = Long.valueOf(datereip);
                         calendar.setTimeInMillis(timeInMillis);
-                        liveBean.getData().get(i).getProgramas().get(j).setCalendarInit(calendar);
+                        channels.getChannels().get(i).getProgramas().get(j).setCalendarInit(calendar);
 
-                        date = liveBean.getData().get(i).getProgramas().get(j).getTimeDateFinish();
+                        date = channels.getChannels().get(i).getProgramas().get(j).getTimeDateFinish();
                         calendar = Calendar.getInstance();
                         datereip = date.replace("/Date(", "").replace(")/", "");
                         timeInMillis = Long.valueOf(datereip);
                         calendar.setTimeInMillis(timeInMillis);
-                        liveBean.getData().get(i).getProgramas().get(j).setCalendarFinish(calendar);
+                        channels.getChannels().get(i).getProgramas().get(j).setCalendarFinish(calendar);
 
                     }
                 }
@@ -1164,16 +1161,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 //Si el IMEI no es Null significa que la aplicacion se esta ejecutando en un Celular, si no la App esta en una TvBox
                 consultarPermiso(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
 
-                //VideoPlayerActivity.openLive(this, liveBean, mensajeBean, imei, direcPag);
+                //VideoPlayerActivity.openLive(this, channels, mensajeBean, imei, direcPag);
                 if (imei != null) {
                     isSmartphoneMode=true;
-                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort, isSmartphoneMode);
+                    VideoPlayerActivityBox.openLive(this, channels, isSmartphoneMode);
 
                 }else{
                     imei = getSerialNumber();
-                    imei=imei.toLowerCase();
                     isSmartphoneMode=false;
-                    VideoPlayerActivityBox.openLive(this, liveBean, mensajeBean, imei, ipmuxIP,ipmuxPort, isSmartphoneMode);
+                    VideoPlayerActivityBox.openLive(this, channels,isSmartphoneMode);
 
                 }
 
@@ -1215,7 +1211,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void initData() {
 
         gson = new Gson();
-        liveBean = new LiveBean();
+        channels = new Channels();
         mensajeBean = new MensajeBean();
         if (!NetWorkUtils.getNetState(this)) {
             handler.sendEmptyMessage(CODE_NETWORK_ERROR);

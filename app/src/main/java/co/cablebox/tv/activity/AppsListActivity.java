@@ -22,8 +22,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import co.cablebox.tv.R;
+import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.Item;
-import co.cablebox.tv.bean.LiveBean;
 
 /* Esta actividad se encarga de organizar la vista de las apliacaciones instalas en el dispositivo
 * Esta Actividad solo debe ser usada por administradores que sepan la clave*/
@@ -34,7 +34,7 @@ public class AppsListActivity extends Activity {
 
     private GridView listApss;
 
-    public static LiveBean liveBean;
+    public static Channels channels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +106,8 @@ public class AppsListActivity extends Activity {
         });
     }
 
-    public static void openLive(Context context, LiveBean liveBean) {
-        AppsListActivity.liveBean = liveBean;
+    public static void openLive(Context context, Channels channels) {
+        AppsListActivity.channels = channels;
         context.startActivity(new Intent(context, AppsListActivity.class));
     }
 
