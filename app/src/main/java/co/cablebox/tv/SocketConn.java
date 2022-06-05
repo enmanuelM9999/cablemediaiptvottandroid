@@ -29,7 +29,11 @@ public class SocketConn  {
         try {
             System.out.println("Try Socket Connection ");
             String socketUri= AppState.getUrlService().generateAndReturnSocketUri();
-            socket = IO.socket(socketUri);
+            IO.Options options = IO.Options.builder()
+                    .setForceNew(true)
+                    .setReconnection(true)
+                    .build();
+            socket = IO.socket(socketUri,options);
             socketEmitConnect();
 
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -162,8 +166,6 @@ public class SocketConn  {
     public void socketEmitConnect(){
         socket.connect();
         //loginWithDeviceId("");
-        count++;
-        Toast.makeText(AppState.getAppContext(), "socketEmitConnect "+count,Toast.LENGTH_SHORT).show();
     }
 
     public void socketEmitPlayingChannel(Channels channels, int channelIndex){
@@ -271,6 +273,11 @@ public class SocketConn  {
         }
     }
 
+    public void disconnect(){
+        socket.disconnect();
+        socket.off();
+        socket=null;
+    }
 
 
 }

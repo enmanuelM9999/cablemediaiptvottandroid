@@ -27,11 +27,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         startAppProto();
     }
 
+
     void startAppProto(){
         /*Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
+        AppState.restartSocketConn();
 
         /*Set app context*/
         AppState.setAppContext(this);

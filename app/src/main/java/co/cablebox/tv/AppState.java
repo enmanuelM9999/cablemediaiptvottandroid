@@ -21,13 +21,8 @@ public class AppState {
     }
 
     public static SocketConn getSocketConn() {
-        if (socketConn==null) {
-            Toast.makeText(AppState.getAppContext(), "getSocketConn +null",Toast.LENGTH_SHORT).show();
-            socketConn= new SocketConn();
-        }
-        else {
-            Toast.makeText(AppState.getAppContext(), "getSocketConn +no null",Toast.LENGTH_SHORT).show();
-        }
+        if (socketConn==null) socketConn = new SocketConn();
+
         return socketConn;
     }
 
@@ -38,6 +33,11 @@ public class AppState {
 
     public static Context getAppContext() {
         return appContext;
+    }
+
+    public static void restartSocketConn(){
+        if (socketConn!=null) socketConn.disconnect();
+        socketConn=null;
     }
 
     public static void setAppContext(Context appContext) {
