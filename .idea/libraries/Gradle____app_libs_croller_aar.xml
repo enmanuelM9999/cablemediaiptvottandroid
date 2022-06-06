@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: ./app/libs/croller.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ed4d1322c014dbc52d2124327db54030/transformed/jetified-croller/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ed4d1322c014dbc52d2124327db54030/transformed/jetified-croller/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ed4d1322c014dbc52d2124327db54030/transformed/jetified-croller/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
