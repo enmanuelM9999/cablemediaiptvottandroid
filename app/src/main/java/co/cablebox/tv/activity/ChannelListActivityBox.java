@@ -305,7 +305,7 @@ public class ChannelListActivityBox extends Activity {
         }
     };
 
-    //Socket Notificaciones
+    //SocketConnection Notificaciones
     private Socket socket;
     public static String Nickname;
 
@@ -744,7 +744,7 @@ public class ChannelListActivityBox extends Activity {
 
     /* Iniciar Variables necesarias para la actividad */
     private void initData(){
-        //Socket
+        //SocketConnection
         gson = new Gson();
         socketNoti();
 
@@ -1020,7 +1020,7 @@ public class ChannelListActivityBox extends Activity {
         }
     }
 
-    //Notifaciones por Socket
+    //Notifaciones por SocketConnection
     private void socketNoti(){
         //connect you socket client to the server
         try {

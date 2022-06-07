@@ -357,7 +357,7 @@ public class WifiConnector {
     /**
      * For enabling wifi
      * If you want to listen wifi states, should call {@link #registerWifiStateListener(WifiStateListener)} and wait for
-     * callback to update User Interface of your application.
+     * callback to update SmartphoneUser Interface of your application.
      * <p>
      * We call {@link #createWifiConnectionBroadcastListener()} to determine using {@link WifiConnectionReceiver} if we are connected to
      * any wifi network.
@@ -411,7 +411,7 @@ public class WifiConnector {
     /**
      * For disabling wifi
      * If you want to listen wifi states, should call {@link #unregisterWifiStateListener()} and wait for
-     * callback to update User Interface on your application
+     * callback to update SmartphoneUser Interface on your application
      */
     public void disableWifi() {
         if (wifiManager.isWifiEnabled()) {
@@ -715,7 +715,7 @@ public class WifiConnector {
 
     /**
      * Similar to {@link #forgetWifiNetwork(WifiManager, WifiConfiguration)} but this will run with any application
-     * installed as user app and will only delete wifi configurations created by its own.
+     * installed as smartphoneUser app and will only delete wifi configurations created by its own.
      *
      * @return true if delete configuration was successful
      */

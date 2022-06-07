@@ -530,7 +530,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
 
         private static Context context;
 
-    //Socket
+    //SocketConnection
         private Socket socket;
         public static String Nickname;
 
@@ -963,7 +963,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
     * Se comprueba si la actividad es iniciada desde el panel de categorias o no,
     * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
     private void initData() {
-        //Socket
+        //SocketConnection
         socketNoti();
 
         if (!deMosaico){
@@ -1059,7 +1059,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
     }
 
 
-    //Notifaciones por Socket
+    //Notifaciones por SocketConnection
     private void socketNoti(){
         //connect you socket client to the server
         try {

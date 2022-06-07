@@ -9,6 +9,8 @@ import android.view.View;
 
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
+import co.cablebox.tv.socket.TvboxSocketConnection;
+import co.cablebox.tv.user.TvboxUser;
 
 public class TvboxLoadingChannelsActivity extends AppCompatActivity {
 
@@ -28,20 +30,18 @@ public class TvboxLoadingChannelsActivity extends AppCompatActivity {
         /*Set app context*/
         AppState.setAppContext(this);
 
-        /*Connect socket as tvbox*/
-        loginWithDeviceId(AppState.getUser().getUserId());
-
         /*Set GUI*/
         setContentView(R.layout.activity_tvbox_loading_channels);
 
         /*Active full screen*/
         setFullScreenMode();
 
-
+        /*Connect socket*/
+        connectSocket();
     }
 
-    private void loginWithDeviceId(String userId){
-        AppState.getSocketConn();
+    private void connectSocket(){
+        AppState.getSocketConnection().socketEmitConnect();
     }
 
     public void setFullScreenMode() {

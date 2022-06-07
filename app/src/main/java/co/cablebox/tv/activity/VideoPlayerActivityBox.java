@@ -3352,7 +3352,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
 
     private void socketEmitPlayingChannel(){
-        AppState.getSocketConn().socketEmitPlayingChannel(channels,channelIndex);
+        AppState.getSocketConnection().socketEmitPlayingChannel(channels,channelIndex);
     }
 
 

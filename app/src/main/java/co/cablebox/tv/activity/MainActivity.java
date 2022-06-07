@@ -13,13 +13,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
 
 import java.lang.reflect.Method;
 
 import co.cablebox.tv.AppState;
-import co.cablebox.tv.User;
-import co.cablebox.tv.socket.ChatBoxActivity;
+import co.cablebox.tv.socket.SmartphoneSocketConnection;
+import co.cablebox.tv.socket.TvboxSocketConnection;
+import co.cablebox.tv.user.SmartphoneUser;
+import co.cablebox.tv.user.TvboxUser;
+import co.cablebox.tv.user.User;
+
 
 public class MainActivity extends AppCompatActivity {
     static final Integer PHONESTATS = 0x1;
@@ -33,13 +36,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startAppProto();
+        startApp();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 
     void startAppProto(){
         /*Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
-        AppState.restartSocketConn();
+        AppState.restartSocketConnection();
 
         /*Set app context*/
         AppState.setAppContext(this);
@@ -57,33 +65,41 @@ public class MainActivity extends AppCompatActivity {
 
     void startApp(){
         try {
-            /*Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
+            /*...Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
+
+            AppState.restartSocketConnection();
 
             /*Set app context*/
             AppState.setAppContext(this);
 
             /*Check device type*/
-            setDeviceTypeAndUserId();
+            Object[] deviceTypeAndSerialNumber = getDeviceTypeAndSerialNumber();
+            int deviceType= (Integer) deviceTypeAndSerialNumber[0];
+            String serialNumber= (String) deviceTypeAndSerialNumber[1];
 
             /*If is tvbox, open TvboxLoadingChannelsActivity
              * If is smartphone, open LoginActivity
              * */
-            boolean isSmartphone= AppState.getUser().getDeviceType()==User.DEVICE_SMARTPHONE;
-            boolean isTvbox= AppState.getUser().getDeviceType()==User.DEVICE_TVBOX;
+            boolean isSmartphone= deviceType== User.DEVICE_SMARTPHONE;
+            boolean isTvbox= deviceType== User.DEVICE_TVBOX;
+
 
             if (isTvbox){
+                AppState.setSocketConnection(new TvboxSocketConnection());
+                AppState.setUser(new TvboxUser(serialNumber));
                 openTvboxLoadingChannelsActivity();
             }
             else if (isSmartphone){
+                AppState.setSocketConnection(new SmartphoneSocketConnection());
+                AppState.setUser(new SmartphoneUser());
                 openLogin();
             }
             else{
-                AppState.getSocketConn().openErrorActivity("Error","No se reconoce el tipo de dispositivo");
+                AppState.openErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     private void openLogin(){
@@ -99,33 +115,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @return the device type. Can be AppState.DEVICE_TVBOX or AppState.DEVICE_SMARTPHONE
+     * @return the device type.
      */
-    void setDeviceTypeAndUserId(){
+    private Object[] getDeviceTypeAndSerialNumber(){
+        /* If the device has an @imei, that means the device is a cellphone and can use a simcard.
+
+         *  If the device does not have imei, that means the device is a tvbox, then
+         *   extract the @serialNumber of it.
+         * */
+        int deviceType = User.DEVICE_SMARTPHONE;
+        String serialNumber="unknown";
         try {
-            /* If the device has an @imei, that means the device is a cellphone and can use a simcard.
-
-             *  If the device does not have imei, that means the device is a tvbox, then
-             *   extract the @serialNumber of it.
-             * */
-            int deviceType= AppState.getUser().deviceType;
-            String userId="";
-
             //Get imei from device
             String imei= checkPermissionsAndGetImei(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
 
             if(imei == null){ //is tvbox
                 deviceType= User.DEVICE_TVBOX;
-                userId = getSerialNumber();
+                serialNumber = getSerialNumber();
             }else{ // is smartphone
                 deviceType= User.DEVICE_SMARTPHONE;
             }
-
-            AppState.getUser().setDeviceType(deviceType);
-            AppState.getUser().setUserId(userId);
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            return new Object[]{deviceType, serialNumber};
         }
     }
 

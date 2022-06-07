@@ -1,5 +1,9 @@
 package co.cablebox.tv.adapter;
 
+/*
+
+
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -51,3 +55,11 @@ public class CustomListAdapter extends ArrayAdapter<Notificaciones> {
     }
 
 }
+
+
+
+
+
+
+
+* */

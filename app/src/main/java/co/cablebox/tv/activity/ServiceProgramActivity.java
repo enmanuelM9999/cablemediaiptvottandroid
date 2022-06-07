@@ -90,7 +90,6 @@ import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
-import co.cablebox.tv.socket.Notificaciones;
 import co.cablebox.tv.utils.IResult;
 import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
@@ -398,7 +397,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private boolean conectado = false;
 
-    //Socket Notificaciones
+    //SocketConnection Notificaciones
         public static String Nickname;
 
         public static String IMEI = "";
@@ -462,12 +461,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             tvImei.setText(imeiMsg);
             tvImei.setVisibility(View.VISIBLE);
             url_type = "unicast";
-        }
-
-        List<Notificaciones> list = new ArrayList<>();
-        for(int i = 0; i < 6; i++){
-            Notificaciones n = new Notificaciones("","Algo "+i);
-            list.add(n);
         }
 
         //declarar las acciones de peticiones a la api

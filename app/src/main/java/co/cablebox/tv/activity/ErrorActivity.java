@@ -24,6 +24,12 @@ public class ErrorActivity extends AppCompatActivity {
         start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     private void start(){
         setContentView(R.layout.activity_error);
         ButterKnife.bind(this);
