@@ -28,8 +28,6 @@ public class TvboxLoginActivity extends AppCompatActivity implements LoginActivi
     }
 
     private void start(){
-        /*Set app context*/
-        AppState.setAppContext(this);
 
         /*Set GUI*/
         setContentView(R.layout.activity_tvbox_loading_channels);

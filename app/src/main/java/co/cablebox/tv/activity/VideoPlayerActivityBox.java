@@ -76,6 +76,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
+import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.utils.ConexionSQLiteHelper;
@@ -3409,8 +3410,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         KeyEvent downEvent = new KeyEvent(KeyEvent.ACTION_DOWN, key);
         inputConnection.sendKeyEvent(downEvent);
     }
-
-
 
 
 

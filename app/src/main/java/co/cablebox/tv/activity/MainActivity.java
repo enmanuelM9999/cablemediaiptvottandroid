@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.view.Display;
 
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
             else{
                 ActivityLauncher.launchErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
-            openLogin();
 
+            openLogin();
         }catch (Exception e){
             e.printStackTrace();
         }

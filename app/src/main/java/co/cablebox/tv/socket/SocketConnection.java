@@ -1,14 +1,21 @@
 package co.cablebox.tv.socket;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
+import co.cablebox.tv.ToastManager;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import io.socket.client.IO;
@@ -117,14 +124,6 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try {
-                    /**
-
-                     if (!canReveiveErrors) {
-                     canReveiveErrors=true;
-                     throw new Exception("Ignore first Error alert. HARDCODING");
-                     }
-                     */
-
                     /* Extract data from server*/
                     String msgType = (String) args[0];
                     String msg = (String) args[1];
@@ -137,7 +136,25 @@ public abstract class SocketConnection {
                     Log.d("e at mensaje_error ", ""+e.toString());
                     e.printStackTrace();
                 }
-            }
+            ;}
+        });
+
+
+        socket.on("ping_deco", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                try {
+                    /* Extract data from server*/
+                    String msg = (String) args[0];
+
+                    /*Print message*/
+                    ToastManager.toast(msg);
+
+                } catch (Exception e) {
+                    Log.d("error at ping_deco ", ""+e.toString());
+                    e.printStackTrace();
+                }
+                ;}
         });
 
         socket.on("mostrar_mensaje", new Emitter.Listener() {
@@ -145,18 +162,29 @@ public abstract class SocketConnection {
             public void call(final Object... args) {
                 try {
                     /* Extract array of messages from server*/
-                    //JSONArray msgs = (JSONArray) args[0];
+                    JSONArray messages = (JSONArray) args[0];
+
+                    /*Convert received array into a json*/
+                    JSONObject json= new JSONObject(); // {} an empty json
+                    json.put("data",json); // {data: [...messages]} a json with data property
 
                     /* Convert json from server into a java object*/
-                    MensajeBean mensajeBean= new Gson().fromJson("{data:[]}", MensajeBean.class);
+                    MensajeBean mensajeBean= new Gson().fromJson(json.toString(), MensajeBean.class);
+
 
                     /* Show msgs*/
-                    //Insert method to show msgs in current activity
+                    ArrayList<MensajeBean.DataBean>msgs=mensajeBean.getData();
+
+                    for (MensajeBean.DataBean msg: msgs) {
+                        Toast.makeText(AppState.getAppContext(), msg.getTexto(), Toast.LENGTH_LONG).show();
+                    }
                 } catch (Exception e) {
                     Log.d("error mostrar_mensaje ", ""+e.toString());
                 }
             }
         });
+
+
     }
 
     public void socketEmitConnect(){
@@ -219,4 +247,5 @@ public abstract class SocketConnection {
         socket.off();
         socket=null;
     }
+
 }

@@ -1,6 +1,7 @@
 package co.cablebox.tv.factory;
 
 import co.cablebox.tv.activity.error.ErrorActivity;
+import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
 import co.cablebox.tv.activity.error.TvboxErrorActivity;
 import co.cablebox.tv.activity.login.LoginActivity;
 import co.cablebox.tv.activity.login.TvboxLoginActivity;

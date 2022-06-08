@@ -640,7 +640,8 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/degradado_list_channel_b"
             android:scrollbars="none"
-            android:textAlignment="center" >
+            android:textAlignment="center"
+            tools:ignore="RtlCompat">
         </ListView>
 
     </LinearLayout>
