@@ -1,17 +1,20 @@
 package co.cablebox.tv.user;
 
-public class TvboxUser implements User{
+public class TvboxUser implements User {
+    /*Consts*/
+    public static final String DEFAULT_SERIAL_NUMBER = "unknown";
     /*Vars*/
     public int deviceType;
     private String serialNumber;
 
     public TvboxUser() {
-        deviceType=DEVICE_TVBOX;
+        deviceType = DEVICE_TVBOX;
+        serialNumber=DEFAULT_SERIAL_NUMBER;
     }
 
     public TvboxUser(String serialNumber) {
-        deviceType=DEVICE_TVBOX;
-        this.serialNumber=serialNumber;
+        deviceType = DEVICE_TVBOX;
+        this.serialNumber = serialNumber;
     }
 
     public String getUserId() {
@@ -28,12 +31,21 @@ public class TvboxUser implements User{
 
     @Override
     public String[] getUserCredentials() {
-        return new String[] {serialNumber};
+        return new String[]{serialNumber};
     }
 
     @Override
     public void setUserCredentials(String[] userCredentials) {
-        this.serialNumber= userCredentials[0];
+        this.serialNumber = userCredentials[0];
     }
 
+    @Override
+    public boolean isLoggedIn() {
+        return false;
+    }
+
+    @Override
+    public void resetUserCredentials() {
+        serialNumber = DEFAULT_SERIAL_NUMBER;
+    }
 }

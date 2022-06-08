@@ -46,5 +46,8 @@ public abstract class ErrorActivity extends AppCompatActivity {
         /* Set Error type and error msg*/
         txtErrorType.setText(errorType);
         txtErrorMsg.setText(errorMsg);
+
+        /*If exist an error, reset user credentials info for user can login again*/
+        AppState.getUser().resetUserCredentials();
     }
 }

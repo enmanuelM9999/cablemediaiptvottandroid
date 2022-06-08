@@ -4,7 +4,7 @@ public interface User {
     int DEVICE_SMARTPHONE =0;
     int DEVICE_TVBOX=1;
 
-     String getUserId();
+    String getUserId();
 
     void setUserId(String userId);
 
@@ -13,5 +13,10 @@ public interface User {
     String[] getUserCredentials();
 
     void setUserCredentials(String[] userCredentials);
+
+    boolean isLoggedIn();
+
+    void resetUserCredentials();
+
 }
 

@@ -3,8 +3,12 @@ package co.cablebox.tv.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Set;
+
+import co.cablebox.tv.user.User;
 
 public class PreUtils {
     private final static String LIVE_INFO = "live";
@@ -29,4 +33,6 @@ public class PreUtils {
         SharedPreferences sp = context.getSharedPreferences(IP_INFO, Context.MODE_PRIVATE);
         return sp.getString(key , defValue);
     }
+
+
 }

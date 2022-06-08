@@ -3,6 +3,8 @@ package co.cablebox.tv;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
 import co.cablebox.tv.activity.VideoPlayerActivityBox;
 import co.cablebox.tv.activity.error.ErrorActivity;
 import co.cablebox.tv.activity.error.TvboxErrorActivity;
@@ -56,7 +58,7 @@ public class AppState {
         AppState.appFactory =appFactory;
         setSocketConnection(getAppFactory().getSocketConnection());
         setUser(getAppFactory().getUser());
-    };
+    }
 
     /*Transactional*/
     public static void restartSocketConnection() {
