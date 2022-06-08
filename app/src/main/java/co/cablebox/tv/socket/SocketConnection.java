@@ -1,7 +1,5 @@
 package co.cablebox.tv.socket;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -9,13 +7,10 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
-import co.cablebox.tv.activity.ErrorActivity;
-import co.cablebox.tv.activity.VideoPlayerActivityBox;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
-import co.cablebox.tv.user.SmartphoneUser;
-import co.cablebox.tv.user.User;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -118,11 +113,6 @@ public abstract class SocketConnection {
             }
         });
 
-
-
-
-
-
         socket.on("mensaje_error", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
@@ -182,14 +172,14 @@ public abstract class SocketConnection {
     public abstract void socketEmitJoin();
 
     private void openVideoPlayer(Channels channels){
-        AppState.openVideoPlayer(channels);
+        ActivityLauncher.launchVideoPlayer(channels);
     }
 
     /**
      * Notify an error. Then, show the Error Activity
      */
     public void openErrorActivity(String errorType,String errorMsg){
-        AppState.openErrorActivity(errorType,errorMsg);
+        ActivityLauncher.launchErrorActivity(errorType,errorMsg);
     }
 
     /**

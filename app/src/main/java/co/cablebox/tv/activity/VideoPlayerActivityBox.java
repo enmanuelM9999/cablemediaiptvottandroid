@@ -2659,6 +2659,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             mediaPlayer.pause();
             //ivlcVout.detachViews();
         }
+
+        AppState.restartSocketConnection();
         cerrarApp();
     }
 

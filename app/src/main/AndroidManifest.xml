@@ -103,18 +103,23 @@
             android:screenOrientation="landscape"/>
 
         <activity
-            android:name=".activity.ErrorActivity"
+            android:name=".activity.error.TvboxErrorActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.error.SmartphoneErrorActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".activity.login.SmartphoneLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
 
         <activity
-            android:name=".activity.TvboxLoadingChannelsActivity"
+            android:name=".activity.login.TvboxLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 

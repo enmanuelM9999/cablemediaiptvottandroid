@@ -1,6 +1,5 @@
 package co.cablebox.tv.activity;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -14,13 +13,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import java.lang.reflect.Method;
-
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
-import co.cablebox.tv.socket.SmartphoneSocketConnection;
-import co.cablebox.tv.socket.TvboxSocketConnection;
-import co.cablebox.tv.user.SmartphoneUser;
-import co.cablebox.tv.user.TvboxUser;
+import co.cablebox.tv.activity.login.TvboxLoginActivity;
+import co.cablebox.tv.factory.SmartphoneAppFactory;
+import co.cablebox.tv.factory.TvboxAppFactory;
 import co.cablebox.tv.user.User;
 
 
@@ -45,24 +42,6 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    void startAppProto(){
-        /*Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
-        AppState.restartSocketConnection();
-
-        /*Set app context*/
-        AppState.setAppContext(this);
-
-        /*Check device type*/
-        //setDeviceTypeAndUserId();
-
-        /*Choose if show Mobile GUI or TvBox GUI
-        * Only Tvbox meanwhile
-        * */
-        openTvboxLoadingChannelsActivity();
-    }
-
-
-
     void startApp(){
         try {
             /*...Before this, all app permissions must be granted (Location, Wifi, Cellphone data...)*/
@@ -73,51 +52,38 @@ public class MainActivity extends AppCompatActivity {
             AppState.setAppContext(this);
 
             /*Check device type*/
-            Object[] deviceTypeAndSerialNumber = getDeviceTypeAndSerialNumber();
-            int deviceType= (Integer) deviceTypeAndSerialNumber[0];
-            String serialNumber= (String) deviceTypeAndSerialNumber[1];
+            int deviceType= getDeviceType();
 
-            /*If is tvbox, open TvboxLoadingChannelsActivity
-             * If is smartphone, open LoginActivity
+            /*
+             *Configure the app style depending on the device type
              * */
             boolean isSmartphone= deviceType== User.DEVICE_SMARTPHONE;
             boolean isTvbox= deviceType== User.DEVICE_TVBOX;
 
-
             if (isTvbox){
-                AppState.setSocketConnection(new TvboxSocketConnection());
-                AppState.setUser(new TvboxUser(serialNumber));
-                openTvboxLoadingChannelsActivity();
+                AppState.setAppFactory(new TvboxAppFactory());
             }
             else if (isSmartphone){
-                AppState.setSocketConnection(new SmartphoneSocketConnection());
-                AppState.setUser(new SmartphoneUser());
-                openLogin();
+                AppState.setAppFactory(new SmartphoneAppFactory());
             }
             else{
-                AppState.openErrorActivity("Error","No se reconoce el tipo de dispositivo");
+                ActivityLauncher.launchErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
+            openLogin();
+
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     private void openLogin(){
-        Intent i= new Intent(this, LoginActivity.class);
-        //i.putExtra("errorType",errorType); //pass props to the activity
-        startActivity(i);
-    }
-
-    private void openTvboxLoadingChannelsActivity(){
-        Intent i= new Intent(this, TvboxLoadingChannelsActivity.class);
-        //i.putExtra("errorType",errorType); //pass props to the activity
-        startActivity(i);
+        ActivityLauncher.launchLoginActivity();
     }
 
     /**
      * @return the device type.
      */
-    private Object[] getDeviceTypeAndSerialNumber(){
+    private int getDeviceType(){
         /* If the device has an @imei, that means the device is a cellphone and can use a simcard.
 
          *  If the device does not have imei, that means the device is a tvbox, then
@@ -131,14 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
             if(imei == null){ //is tvbox
                 deviceType= User.DEVICE_TVBOX;
-                serialNumber = getSerialNumber();
             }else{ // is smartphone
                 deviceType= User.DEVICE_SMARTPHONE;
             }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            return new Object[]{deviceType, serialNumber};
+            return deviceType;
         }
     }
 
@@ -196,39 +161,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return "0000000";
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String getSerialNumber() {
-        String serialNumber;
-        try {
-            Class<?> c = Class.forName("android.os.SystemProperties");
-            Method get = c.getMethod("get", String.class);
-
-            serialNumber = (String) get.invoke(c, "gsm.sn1");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "ril.serialnumber");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "ro.serialno");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "sys.serialnumber");
-            if (serialNumber.equals(""))
-                serialNumber = Build.SERIAL;
-
-            // If none of the methods above worked
-            /*if (serialNumber.equals(""))
-                serialNumber = null;
-            if (serialNumber.equals(Build.UNKNOWN))
-                serialNumber = null;*/
-            if (serialNumber.equals(""))
-                serialNumber = Build.getSerial();
-            if (serialNumber.equals(""))
-                serialNumber = "---------------";
-        } catch (Exception e) {
-            e.printStackTrace();
-            serialNumber = null;
-        }
-
-        return serialNumber;
-    }
-
 }
