@@ -6,7 +6,12 @@ import android.os.Looper;
 import android.widget.Toast;
 
 public class ToastManager {
-    public static void toast(final String text) {
+    public static void toast(String text) {
+        showToast(text);
+        showToast(text);
+    }
+
+    private static void showToast(String text){
         Context context= AppState.getAppContext();
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {

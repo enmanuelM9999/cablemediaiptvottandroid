@@ -164,19 +164,10 @@ public abstract class SocketConnection {
                     /* Extract array of messages from server*/
                     JSONArray messages = (JSONArray) args[0];
 
-                    /*Convert received array into a json*/
-                    JSONObject json= new JSONObject(); // {} an empty json
-                    json.put("data",json); // {data: [...messages]} a json with data property
-
-                    /* Convert json from server into a java object*/
-                    MensajeBean mensajeBean= new Gson().fromJson(json.toString(), MensajeBean.class);
-
-
-                    /* Show msgs*/
-                    ArrayList<MensajeBean.DataBean>msgs=mensajeBean.getData();
-
-                    for (MensajeBean.DataBean msg: msgs) {
-                        Toast.makeText(AppState.getAppContext(), msg.getTexto(), Toast.LENGTH_LONG).show();
+                    /*Iterate each message*/
+                    for (int i = 0; i < messages.length(); i++) {
+                        String msg= messages.getString(i);
+                        ToastManager.toast(msg);
                     }
                 } catch (Exception e) {
                     Log.d("error mostrar_mensaje ", ""+e.toString());
