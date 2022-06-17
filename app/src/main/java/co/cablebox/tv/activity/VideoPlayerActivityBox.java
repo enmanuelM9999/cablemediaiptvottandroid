@@ -74,6 +74,7 @@ import java.util.Timer;
 //import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
 import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
@@ -3107,14 +3108,15 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     //Abrir el activity principal
     private void openServiceActivityAsTechnician(){
         prepareForCloseVideoPlayerActivityBox();
-        ServiceProgramActivity.openLiveC(VideoPlayerActivityBox.this);
+        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
         finish();
     }
 
     //Abrir el activity principal
     private void openServiceActivityAsAdvancedTechnician(){
         prepareForCloseVideoPlayerActivityBox();
-        ServiceProgramActivity.openLiveD(VideoPlayerActivityBox.this);
+        ActivityLauncher.launchServiceProgramActivityAsTechnician();
+
         finish();
     }
 

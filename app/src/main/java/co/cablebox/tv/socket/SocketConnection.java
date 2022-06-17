@@ -77,7 +77,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
-                    socketEmitConnect();
+                    //socketEmitConnect();
                 }
                 catch(Exception e){
                     Log.d("error socket ", ""+e.toString());

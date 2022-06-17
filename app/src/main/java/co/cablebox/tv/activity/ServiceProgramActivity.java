@@ -84,12 +84,15 @@ import java.util.List;
 //import butterknife.Bind;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.cablebox.tv.ActivityLauncher;
+import co.cablebox.tv.AppState;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
 import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
+import co.cablebox.tv.user.User;
 import co.cablebox.tv.utils.IResult;
 import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
@@ -271,7 +274,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         private static boolean isTechnician=false;
 
         // Variable que define si la activity cargará ajustes cruciales que pueden causar fallos en la app.
-        private static boolean needsImportantSettings =false;
+        public static boolean needsImportantSettings =false;
 
     private static int what = 0;
     private Handler handler = new Handler() {
@@ -417,15 +420,18 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         setFontOnTitle(); //Fix para que el título tenga una fuente personalizada
 
+        ServiceProgramActivity.isTechnician=true;
+
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-        ipmuxIP = sharpref.getString("IP", ipmuxIP);// ipmux
-        ipmuxPort = sharpref.getString("PORT", ipmuxPort);// ipmux
-        BASE_URI = generateAndReturnIpmuxApiUrl();
+        ipmuxIP = AppState.getUrlService().getIpmuxIP();
+        ipmuxPort = AppState.getUrlService().getIpmuxPort();
+        BASE_URI = AppState.getUrlService().generateAndReturnSocketUri();
         System.out.println("IP: "+BASE_URI);
 
         //Descargar Apk
-        initDescarga();
+        //initDescarga();
 
+        /*Wifi settings*/
         mSwitch = findViewById(R.id.wifiActivationSwitch);
         mWifiActiveTxtView = findViewById(R.id.wifiActivationTv);
         rv = findViewById(R.id.wifiRv);
@@ -442,29 +448,16 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         //informacion del imei del dispositivo
         consultarPermiso(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
-        imei="eb329baf1";
-        if(imei == null){
-            isCel = false;
-            imei = getSerialNumber();
-            imei="eb329baf1";
-            imeiMsg="ID: "+imei;
-            tvImei.setText(imeiMsg);
-            tvImei.setVisibility(View.VISIBLE);
-            /*if (!Settings.canDrawOverlays(getApplicationContext())) {
-                finishAndRemoveTask();
-                startActivity(new Intent("android.settings.action.MANAGE_OVERLAY_PERMISSION"));
-            }
-            bloquearBarras();*/
-        }else{
-            isSmartphoneMode = true;
-            imeiMsg="ID: "+imei;
-            tvImei.setText(imeiMsg);
-            tvImei.setVisibility(View.VISIBLE);
-            url_type = "unicast";
-        }
+        imei= AppState.getUser().getUserId();
+        int deviceType= AppState.getUser().getDeviceType();
+        isSmartphoneMode=deviceType== User.DEVICE_SMARTPHONE;
+
+        imeiMsg="ID: "+imei;
+        tvImei.setText(imeiMsg);
+        tvImei.setVisibility(View.VISIBLE);
 
         //declarar las acciones de peticiones a la api
-        initVolleyCallback();
+        //initVolleyCallback();
 
         //buscar la version de la app del server
         buscarVersion();
@@ -566,9 +559,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                     //mQueue = Volley.newRequestQueue(this);
                     //volleyS = new VolleyS(mQueue);
-                    inicio();
+                    //inicio();
                     //socketNoti();
-                    initData();
+                    //initData();
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(etIP.getWindowToken(), 0);
@@ -1230,7 +1223,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     // Metodo para cerrar la aplicacion
     public void closeApp() {
-        myReceiver.borrarRegistro(myReceiver);
+        //myReceiver.borrarRegistro(myReceiver);
         destroyWifiConnectorListeners();
         turnOffTechnicianMode();
         needsImportantSettings =false;
@@ -2080,8 +2073,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                         switch (theItem.getAction()){
                             case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
+                                ActivityLauncher.launchMainActivity();
+                                /*
                                 turnOffTechnicianMode();
-                                guaranteeOpenChannelsWithBusyWaiting();
+                                guaranteeOpenChannelsWithBusyWaiting();*/
                                 break;
                             case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED:
                                 if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
@@ -2100,10 +2095,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     isUpdatingApp=true;
                                     //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
 
-                                    String fileName="CableBoxTv-TvBox.apk";
+                                    String fileName="ipmux_tvbox_prototipo.apk";
                                     if (isSmartphoneMode)
-                                        fileName="CableBoxTv-Smartphone.apk";
-                                    myReceiver.download(generateAndReturnIpmuxApksUrl(),fileName);
+                                        fileName="ipmux_smartphone_prototipo.apk";
+                                    myReceiver.download(AppState.getUrlService().generateAndReturnDownloadApkUri(),fileName);
 
                                 }
                                 else{
@@ -2174,7 +2169,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
             //Pintar la ip configurada en el EditText
             SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-            inputNewIp.setText(sharpref.getString("IP", ipmuxIP)+":"+sharpref.getString("PORT", ipmuxPort));
+            inputNewIp.setText(AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
             inputNewIp.setMaxLines(1);
             inputNewIp.setPadding(20,10,20,10);
             builder.setView(inputNewIp);
@@ -2196,7 +2191,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         editor.putString("IP", ipmuxIP);
                         editor.putString("PORT", ipmuxPort);
                         editor.commit();
-                        BASE_URI = generateAndReturnIpmuxApiUrl();
+
+                        AppState.getUrlService().setSocketIP(ipmuxIP);
+                        AppState.getUrlService().setSocketPort(ipmuxPort);
+                        BASE_URI = AppState.getUrlService().generateAndReturnSocketUri();
 
                         PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
@@ -2209,9 +2207,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         Toast.makeText(ServiceProgramActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
 
 
-                        inicio();
+                        //inicio();
                         //socketNoti();
-                        initData();
+                        //initData();
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(inputNewIp.getWindowToken(), 0);
@@ -2265,7 +2263,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private void setUserInfo(){
         tvInfoImei.setText(imeiMsg);
-        tvInfoServer.setText("Server: "+generateAndReturnIpmuxUrl());
+        tvInfoServer.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUri());
     }
 
 

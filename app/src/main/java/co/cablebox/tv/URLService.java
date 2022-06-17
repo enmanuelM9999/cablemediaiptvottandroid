@@ -32,6 +32,11 @@ public class URLService {
         return ""+ipmuxProtocol+ipmuxIP+portNotation+ipmuxPort+ipmuxApiPath;
     }
 
+
+    public String generateAndReturnDownloadApkUri(){
+        return "http://51.161.73.217:5508/file/subidas";
+    }
+
     /**
      * Método que lee las variables socketProtocol, socketIP, socketPort, y construye una uri para que la app acceda al servidor de sockets y haga peticiones
      * */
@@ -39,6 +44,15 @@ public class URLService {
         String portNotation= this.portNotation;
         if (socketPort.equals("")) portNotation="";
         return ""+socketProtocol+socketIP+portNotation+socketPort;
+    }
+
+    /**
+     * Método que lee las variables socketProtocol, socketIP, socketPort, y construye una uri para que la app acceda al servidor de sockets y haga peticiones
+     * */
+    public String generateAndReturnSocketUriWithoutProtocol(){
+        String portNotation= this.portNotation;
+        if (socketPort.equals("")) portNotation="";
+        return ""+socketIP+portNotation+socketPort;
     }
 
     public String getIpmuxIP() {
@@ -55,5 +69,21 @@ public class URLService {
 
     public void setIpmuxPort(String ipmuxPort) {
         this.ipmuxPort = ipmuxPort;
+    }
+
+    public String getSocketIP() {
+        return socketIP;
+    }
+
+    public void setSocketIP(String socketIP) {
+        this.socketIP = socketIP;
+    }
+
+    public String getSocketPort() {
+        return socketPort;
+    }
+
+    public void setSocketPort(String socketPort) {
+        this.socketPort = socketPort;
     }
 }

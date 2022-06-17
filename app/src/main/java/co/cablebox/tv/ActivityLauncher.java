@@ -3,6 +3,8 @@ package co.cablebox.tv;
 import android.content.Context;
 import android.content.Intent;
 
+import co.cablebox.tv.activity.MainActivity;
+import co.cablebox.tv.activity.ServiceProgramActivity;
 import co.cablebox.tv.activity.VideoPlayerActivityBox;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.user.User;
@@ -44,6 +46,31 @@ public class ActivityLauncher {
         Intent i= new Intent(context, errorActivity);
         i.putExtra("errorType",errorType); //pass props to the activity
         i.putExtra("errorMsg",errorMsg); //pass props to the activity
+        context.startActivity(i);
+    }
+
+    public static void launchServiceProgramActivityAsTechnician(){
+        Context context= AppState.getAppContext();
+        Class<?> activityClass= ServiceProgramActivity.class;
+
+        Intent i= new Intent(context, activityClass);
+        ServiceProgramActivity.needsImportantSettings = true;
+        context.startActivity(i);
+    }
+
+    public static void launchServiceProgramActivityAsNormalUser(){
+        Context context= AppState.getAppContext();
+        Class<?> activityClass= ServiceProgramActivity.class;
+
+        Intent i= new Intent(context, activityClass);
+        ServiceProgramActivity.needsImportantSettings = false;
+        context.startActivity(i);
+    }
+
+    public static void launchMainActivity(){
+        Context context= AppState.getAppContext();
+        Intent i= new Intent(context, MainActivity.class);
+        //i.putExtra("errorType",errorType); //pass props to the activity
         context.startActivity(i);
     }
 }
