@@ -38,8 +38,9 @@ public class SmartphoneLoginActivity extends AppCompatActivity implements IpmuxA
         initOnClickEvents();
 
         /*Check if user already logged in*/
-        if (AppState.getUser().isLoggedIn())
-            AppState.getSocketConnection().socketEmitConnect();
+        /*
+        * if (AppState.getUser().isLoggedIn())
+            AppState.getSocketConnection().socketEmitConnect();En*/
     }
 
     @Override
