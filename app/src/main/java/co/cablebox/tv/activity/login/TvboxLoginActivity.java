@@ -7,13 +7,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
+import co.cablebox.tv.URLService;
 
 public class TvboxLoginActivity extends AppCompatActivity implements LoginActivity{
+
+    @BindView(R.id.tvSerialNumber)
+    TextView tvSerialNumber;
+
+    @BindView(R.id.tvServerInfo)
+    TextView tvServerInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +39,42 @@ public class TvboxLoginActivity extends AppCompatActivity implements LoginActivi
     }
 
     private void start(){
-
         /*Set GUI*/
         setContentView(R.layout.activity_tvbox_loading_channels);
+        ButterKnife.bind(this);
 
         /*Active full screen*/
         setFullScreenMode();
 
         /*Set serialNumber in User credentials*/
         String serialNumber= getSerialNumber();
+        //String serialNumber="enm12345";//---------------temp
         AppState.getUser().setUserCredentials(new String[]{serialNumber});
+
+        /*Set serial number and server info in screen*/
+        showSerialNumberAndServerInfo();
 
         /*Connect socket*/
         connectSocket();
+    }
+
+    private void showSerialNumberAndServerInfo(){
+        showSerialNumber();
+        showServerInfo();
+    }
+    private void showServerInfo(){
+        /*Get server info*/
+        String serverInfo= AppState.getUrlService().generateAndReturnSocketUri();
+
+        /*Set server info*/
+        tvServerInfo.setText(serverInfo);
+    }
+    private void showSerialNumber(){
+        /*Get serial number info*/
+        String serialNumber= AppState.getUser().getUserId();
+
+        /*Set serial number*/
+        tvSerialNumber.setText(serialNumber);
     }
 
     private void connectSocket(){

@@ -18,6 +18,12 @@ public abstract class ErrorActivity extends AppCompatActivity {
     @BindView(R.id.txtErrorMsg)
     TextView txtErrorMsg;
 
+    @BindView(R.id.tvErrorUserId)
+    TextView tvErrorUserId;
+
+    @BindView(R.id.tvErrorServerInfo)
+    TextView tvErrorServerInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,14 @@ public abstract class ErrorActivity extends AppCompatActivity {
         txtErrorType.setText(errorType);
         txtErrorMsg.setText(errorMsg);
 
+        /* Set user info and server info*/
+        tvErrorUserId.setText(AppState.getUser().getUserId());
+        tvErrorServerInfo.setText(AppState.getUrlService().generateAndReturnSocketUri());
+
         /*If exist an error, reset user credentials info for user can login again*/
         AppState.getUser().resetUserCredentials();
+
     }
+
+    public void loadComponents(){}
 }

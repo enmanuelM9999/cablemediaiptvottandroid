@@ -77,4 +77,71 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_info_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:clipToPadding="true"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-4dp"
+                    android:text="ID: "
+                    android:textColor="#fff"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/tvErrorUserId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-4dp"
+                    android:text="123456789"
+                    android:textColor="#fff"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-4dp"
+                    android:text="Server: "
+                    android:textColor="#fff"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/tvErrorServerInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="-4dp"
+                    android:text="51.111.11.11:1111"
+                    android:textColor="#fff"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

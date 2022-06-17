@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }finally {
             return deviceType;
+            //return User.DEVICE_TVBOX; //---------------temp
         }
     }
 
