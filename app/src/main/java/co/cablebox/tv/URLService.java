@@ -2,6 +2,8 @@ package co.cablebox.tv;
 
 import android.content.SharedPreferences;
 
+import co.cablebox.tv.utils.PreUtils;
+
 public class URLService {
     private final String portNotation=":";
 
@@ -42,8 +44,8 @@ public class URLService {
      * */
     public String generateAndReturnSocketUri(){
         String portNotation= this.portNotation;
-        if (socketPort.equals("")) portNotation="";
-        return ""+socketProtocol+socketIP+portNotation+socketPort;
+        if (getSocketPort().equals("")) portNotation="";
+        return ""+getSocketProtocol()+getSocketIP()+portNotation+getSocketPort();
     }
 
     /**
@@ -51,8 +53,8 @@ public class URLService {
      * */
     public String generateAndReturnSocketUriWithoutProtocol(){
         String portNotation= this.portNotation;
-        if (socketPort.equals("")) portNotation="";
-        return ""+socketIP+portNotation+socketPort;
+        if (getSocketPort().equals("")) portNotation="";
+        return ""+getSocketIP()+portNotation+getSocketPort();
     }
 
     public String getIpmuxIP() {
@@ -72,18 +74,30 @@ public class URLService {
     }
 
     public String getSocketIP() {
-        return socketIP;
+        String ip= PreUtils.getString(AppState.getAppContext(),"SOCKET_IP",this.socketIP);
+        return ip;
     }
 
     public void setSocketIP(String socketIP) {
+        PreUtils.setString(AppState.getAppContext(),"SOCKET_IP",socketIP);
         this.socketIP = socketIP;
     }
 
     public String getSocketPort() {
-        return socketPort;
+        String port= PreUtils.getString(AppState.getAppContext(),"SOCKET_PORT",this.socketPort);
+        return port;
     }
 
     public void setSocketPort(String socketPort) {
+        PreUtils.setString(AppState.getAppContext(),"SOCKET_PORT",socketPort);
         this.socketPort = socketPort;
+    }
+
+    public String getSocketProtocol() {
+        return socketProtocol;
+    }
+
+    public void setSocketProtocol(String socketProtocol) {
+        this.socketProtocol = socketProtocol;
     }
 }
