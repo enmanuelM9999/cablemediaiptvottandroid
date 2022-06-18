@@ -24,6 +24,10 @@ public abstract class ErrorActivity extends AppCompatActivity {
     @BindView(R.id.tvErrorServerInfo)
     TextView tvErrorServerInfo;
 
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
+    private static final String SH0W1M31 = "88888";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

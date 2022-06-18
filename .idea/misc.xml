@@ -75,6 +75,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/activity_service_list.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_tvbox_loading_channels.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/component_num_panel.xml" value="0.16979166666666667" />
         <entry key="app/src/main/res/layout/item.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/item_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/lv_list_item.xml" value="0.25" />
