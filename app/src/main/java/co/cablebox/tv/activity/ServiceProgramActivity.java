@@ -423,13 +423,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         ServiceProgramActivity.isTechnician=true;
 
         SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
-        ipmuxIP = AppState.getUrlService().getIpmuxIP();
-        ipmuxPort = AppState.getUrlService().getIpmuxPort();
+        ipmuxIP = AppState.getUrlService().getSocketIP();
+        ipmuxPort = AppState.getUrlService().getSocketPort();
         BASE_URI = AppState.getUrlService().generateAndReturnSocketUri();
         System.out.println("IP: "+BASE_URI);
 
-        //Descargar Apk
-        //initDescarga();
+        //Necesary for start apk downloading
+        initDescarga();
 
         /*Wifi settings*/
         mSwitch = findViewById(R.id.wifiActivationSwitch);

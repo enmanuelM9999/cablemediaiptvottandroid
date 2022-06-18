@@ -93,6 +93,8 @@ public class MyReceiver extends BroadcastReceiver {
 
 
     public void download (String ipmuxApksUrl, String fileName){
+        System.out.println("-----------------------------------------downloading"+ipmuxApksUrl+"/"+fileName);
+
         //definir la url del archivo a descargar
         DownloadManager downloadmanager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(ipmuxApksUrl+"/"+fileName);
