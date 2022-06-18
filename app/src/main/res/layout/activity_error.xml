@@ -3,145 +3,173 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <LinearLayout
-        android:id="@+id/ll_screen_generic_failure"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:background="#000"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent">
 
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/tv_screen_generic_failure"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="tv_loading.json"
-            app:lottie_loop="true" />
 
         <LinearLayout
-            android:id="@+id/ll_text_screen_generic_failure"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_loading_animation"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/text_view_card_bg"
-            android:padding="20dp"
-            android:layout_marginTop="0dp"
+            android:id="@+id/ll_screen_generic_failure"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="#000"
+            android:gravity="center"
             android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            >
 
-            <TextView
-                android:id="@+id/txtErrorType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/tv_screen_generic_failure"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/segoe_ui_bold"
-                android:text="Algo salió mal"
-                android:textColor="#fff"
-                android:textSize="@dimen/h_40" />
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="tv_loading.json"
+                app:lottie_loop="true" />
 
-            <TextView
-                android:id="@+id/txtErrorMsg"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_text_screen_generic_failure"
+                android:layout_width="400dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_below="@+id/tv_loading_animation"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/text_view_card_bg"
+                android:padding="20dp"
                 android:layout_marginTop="0dp"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+                    android:id="@+id/txtErrorType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Algo salió mal"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/h_40" />
+
+                <TextView
+                    android:id="@+id/txtErrorMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/segoe_ui_bold"
+                    android:text="Estamos recuperando tus canales"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/h_40" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_cargando_canal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_text_screen_generic_failure"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/segoe_ui_bold"
-                android:text="Estamos recuperando tus canales"
+                android:text="@string/powered_by"
                 android:textColor="#fff"
-                android:textSize="@dimen/h_40" />
+                android:textSize="13dp" />
+
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_cargando_canal"
+        <LinearLayout
+            android:id="@+id/ll_info_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ll_text_screen_generic_failure"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/powered_by"
-            android:textColor="#fff"
-            android:textSize="13dp" />
+            android:padding="20dp"
+            android:clipToPadding="true"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:visibility="visible">
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="-4dp"
+                        android:text="ID: "
+                        android:textColor="#fff"
+                        android:textSize="15dp" />
+                    <TextView
+                        android:id="@+id/tvErrorUserId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="-4dp"
+                        android:text="123456789"
+                        android:textColor="#fff"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_info_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:clipToPadding="true"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:visibility="visible">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="-4dp"
+                        android:text="Server: "
+                        android:textColor="#fff"
+                        android:textSize="15dp" />
+                    <TextView
+                        android:id="@+id/tvErrorServerInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="-4dp"
+                        android:text="51.111.11.11:1111"
+                        android:textColor="#fff"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_type_num"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:clipToPadding="true"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            android:visibility="visible"
             >
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btnErrorLaunchLogin"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-4dp"
-                    android:text="ID: "
-                    android:textColor="#fff"
-                    android:textSize="15dp" />
-                <TextView
-                    android:id="@+id/tvErrorUserId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-4dp"
-                    android:text="123456789"
-                    android:textColor="#fff"
-                    android:textSize="15dp" />
-            </LinearLayout>
-        </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:text="Iniciar Sesión"
+                android:visibility="gone"
+                ></Button>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-4dp"
-                    android:text="Server: "
-                    android:textColor="#fff"
-                    android:textSize="15dp" />
-                <TextView
-                    android:id="@+id/tvErrorServerInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="-4dp"
-                    android:text="51.111.11.11:1111"
-                    android:textColor="#fff"
-                    android:textSize="15dp" />
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ android {
     //buildToolsVersion '26.0.3'
 
     defaultConfig {
-        //applicationId "co.ipmux.smartphone.tv"
+        //applicationId "co.ipmux.smartphone.prototype"
         applicationId "co.ipmux.tvbox.prototype"
         minSdkVersion 21
         targetSdkVersion 30

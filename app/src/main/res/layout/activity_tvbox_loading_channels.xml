@@ -50,7 +50,7 @@
 
     <LinearLayout
         android:id="@+id/ll_info_user"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
         android:clipToPadding="true"

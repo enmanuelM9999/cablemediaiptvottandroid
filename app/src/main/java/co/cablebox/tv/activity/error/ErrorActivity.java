@@ -60,6 +60,8 @@ public abstract class ErrorActivity extends AppCompatActivity {
         /*If exist an error, reset user credentials info for user can login again*/
         //AppState.getUser().resetUserCredentials();
 
+        loadComponents();
+
     }
 
     public void loadComponents(){}
