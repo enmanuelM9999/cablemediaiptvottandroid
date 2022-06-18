@@ -77,13 +77,12 @@ import butterknife.ButterKnife;
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
-import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.utils.ConexionSQLiteHelper;
 import co.cablebox.tv.utils.NetWorkUtils;
 import co.cablebox.tv.utils.OnSwipeTouchListener;
-import co.cablebox.tv.utils.PreUtils;
+import co.cablebox.tv.utils.StorageUtils;
 import co.cablebox.tv.utils.Utilidades;
 
 
@@ -826,7 +825,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     private void initData() {
 
 
-            channelIndex = PreUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
+            channelIndex = StorageUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
             if (channelIndex == (channels.getChannels().size()-1))
                 channelIndex = 0;
 
@@ -1161,7 +1160,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             }
         }
         //cargar el activity
-        PreUtils.setInt(context, PROGRAM_KEY, indexOfChannel);
+        StorageUtils.setInt(context, PROGRAM_KEY, indexOfChannel);
         context.startActivity(new Intent(context, VideoPlayerActivityBox.class));
     }
 
@@ -1316,7 +1315,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             //ChannelListActivityBox.channelIndex = channelIndex;
             ChannelListActivityBox.channelIndex = 0;
-            PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
+            StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
             //ChannelListActivityBox.openLive(this, channels, IMEI, mensajeBean, ipmuxIP);
             finish();
         }
@@ -1884,7 +1883,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     public void cerrarApp() {
         System.out.println("---PROGRAM_KEY "+channelIndex);
 
-        PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
+        StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
 
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
@@ -2683,7 +2682,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         super.onDestroy();
 
         System.out.println("onDestroy");
-        PreUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
+        StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
 
         if (networkReceiver != null) {
             unregisterReceiver(networkReceiver);

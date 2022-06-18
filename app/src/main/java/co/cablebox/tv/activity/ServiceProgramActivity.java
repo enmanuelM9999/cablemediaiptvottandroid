@@ -96,7 +96,7 @@ import co.cablebox.tv.user.User;
 import co.cablebox.tv.utils.IResult;
 import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
-import co.cablebox.tv.utils.PreUtils;
+import co.cablebox.tv.utils.StorageUtils;
 import co.cablebox.tv.utils.StreamUtils;
 import co.cablebox.tv.utils.VolleyService;
 import co.cablebox.tv.utils.config.wifi.wificonnector.WifiConnector;
@@ -547,7 +547,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     editor.commit();
                     BASE_URI = generateAndReturnIpmuxApiUrl();
 
-                    PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
+                    StorageUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
                     String localUrl = getServerFromFile(LOCAL_URL);
                     if (!TextUtils.isEmpty(localUrl)) {
@@ -2196,7 +2196,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                         AppState.getUrlService().setSocketPort(ipmuxPort);
                         BASE_URI = AppState.getUrlService().generateAndReturnSocketUri();
 
-                        PreUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
+                        StorageUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
 
                         String localUrl = getServerFromFile(LOCAL_URL);
                         if (!TextUtils.isEmpty(localUrl)) {
@@ -2263,7 +2263,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     private void setUserInfo(){
         tvInfoImei.setText(imeiMsg);
-        tvInfoServer.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUri());
+        tvInfoServer.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
     }
 
 

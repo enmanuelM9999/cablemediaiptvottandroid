@@ -1,8 +1,6 @@
 package co.cablebox.tv;
 
-import android.content.SharedPreferences;
-
-import co.cablebox.tv.utils.PreUtils;
+import co.cablebox.tv.utils.StorageUtils;
 
 public class URLService {
     private final String portNotation=":";
@@ -74,22 +72,22 @@ public class URLService {
     }
 
     public String getSocketIP() {
-        String ip= PreUtils.getString(AppState.getAppContext(),"SOCKET_IP",this.socketIP);
+        String ip= StorageUtils.getString(AppState.getAppContext(),"SOCKET_IP",this.socketIP);
         return ip;
     }
 
     public void setSocketIP(String socketIP) {
-        PreUtils.setString(AppState.getAppContext(),"SOCKET_IP",socketIP);
+        StorageUtils.setString(AppState.getAppContext(),"SOCKET_IP",socketIP);
         this.socketIP = socketIP;
     }
 
     public String getSocketPort() {
-        String port= PreUtils.getString(AppState.getAppContext(),"SOCKET_PORT",this.socketPort);
+        String port= StorageUtils.getString(AppState.getAppContext(),"SOCKET_PORT",this.socketPort);
         return port;
     }
 
     public void setSocketPort(String socketPort) {
-        PreUtils.setString(AppState.getAppContext(),"SOCKET_PORT",socketPort);
+        StorageUtils.setString(AppState.getAppContext(),"SOCKET_PORT",socketPort);
         this.socketPort = socketPort;
     }
 

@@ -79,7 +79,7 @@ import co.cablebox.tv.utils.IResult;
 import co.cablebox.tv.utils.MCrypt;
 import co.cablebox.tv.utils.NetWorkUtils;
 import co.cablebox.tv.utils.OnSwipeTouchListener;
-import co.cablebox.tv.utils.PreUtils;
+import co.cablebox.tv.utils.StorageUtils;
 import co.cablebox.tv.utils.Utilidades;
 import co.cablebox.tv.utils.VolleyService;
 
@@ -967,7 +967,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
         socketNoti();
 
         if (!deMosaico){
-            channelIndex = PreUtils.getInt(VideoPlayerActivity.this, PROGRAM_KEY, 0);
+            channelIndex = StorageUtils.getInt(VideoPlayerActivity.this, PROGRAM_KEY, 0);
             if (channelIndex == (channels.getChannels().size()-1))
                 channelIndex = 0;
         }
@@ -2437,7 +2437,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
     public void cerrarApp() {
         System.out.println("PROGRAM_KEY "+channelIndex);
 
-        PreUtils.setInt(VideoPlayerActivity.this, PROGRAM_KEY, channelIndex);
+        StorageUtils.setInt(VideoPlayerActivity.this, PROGRAM_KEY, channelIndex);
 
         if (mediaPlayer.isPlaying()) {
             pauseChannel();
@@ -3422,7 +3422,7 @@ public class VideoPlayerActivity extends Activity implements IVLCVout.OnNewVideo
         super.onDestroy();
 
         System.out.println("onDestroy");
-        PreUtils.setInt(VideoPlayerActivity.this, PROGRAM_KEY, channelIndex);
+        StorageUtils.setInt(VideoPlayerActivity.this, PROGRAM_KEY, channelIndex);
 
         if (mediaPlayer.isPlaying()) {
             pauseChannel();

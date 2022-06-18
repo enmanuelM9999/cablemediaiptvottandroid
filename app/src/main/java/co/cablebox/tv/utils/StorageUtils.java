@@ -10,7 +10,7 @@ import java.util.Set;
 
 import co.cablebox.tv.user.User;
 
-public class PreUtils {
+public class StorageUtils {
     private final static String LIVE_INFO = "live";
     private final static String IP_INFO = "ip";
 

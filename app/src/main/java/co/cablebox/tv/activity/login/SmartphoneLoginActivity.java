@@ -2,7 +2,6 @@ package co.cablebox.tv.activity.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import butterknife.ButterKnife;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.activity.IpmuxActivity;
 import co.cablebox.tv.R;
-import co.cablebox.tv.utils.PreUtils;
 
 public class SmartphoneLoginActivity extends AppCompatActivity implements IpmuxActivity,LoginActivity {
     @BindView(R.id.username)

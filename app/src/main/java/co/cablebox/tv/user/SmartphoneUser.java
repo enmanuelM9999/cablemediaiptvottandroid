@@ -3,8 +3,7 @@ package co.cablebox.tv.user;
 import android.content.Context;
 
 import co.cablebox.tv.AppState;
-import co.cablebox.tv.user.User;
-import co.cablebox.tv.utils.PreUtils;
+import co.cablebox.tv.utils.StorageUtils;
 
 public class SmartphoneUser implements User {
     /*Consts*/
@@ -25,8 +24,8 @@ public class SmartphoneUser implements User {
         * Load username and password saved in device
         * */
         Context context = AppState.getAppContext();
-        String storedUserName = PreUtils.getString(context, KEY_SMARTPHONE_USERNAME, DEFAULT_SMARTPHONE_USERNAME);
-        String storedPassword = PreUtils.getString(context, KEY_SMARTPHONE_USER_PASSWORD, DEFAULT_SMARTPHONE_USER_PASSWORD);
+        String storedUserName = StorageUtils.getString(context, KEY_SMARTPHONE_USERNAME, DEFAULT_SMARTPHONE_USERNAME);
+        String storedPassword = StorageUtils.getString(context, KEY_SMARTPHONE_USER_PASSWORD, DEFAULT_SMARTPHONE_USER_PASSWORD);
         this.username = storedUserName;
         this.password = storedPassword;
     }
@@ -76,8 +75,8 @@ public class SmartphoneUser implements User {
     }
 
     private void saveUser(String username, String password){
-        PreUtils.setString(AppState.getAppContext(),KEY_SMARTPHONE_USERNAME,username);
-        PreUtils.setString(AppState.getAppContext(),KEY_SMARTPHONE_USER_PASSWORD,password);
+        StorageUtils.setString(AppState.getAppContext(),KEY_SMARTPHONE_USERNAME,username);
+        StorageUtils.setString(AppState.getAppContext(),KEY_SMARTPHONE_USER_PASSWORD,password);
     }
 
 }
