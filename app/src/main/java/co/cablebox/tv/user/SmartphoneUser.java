@@ -56,7 +56,7 @@ public class SmartphoneUser implements User {
         boolean isLoggedIn = true;
 
         /*
-        * If current username AND password are equals to default values, user is no logged in
+        * If current username AND password are equals to default values, user is not logged in
         * */
         if (username.equals(DEFAULT_SMARTPHONE_USERNAME) && password.equals(DEFAULT_SMARTPHONE_USER_PASSWORD))
             isLoggedIn = false;

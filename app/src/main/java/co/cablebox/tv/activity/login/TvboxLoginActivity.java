@@ -64,7 +64,7 @@ public class TvboxLoginActivity extends AppCompatActivity implements LoginActivi
     }
     private void showServerInfo(){
         /*Get server info*/
-        String serverInfo= AppState.getUrlService().generateAndReturnSocketUri();
+        String serverInfo= AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol();
 
         /*Set server info*/
         tvServerInfo.setText(serverInfo);
