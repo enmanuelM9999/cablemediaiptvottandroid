@@ -24,11 +24,14 @@ import io.socket.emitter.Emitter;
 
 public abstract class SocketConnection {
 
-    public static int count=0;
     public Socket socket;
 
     public SocketConnection(){
         //connect you socket client to the server
+            initiSocket();
+    }
+
+    private void initiSocket(){
         try {
             System.out.println("Try SocketConnection Connection ");
             String socketUri= AppState.getUrlService().generateAndReturnSocketUri();
@@ -38,14 +41,15 @@ public abstract class SocketConnection {
                     .build();
             socket = IO.socket(socketUri,options);
             initSocketEvents();
-            //socketEmitConnect();
+        }catch (Exception e){
 
-        } catch (Exception e) {
-            Log.d("error SocketConstructor", ""+e.toString());
-            //e.printStackTrace();
         }
     }
 
+    private void initiSocketAndConnect(){
+       initiSocket();
+       socketEmitConnect();
+    }
 
     private void initSocketEvents(){
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -60,12 +64,26 @@ public abstract class SocketConnection {
             }
         });
 
+        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                try{
+                    System.out.println("-------------------------------CONNECT");
+                    //initiSocketAndConnect();
+                }
+                catch(Exception e){
+                    Log.d("error connect error", ""+e.toString());
+                }
+            }
+        });
+
         socket.on("disconnect", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
                 try{
+                    System.out.println("-------------------------------disconnect");
                     //Toast.makeText(VideoPlayerActivityBox.this, "SKT OFFLINE",Toast.LENGTH_SHORT).show();
-                    socketEmitConnect();
+                    initiSocketAndConnect();
                 }
                 catch(Exception e){
                     Log.d("error socket ", ""+e.toString());
@@ -77,6 +95,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
+                    System.out.println("-------------------------------reconnect");
                     //socketEmitConnect();
                 }
                 catch(Exception e){
@@ -108,6 +127,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
+                    System.out.println("-------------------------------recargar_plan");
                     /* Extract channels from server*/
                     JSONArray channelsFromServer = (JSONArray) args[0];
 
@@ -124,6 +144,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try {
+                    System.out.println("-------------------------------mensaje_error");
                     /* Extract data from server*/
                     String msgType = (String) args[0];
                     String msg = (String) args[1];
@@ -144,6 +165,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try {
+                    System.out.println("-------------------------------ping deco");
                     /* Extract data from server*/
                     String msg = (String) args[0];
 
@@ -161,6 +183,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try {
+                    System.out.println("-------------------------------mostrar mensaje");
                     /* Extract array of messages from server*/
                     JSONArray messages = (JSONArray) args[0];
 
@@ -174,8 +197,6 @@ public abstract class SocketConnection {
                 }
             }
         });
-
-
     }
 
     public void socketEmitConnect(){

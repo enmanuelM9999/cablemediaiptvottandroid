@@ -29,16 +29,14 @@ public class SmartphoneLoginActivity extends AppCompatActivity implements IpmuxA
         ButterKnife.bind(this);
 
         /* App state configs */
-        setContextOnAppState();
         setMessageOnAppState();
 
         /* Set onClick events*/
         initOnClickEvents();
 
         /*Check if user already logged in*/
-        /*
-        * if (AppState.getUser().isLoggedIn())
-            AppState.getSocketConnection().socketEmitConnect();En*/
+        if (AppState.getUser().isLoggedIn())
+            AppState.getSocketConnection().socketEmitConnect();
     }
 
     @Override
@@ -64,11 +62,6 @@ public class SmartphoneLoginActivity extends AppCompatActivity implements IpmuxA
                 Toast.makeText(SmartphoneLoginActivity.this,"Loggin...",Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void setContextOnAppState() {
-        AppState.setAppContext(this);
     }
 
     @Override
