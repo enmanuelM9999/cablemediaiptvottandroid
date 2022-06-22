@@ -1429,6 +1429,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             cerrarApp();
+
                                         }
                                     })
                                     .show();
