@@ -44,9 +44,6 @@ public abstract class ErrorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_error);
         ButterKnife.bind(this);
 
-        /*Set app context*/
-        AppState.setAppContext(this);
-
         /* Recover props*/
         String errorType= getIntent().getStringExtra("errorType");
         String errorMsg= getIntent().getStringExtra("errorMsg");

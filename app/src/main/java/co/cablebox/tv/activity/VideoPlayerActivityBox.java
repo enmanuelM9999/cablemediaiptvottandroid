@@ -93,6 +93,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     private static boolean isSmartphoneMode =false;
 
+    public static boolean canCloseSocketConnectionPauseVideoPlayer =true;
+
     private static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
     private static final String LOCAL_MESSAGES_FILE = "messageList.xml";
 
@@ -501,6 +503,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         setContentView(R.layout.activity_live_box);
 
         try {
+            /*Default*/
+            canCloseSocketConnectionPauseVideoPlayer=true;
+
             /*Recover props*/
             VideoPlayerActivityBox.channels = (Channels) getIntent().getSerializableExtra("channels");
             VideoPlayerActivityBox.isSmartphoneMode= getIntent().getBooleanExtra("isSmartphoneMode",false);
@@ -746,7 +751,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 .show();*/
 
         System.out.println("OnStop......");
-        AppState.restartSocketConnection();
     }
 
     private void registerNetReceiver() {
@@ -1907,6 +1911,10 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         if (networkReceiver != null) {
             unregisterReceiver(networkReceiver);
         }
+
+        /*Socket connection*/
+        if (canCloseSocketConnectionPauseVideoPlayer)
+            AppState.restartSocketConnection();
 
         finish();
     }

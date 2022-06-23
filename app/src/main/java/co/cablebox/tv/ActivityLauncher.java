@@ -40,6 +40,8 @@ public class ActivityLauncher {
      * Notify an error. Then, show the Error Activity
      */
     public static void launchErrorActivity(String errorType, String errorMsg){
+        VideoPlayerActivityBox.canCloseSocketConnectionPauseVideoPlayer=false;
+
         Context context= AppState.getAppContext();
         Class<?> errorActivity= AppState.getAppFactory().getErrorActivity();
 
@@ -58,7 +60,7 @@ public class ActivityLauncher {
     }
 
     private static void launcheServiceProgramActivity(boolean needsImportantSettings){
-        AppState.restartSocketConnection();
+        VideoPlayerActivityBox.canCloseSocketConnectionPauseVideoPlayer=true;
 
         Context context= AppState.getAppContext();
         Class<?> activityClass= ServiceProgramActivity.class;
