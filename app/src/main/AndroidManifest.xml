@@ -76,8 +76,6 @@
 
 
 
-
-
                 <action android:name="com.longjingtech.ott.live" />
             </intent-filter>
         </activity>

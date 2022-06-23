@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -54,6 +55,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
 
 
 import org.videolan.libvlc.interfaces.IVLCVout;
@@ -744,11 +746,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 .show();*/
 
         System.out.println("OnStop......");
-        if (reproduccion != null)
-            reproduccion.cancel(true);
-
-        mediaPlayer.stop();
-        mediaPlayer.getVLCVout().detachViews();
+        AppState.restartSocketConnection();
     }
 
     private void registerNetReceiver() {
@@ -1428,7 +1426,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                                     .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {// un listener que al pulsar, cierre la aplicacion
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            cerrarApp();
+                                            closeApp();
 
                                         }
                                     })
@@ -1881,24 +1879,19 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     // Metodo para cerrar la aplicacion
-    public void cerrarApp() {
-        System.out.println("---PROGRAM_KEY "+channelIndex);
+    public void closeApp() {
+        releaseResources();
+        System.exit(0);
+    }
 
-        StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
+    private void releaseResources(){
+        reproduccion.cancel(true);
 
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+        mediaPlayer.stop();
+        mediaPlayer.getVLCVout().detachViews();
+        mediaPlayer.release();
+        libvlc.release();
 
-        /*if (networkReceiver != null) {
-            unregisterReceiver(networkReceiver);
-        }*/
-
-        /*if (mediaPlayer != null) {
-            mediaPlayer.release();
-            ivlcVout.detachViews();
-            libvlc.release();
-        }*/
 
         llCpuRam.setVisibility(View.INVISIBLE);
         handler.removeCallbacks(r);
@@ -1908,10 +1901,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         tiempo_canal.cancel();
 
         isSmartphoneMode =false;
-        finish();
 
-        //System.exit(0);
-        //android.os.Process.killProcess(android.os.Process.myPid());
+        StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
+
+        if (networkReceiver != null) {
+            unregisterReceiver(networkReceiver);
+        }
+
+        finish();
     }
 
     // Metodos para reconocer cuando se oprime una tecla desde controles compatibles con la TvBox
@@ -2656,14 +2653,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     protected void onPause() {
         super.onPause();
         System.out.println("onPause");
+        releaseResources();
 
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            //ivlcVout.detachViews();
-        }
-
-        //AppState.restartSocketConnection();
-        cerrarApp();
     }
 
     @Override
@@ -2681,22 +2672,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         System.out.println("onDestroy");
-        StorageUtils.setInt(VideoPlayerActivityBox.this, PROGRAM_KEY, channelIndex);
-
-        if (networkReceiver != null) {
-            unregisterReceiver(networkReceiver);
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            ivlcVout.detachViews();
-            libvlc.release();
-        }
-
-        //cerrarApp();
-        finish();
     }
 
     public void showNetworkInfo(String text) {

@@ -50,20 +50,21 @@ public class ActivityLauncher {
     }
 
     public static void launchServiceProgramActivityAsTechnician(){
-        Context context= AppState.getAppContext();
-        Class<?> activityClass= ServiceProgramActivity.class;
-
-        Intent i= new Intent(context, activityClass);
-        ServiceProgramActivity.needsImportantSettings = true;
-        context.startActivity(i);
+        launcheServiceProgramActivity(true);
     }
 
     public static void launchServiceProgramActivityAsNormalUser(){
+        launcheServiceProgramActivity(false);
+    }
+
+    private static void launcheServiceProgramActivity(boolean needsImportantSettings){
+        AppState.restartSocketConnection();
+
         Context context= AppState.getAppContext();
         Class<?> activityClass= ServiceProgramActivity.class;
 
         Intent i= new Intent(context, activityClass);
-        ServiceProgramActivity.needsImportantSettings = false;
+        ServiceProgramActivity.needsImportantSettings = needsImportantSettings;
         context.startActivity(i);
     }
 

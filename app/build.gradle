@@ -9,10 +9,11 @@ android {
     defaultConfig {
         applicationId "co.ipmux.smartphone.prototype"
         //applicationId "co.ipmux.tvbox.prototype"
+
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 50
-        versionName "5.00"
+        versionName "5.01"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,6 +52,7 @@ dependencies {
     implementation files('libs/gson-2.3.1.jar')
 
     implementation 'com.jakewharton:butterknife:10.2.3'
+    implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     /*implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'com.jakewharton:butterknife:7.0.1'
