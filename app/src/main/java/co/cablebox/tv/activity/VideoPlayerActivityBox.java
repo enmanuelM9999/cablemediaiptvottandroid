@@ -1182,7 +1182,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Escribiendo el numero del canal
     private void canalNum(String num) {
-        if (numChange.length() <= 3) { //permite 3 digitos antes de agregar otro
+        if (numChange.length() <= 3) { //permite 3 digitos antes de agregar otro, max 4 digitos
             handler.removeMessages(CODE_CHANGE_BY_NUM);
             numChange += num;
 
