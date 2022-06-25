@@ -14,7 +14,7 @@ import co.cablebox.tv.AppState;
 import co.cablebox.tv.activity.IpmuxActivity;
 import co.cablebox.tv.R;
 
-public class SmartphoneLoginActivity extends AppCompatActivity implements IpmuxActivity,LoginActivity {
+public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActivity{
     @BindView(R.id.username)
     EditText etUsername;
     @BindView(R.id.password)

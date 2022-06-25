@@ -282,7 +282,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case CODE_TRY_PLAYER:
-
                         try {
                             openChannels();
                         }catch(Exception e){
@@ -367,6 +366,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             }
         }
     };
+
+
 
     private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
     private static final String SH0W1M31 = "88888";

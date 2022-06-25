@@ -17,7 +17,7 @@ import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
 import co.cablebox.tv.URLService;
 
-public class TvboxLoginActivity extends AppCompatActivity implements LoginActivity{
+public class TvboxLoginActivity extends LoginActivity {
 
     @BindView(R.id.tvSerialNumber)
     TextView tvSerialNumber;

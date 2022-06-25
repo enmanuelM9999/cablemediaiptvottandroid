@@ -826,7 +826,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
      * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
     private void initData() {
 
-
             channelIndex = StorageUtils.getInt(VideoPlayerActivityBox.this, PROGRAM_KEY, 0);
             if (channelIndex == (channels.getChannels().size()-1))
                 channelIndex = 0;
