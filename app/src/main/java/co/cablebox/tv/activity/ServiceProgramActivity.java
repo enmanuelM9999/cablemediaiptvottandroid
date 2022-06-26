@@ -2096,10 +2096,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     isUpdatingApp=true;
                                     //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
 
-                                    String fileName="ipmux_tvbox_prototipo.apk";
+                                    String fileName=AppState.getUrlService().getTvboxApkName();
                                     if (isSmartphoneMode)
-                                        fileName="ipmux_smartphone_prototipo.apk";
-                                    myReceiver.download(AppState.getUrlService().generateAndReturnDownloadApkUri(),fileName);
+                                        fileName=AppState.getUrlService().getSmartphoneApkName();
+                                    myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
 
                                 }
                                 else{
@@ -2169,7 +2169,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             inputNewIp= new EditText(ServiceProgramActivity.this);
 
             //Pintar la ip configurada en el EditText
-            SharedPreferences sharpref = getPreferences(getBaseContext().MODE_PRIVATE);
             inputNewIp.setText(AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
             inputNewIp.setMaxLines(1);
             inputNewIp.setPadding(20,10,20,10);
@@ -2183,31 +2182,15 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                     if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
 
-                        String myarray []=  getIpAndPortByText(inputNewIp.getText().toString());
+                        String myarray []=  getIpAndPortByText(txt);
                         ipmuxIP=myarray[0];
                         ipmuxPort=myarray[1];
 
-                        SharedPreferences sharepref = getPreferences(getApplicationContext().MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharepref.edit();
-                        editor.putString("IP", ipmuxIP);
-                        editor.putString("PORT", ipmuxPort);
-                        editor.commit();
-
                         AppState.getUrlService().setSocketIP(ipmuxIP);
                         AppState.getUrlService().setSocketPort(ipmuxPort);
-                        BASE_URI = AppState.getUrlService().generateAndReturnSocketUri();
-
-                        StorageUtils.setString(ServiceProgramActivity.this, IP_KEY, BASE_URI);
-
-                        String localUrl = getServerFromFile(LOCAL_URL);
-                        if (!TextUtils.isEmpty(localUrl)) {
-                            BASE_URI = localUrl;
-                        }
 
                         llIpNueva.setVisibility(View.INVISIBLE);
                         Toast.makeText(ServiceProgramActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
-
-
                         //inicio();
                         //socketNoti();
                         //initData();

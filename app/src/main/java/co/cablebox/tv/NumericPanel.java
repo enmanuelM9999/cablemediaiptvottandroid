@@ -11,14 +11,14 @@ public class NumericPanel extends Activity {
     private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
     private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
     private String wordKey = "";
-    private final static int CODE_SALIR_APP = 3;
+    private final static int CODE_OPEN_SETTINGS = 3;
     private int delayBusNum = 3000;
 
     public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case CODE_SALIR_APP:
+                case CODE_OPEN_SETTINGS:
                     if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
                         ActivityLauncher.launchServiceProgramActivityAsNormalUser();
                     } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
@@ -81,7 +81,7 @@ public class NumericPanel extends Activity {
 
     public void pressNumber(String number){
         wordKey += number;
-        handler.removeMessages(CODE_SALIR_APP);
-        handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
+        handler.removeMessages(CODE_OPEN_SETTINGS);
+        handler.sendEmptyMessageDelayed(CODE_OPEN_SETTINGS, delayBusNum);
     }
 }

@@ -14,6 +14,9 @@ public class URLService {
     private  String socketIP = ipmuxIP;
     private  String socketPort = "4010";
 
+    private String tvboxApkName ="ipmux_tvbox_prototipo.apk";
+    private String smartphoneApkName ="ipmux_smartphone_prototipo.apk";
+
     public URLService(){
 
     }
@@ -33,8 +36,8 @@ public class URLService {
     }
 
 
-    public String generateAndReturnDownloadApkUri(){
-        return "http://51.161.73.217:5508/file/subidas";
+    public String generateAndReturnApkDownloadUri(){
+        return "http://51.161.73.216:5508/file/subidas";
     }
 
     /**
@@ -97,5 +100,13 @@ public class URLService {
 
     public void setSocketProtocol(String socketProtocol) {
         this.socketProtocol = socketProtocol;
+    }
+
+    public String getTvboxApkName() {
+        return tvboxApkName;
+    }
+
+    public String getSmartphoneApkName() {
+        return smartphoneApkName;
     }
 }
