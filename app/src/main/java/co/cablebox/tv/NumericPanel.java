@@ -1,87 +1,243 @@
 package co.cablebox.tv;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import butterknife.BindView;
 
 public class NumericPanel extends Activity {
 
+    //Panel de Numeros
+    @BindView(R.id.ll_type_num)
+    LinearLayout llTypeNum;
+    @BindView(R.id.rl_panel_num)
+    RelativeLayout rlPanelNum;
 
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
-    private String wordKey = "";
-    private final static int CODE_OPEN_SETTINGS = 3;
-    private int delayBusNum = 3000;
+    @BindView(R.id.tv_num_one)
+    TextView numOne;
+    @BindView(R.id.tv_num_two)
+    TextView numTwo;
+    @BindView(R.id.tv_num_three)
+    TextView numThree;
+    @BindView(R.id.tv_num_four)
+    TextView numFour;
+    @BindView(R.id.tv_num_five)
+    TextView numFive;
+    @BindView(R.id.tv_num_six)
+    TextView numSix;
+    @BindView(R.id.tv_num_seven)
+    TextView numSeven;
+    @BindView(R.id.tv_num_eight)
+    TextView numEight;
+    @BindView(R.id.tv_num_nine)
+    TextView numNine;
+    @BindView(R.id.tv_num_zero)
+    TextView numZero;
 
-    public Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case CODE_OPEN_SETTINGS:
-                    if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
-                        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
-                    } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                        ActivityLauncher.launchServiceProgramActivityAsTechnician();
-                    }
-                    wordKey = "";
-                    break;
+    /**
+     * Acciones para el evento touch para todos los elementos que conforman el entorno del panel numérico
+     */
+    private void numberTypingOnActionTouch(){
+        //boton que hace visible el panel numérico
+        llTypeNum.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
 
-            }
-        }
-    };
+                    case MotionEvent.ACTION_DOWN:
+                        llTypeNum.setBackground(getDrawable(R.drawable.bordes_suave_act));
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        switch (keyCode) {
-
-            case KeyEvent.KEYCODE_1:
-                pressNumber("1");
-                break;
-
-            case KeyEvent.KEYCODE_2:
-                pressNumber("2");
-                break;
-
-            case KeyEvent.KEYCODE_3:
-                pressNumber("3");
-                break;
-
-            case KeyEvent.KEYCODE_4:
-                pressNumber("4");
-                break;
-
-            case KeyEvent.KEYCODE_5:
-                pressNumber("5");
-                break;
-
-            case KeyEvent.KEYCODE_6:
-                pressNumber("6");
-                break;
-            case KeyEvent.KEYCODE_7:
-                pressNumber("7");
-                break;
-
-            case KeyEvent.KEYCODE_8:
-                pressNumber("8");
-                break;
-
-            case KeyEvent.FLAG_EDITOR_ACTION:
-                System.out.println("Oprimio Enter");
-                break;
-
-            case KeyEvent.KEYCODE_MENU:
-                //"return true" evita comportamientos por defecto del S.O. para el botón presionado
+                        if (rlPanelNum.getVisibility()==View.VISIBLE){
+                            rlPanelNum.setVisibility(View.INVISIBLE);
+                        }
+                        else{
+                            rlPanelNum.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        llTypeNum.setBackground(null);
+                        break;
+                }
                 return true;
+            }
+        });
 
-        }
-        return super.onKeyDown(keyCode, event);
+        // Cada uno de los numeros del panel para digitar el numero del canal buscado
+        numOne.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numOne.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("1");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numOne.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numTwo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numTwo.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("2");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numTwo.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numThree.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numThree.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("3");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numThree.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numFour.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numFour.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("4");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numFour.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numFive.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numFive.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("5");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numFive.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numSix.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numSix.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("6");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numSix.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numSeven.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numSeven.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("7");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numSeven.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numEight.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numEight.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("8");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numEight.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numNine.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numNine.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("9");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numNine.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
+        numZero.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        numZero.setBackground(getDrawable(R.drawable.bordes_suave_act));
+                        pressNumber("0");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        numZero.setBackground(null);
+                        break;
+                }
+                return true;
+            }
+
+        });
     }
 
-    public void pressNumber(String number){
-        wordKey += number;
-        handler.removeMessages(CODE_OPEN_SETTINGS);
-        handler.sendEmptyMessageDelayed(CODE_OPEN_SETTINGS, delayBusNum);
-    }
+    void pressNumber(String number){}
 }
