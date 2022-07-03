@@ -8,12 +8,13 @@ android {
 
     defaultConfig {
         //applicationId "co.ipmux.smartphone.prototype"
-        applicationId "co.ipmux.tvbox.prototype"
+        //applicationId "co.ipmux.tvbox.prototype"
+        applicationId "co.ipmux.tv"
 
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 50
-        versionName "5.02"
+        versionName "5.10"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
