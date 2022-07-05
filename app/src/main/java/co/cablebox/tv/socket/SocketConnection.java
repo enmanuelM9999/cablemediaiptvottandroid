@@ -24,6 +24,11 @@ import io.socket.emitter.Emitter;
 
 public abstract class SocketConnection {
 
+    public static IO.Options options = IO.Options.builder()
+            .setForceNew(false)
+            .setReconnection(true)
+            .build();
+
     public Socket socket;
 
     public SocketConnection(){
@@ -33,12 +38,8 @@ public abstract class SocketConnection {
 
     private void initiSocket(){
         try {
-            System.out.println("Try SocketConnection Connection ");
+            System.out.println("Try SocketConnection Connection");
             String socketUri= AppState.getUrlService().generateAndReturnSocketUri();
-            IO.Options options = IO.Options.builder()
-                    .setForceNew(true)
-                    .setReconnection(true)
-                    .build();
             socket = IO.socket(socketUri,options);
             initSocketEvents();
         }catch (Exception e){
@@ -56,6 +57,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
+                    System.out.println("-------------------------------connect");
                     socketEmitJoin();
                 }
                 catch(Exception e){
@@ -68,7 +70,7 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
-                    System.out.println("-------------------------------CONNECT");
+                    System.out.println("-------------------------------EVENT_CONNECT_ERROR");
                     //initiSocketAndConnect();
                 }
                 catch(Exception e){
@@ -81,9 +83,19 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try{
-                    System.out.println("-------------------------------disconnect");
+                    String reason= (String) args[0];
+                    System.out.println("-------------------------------disconnect with reason "+reason);
+
+                    if (reason.equals("io server disconnect")){
+                        System.out.println("Disconnected by IPMUX");
+                        initiSocketAndConnect();
+                    }
+                    else if (reason.equals("transport close")){
+                        System.out.println("Disconnected by ipmux restart");
+                    }
+
                     //Toast.makeText(VideoPlayerActivityBox.this, "SKT OFFLINE",Toast.LENGTH_SHORT).show();
-                    initiSocketAndConnect();
+                    //initiSocketAndConnect();
                 }
                 catch(Exception e){
                     Log.d("error socket ", ""+e.toString());

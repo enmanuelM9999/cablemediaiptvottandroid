@@ -7,7 +7,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -1883,8 +1882,13 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Metodo para cerrar la aplicacion
     public void closeApp() {
-        releaseResources();
+        releaseResourcesAndFinish();
         System.exit(0);
+    }
+
+    private void releaseResourcesAndFinish(){
+        releaseResources();
+        finish();
     }
 
     private void releaseResources(){
@@ -1914,8 +1918,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         /*Socket connection*/
         if (canCloseSocketConnectionPauseVideoPlayer)
             AppState.restartSocketConnection();
-
-        finish();
     }
 
     // Metodos para reconocer cuando se oprime una tecla desde controles compatibles con la TvBox
@@ -2097,6 +2099,18 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                 Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
                 System.out.println("++++++++++++++++++++++++SETTINGS");
                 return true;
+
+            case KeyEvent.KEYCODE_W:
+                try {
+                    releaseResources();
+                    Process proc = Runtime.getRuntime()
+                            .exec(new String[]{ "su", "-c", "reboot -p" });
+                    proc.waitFor();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                break;
 
         }
         return super.onKeyDown(keyCode, event);
@@ -2660,7 +2674,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     protected void onPause() {
         super.onPause();
         System.out.println("onPause");
-        releaseResources();
+        releaseResourcesAndFinish();
 
     }
 
