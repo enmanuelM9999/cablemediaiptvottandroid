@@ -6,7 +6,7 @@ public class URLService {
     private final String portNotation=":";
 
     private  String ipmuxProtocol = "http://";
-    private  String ipmuxIP = "51.161.73.216";
+    private  String ipmuxIP = "51.161.73.217";
     private  String ipmuxPort = "5508";
     private  String ipmuxApiPath = "/api/RestController.php";
 
@@ -14,8 +14,8 @@ public class URLService {
     private  String socketIP = ipmuxIP;
     private  String socketPort = "4010";
 
-    private String tvboxApkName ="ipmux_tvbox_prototipo.apk";
-    private String smartphoneApkName ="ipmux_smartphone_prototipo.apk";
+    private String tvboxApkName ="IPMUX_TV.apk";
+    private String smartphoneApkName ="IPMUX_TV.apk";
 
     public URLService(){
 
@@ -37,7 +37,7 @@ public class URLService {
 
 
     public String generateAndReturnApkDownloadUri(){
-        return "http://51.161.73.216:5508/file/subidas";
+        return "http://"+getSocketIP()+":5508/archivos/apk/subidas";
     }
 
     /**

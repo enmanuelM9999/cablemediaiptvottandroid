@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileFilter;
 
+import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
 
 public class MyReceiver extends BroadcastReceiver {
@@ -143,6 +144,71 @@ public class MyReceiver extends BroadcastReceiver {
                     cursor.close();
 
                     //cuando finaliza la descarga, se invoca el método onReceive de esta clase
+                }
+            }
+        }).start();
+    }
+
+    public void download2(String dir, String fileName){
+        eliminarPorExtension("/storage/emulated/0/apk/", "apk");
+
+        //String url = "http://"+dir+"/file/CableBoxTv-Telefono.apk";
+        String url = AppState.getUrlService().generateAndReturnApkDownloadUri() "http://"+dir+"/file/CableBoxTv-TvBox.apk";
+        DownloadManager.Request myRequest;
+
+        myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+
+        myRequest = new DownloadManager.Request(Uri.parse(url));
+        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(url);
+        String name = URLUtil.guessFileName(url, null, fileExtension);
+
+        //Crear la carpeta
+        File myFile = new File(Environment.getExternalStorageDirectory(), "apk");
+        boolean isCreate = myFile.exists();
+        if(!isCreate){
+            myFile.mkdirs();
+        }
+
+        myRequest.setDestinationInExternalPublicDir("/apk", name);
+
+        String h = myRequest.setDestinationInExternalPublicDir("/apk", name).toString();
+
+        Log.e("Ruta_apk", h);
+        Log.e("Descargar", "Ok");
+
+        downloadedId = myDownloadManager.enqueue(myRequest);
+
+        final SeekBar mProgressBar = (SeekBar) myActivity.findViewById(R.id.sb_descarga);
+        final TextView mPorcentaje = (TextView) myActivity.findViewById(R.id.tv_por_descarga);
+        new Thread(new Runnable() {
+            @Override public void run() {
+                System.out.println("Entro");
+                boolean downloading = true;
+                while (downloading) {
+                    DownloadManager.Query q = new DownloadManager.Query();
+                    q.setFilterById(downloadedId);
+                    Cursor cursor = myDownloadManager.query(q);
+                    cursor.moveToFirst();
+                    int bytes_downloaded = cursor.getInt(cursor .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                    int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+
+                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                        downloading = false;
+                    }
+                    final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
+
+                    myActivity.runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            mProgressBar.setProgress((int) dl_progress);
+                            mPorcentaje.setText(dl_progress+"%");
+                        }
+                    });
+
+                    Log.d("Progreso", statusMessage(cursor)+" - "+dl_progress);
+                    if(dl_progress == 100){
+                        //estadoBotones(true);
+                    }
+                    cursor.close();
                 }
             }
         }).start();
