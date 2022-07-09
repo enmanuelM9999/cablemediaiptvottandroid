@@ -40,8 +40,10 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.BaseInputConnection;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -177,6 +179,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         ImageView ivFavorite;
         @BindView(R.id.iv_list)
         ImageView ivList;
+        @BindView(R.id.ivLogout)
+        ImageView ivLogout;
         @BindView(R.id.iv_exit_app)
         ImageView ivExitApp;
         @BindView(R.id.iv_lock)
@@ -1407,6 +1411,28 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             }
 
         });
+
+        // Boton para cerrar sesion
+        ivLogout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        ivLogout.setBackground(getDrawable(R.drawable.bordes_suave_act));
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        ivLogout.setBackground(getDrawable(R.drawable.borde_volumen));
+                        showLogoutDialog();
+
+                        break;
+                }
+                return true;
+            }
+
+        });
+
 
         // Boton para cerra la app por completo
         ivExitApp.setOnTouchListener(new View.OnTouchListener() {
@@ -3410,6 +3436,36 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
         inputConnection.sendKeyEvent(downEvent);
     }
 
+    private void showLogoutDialog(){
+
+            AlertDialog.Builder builder= new AlertDialog.Builder(VideoPlayerActivityBox.this);
+            builder.setTitle("¿Cerrar sesión?");
+            //builder.setMessage(""); //Mensaje además del titulo
+
+            //Set positive button
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityLauncher.logout();
+                }
+            });
+
+            //Set negative button
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+
+            //Create Dialog
+            AlertDialog ad= builder.create();
+            ad.show();
+
+            if (!isSmartphoneMode)
+                ad.getWindow().setLayout(300, 180); //Controlling width and height.
+        }
 
 
 

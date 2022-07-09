@@ -76,4 +76,9 @@ public class ActivityLauncher {
         //i.putExtra("errorType",errorType); //pass props to the activity
         context.startActivity(i);
     }
+
+    public static void logout(){
+        AppState.getUser().resetUserCredentials();
+        launchMainActivity();
+    }
 }

@@ -153,7 +153,7 @@ public class MyReceiver extends BroadcastReceiver {
         eliminarPorExtension("/storage/emulated/0/apk/", "apk");
 
         //String url = "http://"+dir+"/file/CableBoxTv-Telefono.apk";
-        String url = AppState.getUrlService().generateAndReturnApkDownloadUri() "http://"+dir+"/file/CableBoxTv-TvBox.apk";
+        String url = AppState.getUrlService().generateAndReturnApkDownloadUri();
         DownloadManager.Request myRequest;
 
         myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
