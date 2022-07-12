@@ -14,8 +14,9 @@ public class URLService {
     private  String socketIP = ipmuxIP;
     private  String socketPort = "4010";
 
-    private String tvboxApkName ="IPMUX_TV.apk";
-    private String smartphoneApkName ="IPMUX_TV.apk";
+    private String apkName ="IPMUX_TV.apk";
+    private String tvboxApkName =apkName;
+    private String smartphoneApkName =apkName;
 
     public URLService(){
 
@@ -108,5 +109,9 @@ public class URLService {
 
     public String getSmartphoneApkName() {
         return smartphoneApkName;
+    }
+
+    public String getApkName() {
+        return apkName;
     }
 }

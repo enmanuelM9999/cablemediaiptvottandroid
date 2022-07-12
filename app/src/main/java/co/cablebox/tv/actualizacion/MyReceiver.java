@@ -67,6 +67,49 @@ public class MyReceiver extends BroadcastReceiver {
             //obtener la ruta del apk descargado
             DownloadManager downloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
             Uri apkUri = downloadManager.getUriForDownloadedFile(downloadedId);
+            System.out.println("---------path download id: "+apkUri);
+
+            String fileName= AppState.getUrlService().getApkName();
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File file = new File(downloadsDir, fileName);
+            apkUri= Uri.parse("file://"+file.getAbsolutePath());
+
+            System.out.println("---------path absolute: "+apkUri);
+
+
+            //abrir el apk descargado
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                    intent.setData(apkUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    myContext.startActivity(intent);
+                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    myContext.startActivity(intent);
+                }else {
+                    Toast.makeText(myContext, "File not found.", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Log.e("MsjDescargar", "Se descargó sin problemas");
+            handler.sendEmptyMessageDelayed(CODE_DOWNLOAD_SUCCESES, 3000);
+        }
+    }
+
+    public void onReceiveBK(Context context, Intent intent) {
+
+        String action = intent.getAction();
+
+        if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)){
+
+            //obtener la ruta del apk descargado
+            DownloadManager downloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri apkUri = downloadManager.getUriForDownloadedFile(downloadedId);
 
             //abrir el apk descargado
             try {
@@ -93,7 +136,8 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
 
-    public void download (String ipmuxApksUrl, String fileName){
+
+    public void downloaBK (String ipmuxApksUrl, String fileName){
         System.out.println("-----------------------------------------downloading"+ipmuxApksUrl+"/"+fileName);
 
         //definir la url del archivo a descargar
@@ -149,40 +193,35 @@ public class MyReceiver extends BroadcastReceiver {
         }).start();
     }
 
-    public void download2(String dir, String fileName){
-        eliminarPorExtension("/storage/emulated/0/apk/", "apk");
+    public void download (String ipmuxApksUrl, String fileName){
+        System.out.println("-----------------------------------------downloading"+ipmuxApksUrl+"/"+fileName);
 
-        //String url = "http://"+dir+"/file/CableBoxTv-Telefono.apk";
-        String url = AppState.getUrlService().generateAndReturnApkDownloadUri();
-        DownloadManager.Request myRequest;
+        /*Delete file before download*/
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(downloadsDir, fileName);
+        boolean deleted = file.delete();
+        System.out.println("-----------was deleted" +deleted);
 
-        myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        //definir la url del archivo a descargar
+        DownloadManager downloadmanager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(ipmuxApksUrl+"/"+fileName);
 
-        myRequest = new DownloadManager.Request(Uri.parse(url));
-        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(url);
-        String name = URLUtil.guessFileName(url, null, fileExtension);
+        //descargar archivo
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setTitle(fileName);
+        request.setDescription("Downloading");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);//donde se guarda el archivo descargado
+        downloadedId = downloadmanager.enqueue(request); //guardar el id de la descarga en una variable. Esto nos evita tener que borrar el apk del dispositivo si existe.
 
-        //Crear la carpeta
-        File myFile = new File(Environment.getExternalStorageDirectory(), "apk");
-        boolean isCreate = myFile.exists();
-        if(!isCreate){
-            myFile.mkdirs();
-        }
-
-        myRequest.setDestinationInExternalPublicDir("/apk", name);
-
-        String h = myRequest.setDestinationInExternalPublicDir("/apk", name).toString();
-
-        Log.e("Ruta_apk", h);
-        Log.e("Descargar", "Ok");
-
-        downloadedId = myDownloadManager.enqueue(myRequest);
-
+        //informar al usuario de la descarga con una barra de progreso
         final SeekBar mProgressBar = (SeekBar) myActivity.findViewById(R.id.sb_descarga);
         final TextView mPorcentaje = (TextView) myActivity.findViewById(R.id.tv_por_descarga);
         new Thread(new Runnable() {
             @Override public void run() {
                 System.out.println("Entro");
+                myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
                 boolean downloading = true;
                 while (downloading) {
                     DownloadManager.Query q = new DownloadManager.Query();
@@ -209,11 +248,12 @@ public class MyReceiver extends BroadcastReceiver {
                         //estadoBotones(true);
                     }
                     cursor.close();
+
+                    //cuando finaliza la descarga, se invoca el método onReceive de esta clase
                 }
             }
         }).start();
     }
-
     public void Descargar(String dir){
         eliminarPorExtension("/storage/emulated/0/apk/", "apk");
 

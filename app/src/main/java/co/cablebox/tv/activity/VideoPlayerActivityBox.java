@@ -573,6 +573,27 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     }
                 });
 
+                /*Catch screen off event*/
+                IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+                filter.addAction(Intent.ACTION_SCREEN_OFF);
+                BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+                    public void onReceive(Context context, Intent intent) {
+                        if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+                            /*Catch event screen off*/
+                            Log.e("estado", "----------------------Pantalla Apagada");
+                            releaseResourcesAndFinish();
+
+                        }
+                        else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+                            /*Catch event screen on*/
+                            Log.e("estado", "--------------------------Pantalla Encendida");
+                        }
+                    }
+                };
+                registerReceiver(mReceiver, filter);
+
+                /*Volume control*/
                 initVolumeControl();
 
                 //si es modo smartphone, habilitar los botones del panel superior
@@ -992,7 +1013,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                             if(!controlError || numCurrent != channelIndex){
                                 hideLoading();
                                 Log.i(TAG, "onEvent: buffer success...");
-                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 2300); // Desaparecer la pantalla negra con retraso despues de que el buffer del canal está al 100%
+                                handler.sendEmptyMessageDelayed(CODE_HIDE_BLACK, 1500); // Desaparecer la pantalla negra con retraso despues de que el buffer del canal está al 100%
                                 numCurrent = channelIndex;
                                 getCodec();
                             }else {
@@ -2133,6 +2154,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                             .exec(new String[]{ "su", "-c", "reboot -p" });
                     proc.waitFor();
 
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                break;
+
+            case KeyEvent.KEYCODE_Q:
+                try {
+                    openServiceActivityAsTechnician();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -3466,7 +3495,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             if (!isSmartphoneMode)
                 ad.getWindow().setLayout(300, 180); //Controlling width and height.
         }
-
 
 
 
