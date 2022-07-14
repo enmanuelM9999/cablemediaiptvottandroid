@@ -98,7 +98,7 @@ public class WifiListRvAdapter extends RecyclerView.Adapter<WifiListRvAdapter.Wi
 
     }
 
-    interface WifiItemListener {
+    public interface WifiItemListener {
         void onWifiItemClicked(ScanResult scanResult);
 
         void onWifiItemLongClick(ScanResult scanResult);

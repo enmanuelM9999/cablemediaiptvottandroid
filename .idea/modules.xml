@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cmedia_ipmux.iml" filepath="$PROJECT_DIR$/.idea/modules/cmedia_ipmux.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cmedia_ipmux.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libvlc/cmedia_ipmux.libvlc.iml" filepath="$PROJECT_DIR$/.idea/modules/libvlc/cmedia_ipmux.libvlc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cablemediaiptvottandroid.iml" filepath="$PROJECT_DIR$/.idea/modules/cablemediaiptvottandroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/cablemediaiptvottandroid.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/cablemediaiptvottandroid.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libvlc/cablemediaiptvottandroid.libvlc.iml" filepath="$PROJECT_DIR$/.idea/modules/libvlc/cablemediaiptvottandroid.libvlc.iml" />
     </modules>
   </component>
 </project>

@@ -81,7 +81,7 @@ public class ConnectToWifiDialog extends Dialog implements View.OnClickListener 
         dismiss();
     }
 
-    interface DialogListener {
+   public interface DialogListener {
         void onConnectClicked(ScanResult scanResult, String password);
     }
 
