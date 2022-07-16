@@ -20,6 +20,7 @@ import co.cablebox.tv.AppState;
 import co.cablebox.tv.activity.login.TvboxLoginActivity;
 import co.cablebox.tv.factory.SmartphoneAppFactory;
 import co.cablebox.tv.factory.TvboxAppFactory;
+import co.cablebox.tv.factory.TvboxSubscriptionsAppFactory;
 import co.cablebox.tv.user.User;
 
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 ActivityLauncher.launchErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
 
+            AppState.setAppFactory(new TvboxSubscriptionsAppFactory());
             openLogin();
         }catch (Exception e){
             e.printStackTrace();

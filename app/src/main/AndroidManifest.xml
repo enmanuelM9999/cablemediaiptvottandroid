@@ -122,7 +122,10 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 
-
+        <activity
+            android:name=".activity.login.SubscriptionsLoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
 
         <activity
             android:name=".activity.VideoPlayerActivityBox"

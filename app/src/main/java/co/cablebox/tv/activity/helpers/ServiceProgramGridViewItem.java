@@ -10,6 +10,7 @@ public class ServiceProgramGridViewItem {
      */
     public static final String ACTION_TYPE_START_APP ="startApp";
     public static final String ACTION_TYPE_START_CONFIGURATION ="startConfiguration";
+    public static final String ACTION_TYPE_START_SETTINGS ="startSettings";
 
 
     /**

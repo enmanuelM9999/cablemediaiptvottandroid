@@ -3,6 +3,7 @@ package co.cablebox.tv.factory;
 import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
 import co.cablebox.tv.activity.error.TvboxErrorActivity;
 import co.cablebox.tv.activity.login.SmartphoneLoginActivity;
+import co.cablebox.tv.activity.login.SubscriptionsLoginActivity;
 import co.cablebox.tv.socket.SmartphoneSocketConnection;
 import co.cablebox.tv.socket.SocketConnection;
 import co.cablebox.tv.user.SmartphoneUser;
@@ -21,7 +22,7 @@ public class TvboxSubscriptionsAppFactory implements AppFactory{
 
     @Override
     public Class<?>  getLoginActivity() {
-        return SmartphoneLoginActivity.class;
+        return SubscriptionsLoginActivity.class;
     }
 
     @Override

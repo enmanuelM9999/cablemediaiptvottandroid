@@ -113,12 +113,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     @BindView(R.id.cablebox_title)
     TextView tvCableboxTitle;
 
-    @BindView(R.id.ll_info_user)
-    LinearLayout llInfoUser;
-    @BindView(R.id.tv_info_imei)
-    TextView tvInfoImei;
-    @BindView(R.id.tv_info_server)
-    TextView tvInfoServer;
 
     @BindView(R.id.btn_ok)
     Button btnOK;
@@ -292,8 +286,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
                             if(isSmartphoneMode)llTypeNum.setVisibility(View.VISIBLE);
 
-                            tvInfoServer.setTextColor(Color.WHITE);
-                            tvInfoImei.setTextColor(Color.WHITE);
+
                             String aDeviceState= getDeviceState();
                             switch (aDeviceState){
                                 case "Suspension_mora":
@@ -1707,10 +1700,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      */
     public void guaranteeOpenChannelsWithBusyWaiting(){
         //información de usuario
-        llInfoUser.setVisibility(View.VISIBLE);
-        tvInfoServer.setTextColor(Color.BLACK);
-        tvInfoImei.setTextColor(Color.BLACK);
-
 
         llLoadingChannels.setVisibility(View.VISIBLE);
         handler.sendEmptyMessageDelayed(CODE_CAN_SHOW_FAILURE_SCREENS,15000); // se pueden mostrar mensajes de error despues de 15 segundos sin respuesta del servidor
@@ -1786,8 +1775,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         llLoadingChannels.setVisibility(View.INVISIBLE);
         //ocultar pantallas de error "no canales" y "sin conexión"
         hideAllFailureScreens();
-        //ocultar info del usuario
-        llInfoUser.setVisibility(View.INVISIBLE);
         //evitar que se sigan mostrando las pantallas de error "no canales" y "sin conexión"
         canShowFailureScreens=false;
         //dejar de intentar reproducir canales
@@ -1808,8 +1795,6 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
             gridView.setAdapter(null);
             hideWifiPanel();
         }catch(Exception e){}
-        //mostrar la informacion del usuario, como imei y server conectado
-        llInfoUser.setVisibility(View.VISIBLE);
         //tech mode
         isTechnician=false;
     }
@@ -1892,9 +1877,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         gridViewItems= new ArrayList<>();
         gridView = findViewById(R.id.grid_view);
 
+        /*Define all items for grid view*/
         loadConfigurationsToArrayList();
+        loadSettingsToArrayList();
         loadAppsToArrayList();
 
+        /*Set items*/
         loadAllArrayListsToGridView();
         loadGridViewListeners();
         if (!needsImportantSettings){
@@ -1950,47 +1938,61 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     /**
      * Ver loadItemsToGridView()
      */
+    private void loadSettingsToArrayList(){
+
+        if (needsImportantSettings){
+            Drawable icon= getResources().getDrawable(R.drawable.settings);
+            String text= "Ajustes";
+            String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_SETTINGS;
+            String action =Settings.ACTION_SETTINGS;
+            String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+            String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+
+            ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
+            gridViewItems.add(item);
+        }
+    }
+
+    /**
+     * Ver loadItemsToGridView()
+     */
     private void loadAppsToArrayList(){
 
-        Intent i = new Intent(Intent.ACTION_MAIN, null);
-        i.addCategory(Intent.CATEGORY_LAUNCHER);
+        if (needsImportantSettings){
+            Intent i = new Intent(Intent.ACTION_MAIN, null);
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
+            for (ResolveInfo ri: availableActivities){
 
-        List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(i, 0);
-        for (ResolveInfo ri: availableActivities){
-
-            if
-            (   ri.activityInfo.packageName.equals("com.android.tv.settings") ||
-                ri.activityInfo.packageName.equals("tv.pluto.android") ||
-                ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
-                ri.activityInfo.packageName.equals("org.videolan.vlc")
-            )
-            {
-                Drawable icon= ri.loadIcon(packageManager);
-                String text= ri.loadLabel(packageManager).toString();
-                String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_APP;
-                String action =ri.activityInfo.packageName;
-                String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
-                String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+                if
+                (
+                        ri.activityInfo.packageName.equals("tv.pluto.android") ||
+                        ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid") ||
+                        ri.activityInfo.packageName.equals("org.videolan.vlc")
+                )
+                {
+                    Drawable icon= ri.loadIcon(packageManager);
+                    String text= ri.loadLabel(packageManager).toString();
+                    String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_APP;
+                    String action =ri.activityInfo.packageName;
+                    String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+                    String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
 
 
-                //Cambiar el color de fondo segun la app
-                if (ri.activityInfo.packageName.equals("com.android.tv.settings")){
-                    icon=getResources().getDrawable(R.drawable.settings);
+                    if (ri.activityInfo.packageName.equals("tv.pluto.android")){
+                        icon=getResources().getDrawable(R.drawable.pluto_tv_white);
+                    }
+                    if (ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid")) {
+                        icon=getResources().getDrawable(R.drawable.anydesk_white);
+                    }
+                    if (ri.activityInfo.packageName.equals("org.videolan.vlc")){
+                        icon=getResources().getDrawable(R.drawable.vlc_white);
+                    }
+
+
+                    ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
+                    gridViewItems.add(item);
                 }
-
-                if (ri.activityInfo.packageName.equals("tv.pluto.android")){
-                    icon=getResources().getDrawable(R.drawable.pluto_tv_white);
-                   }
-                if (ri.activityInfo.packageName.equals("com.anydesk.anydeskandroid")) {
-                    icon=getResources().getDrawable(R.drawable.anydesk_white);
-                }
-                if (ri.activityInfo.packageName.equals("org.videolan.vlc")){
-                    icon=getResources().getDrawable(R.drawable.vlc_white);
-                }
-
-
-                ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
-                gridViewItems.add(item);
             }
         }
     }
@@ -2117,6 +2119,11 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_APP)){
                         Intent i = packageManager.getLaunchIntentForPackage(theItem.getAction());
                         startActivity(i);
+                    }
+
+                    //si el tipo de acción es igual a abrir ajustes del S.O. ...
+                    else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_SETTINGS)){
+                        startActivity(new Intent(theItem.getAction()));
                     }
                 } catch(Exception e){System.out.println(e);}
 
@@ -2246,8 +2253,8 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     }
 
     private void setUserInfo(){
-        tvInfoImei.setText(imeiMsg);
-        tvInfoServer.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
+        //tvInfoImei.setText(imeiMsg);
+        //tvInfoServer.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
     }
 
 

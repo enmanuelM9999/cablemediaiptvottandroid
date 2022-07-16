@@ -40,10 +40,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.BaseInputConnection;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -325,8 +323,8 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321"; // Ajustes de la app
-    private static final String KEY_OPEN_TECHNICIAN_MODE = "12345"; // Ajustes avanzados de la app
+    private static final String KEY_LAUNCH_SETTINGS_AS_TECHNICIAN = "54321"; // Ajustes de la app
+    private static final String KEY_LAUNCH_SETTINGS_AS_NORMAL_USER = "12345"; // Ajustes avanzados de la app
     private String wordKey = "";
 
     // Variables de Canal actual y programa actual
@@ -381,11 +379,11 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                         viewCpuRam();
                         delayBusNum = 3000;
                         wordKey = "";
-                    } else if (wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                         openServiceActivityAsAdvancedTechnician();
-                    }
-                     else if (wordKey.equals(KEY_OPEN_TECHNICIAN_MODE)){
+                    } else if (wordKey.equals(KEY_LAUNCH_SETTINGS_AS_TECHNICIAN)){
                          openServiceActivityAsTechnician();
+                    }
+                     else if (wordKey.equals(KEY_LAUNCH_SETTINGS_AS_NORMAL_USER)){
+                         openServiceActivityAsNormalUser();
                      }
                     delayBusNum = 3000;
                     wordKey = "";
@@ -1446,7 +1444,6 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
                     case MotionEvent.ACTION_UP:
                         ivLogout.setBackground(getDrawable(R.drawable.borde_volumen));
                         showLogoutDialog();
-
                         break;
                 }
                 return true;
@@ -2161,7 +2158,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
             case KeyEvent.KEYCODE_Q:
                 try {
-                    openServiceActivityAsTechnician();
+                    openServiceActivityAsNormalUser();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -2885,6 +2882,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     };
     private static float getCpuUsage() {
         try {
+
+           
+
             RandomAccessFile randomAccessFile = new RandomAccessFile("/proc/stat", "r");
             String[] split = randomAccessFile.readLine().split(" ");
             long parseLong = Long.parseLong(split[5]);
@@ -3158,17 +3158,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     }
 
     //Abrir el activity principal
-    private void openServiceActivityAsTechnician(){
+    private void openServiceActivityAsNormalUser(){
         prepareForCloseVideoPlayerActivityBox();
         ActivityLauncher.launchServiceProgramActivityAsNormalUser();
         finish();
     }
 
     //Abrir el activity principal
-    private void openServiceActivityAsAdvancedTechnician(){
+    private void openServiceActivityAsTechnician(){
         prepareForCloseVideoPlayerActivityBox();
         ActivityLauncher.launchServiceProgramActivityAsTechnician();
-
         finish();
     }
 
