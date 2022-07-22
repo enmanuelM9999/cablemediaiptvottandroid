@@ -91,48 +91,71 @@
             android:screenOrientation="landscape"
             android:noHistory="true"/>
 
+
+
         <activity
-            android:name=".activity.VideoPlayerActivity"
+            android:name=".activity.videoplayer.TvboxVideoPlayerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activity.videoplayer.SmartphoneVideoPlayerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+
 
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 
+
+
         <activity
             android:name=".activity.error.TvboxErrorActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
-
         <activity
             android:name=".activity.error.SmartphoneErrorActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 
+
+
         <activity
             android:name=".activity.login.SmartphoneLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
-
-
         <activity
             android:name=".activity.login.TvboxLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
-
         <activity
             android:name=".activity.login.SubscriptionsLoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"/>
 
+
+
+
+        <activity
+            android:name=".activity.settings.TvboxSettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activity.settings.SubscriptionsSettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activity.settings.SmartphoneSettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"/>
+
+
+
+
         <activity
             android:name=".activity.VideoPlayerActivityBox"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape" />
-
-        <activity android:name=".activity.ChannelListActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" />
 

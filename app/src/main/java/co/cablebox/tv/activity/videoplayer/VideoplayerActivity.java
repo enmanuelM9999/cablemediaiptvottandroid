@@ -1,7 +1,5 @@
 package co.cablebox.tv.activity.videoplayer;
 
-import static co.cablebox.tv.utils.ToolBox.convertDpToPx;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -90,8 +88,6 @@ import co.cablebox.tv.utils.Utilidades;
 public abstract class VideoplayerActivity extends Activity implements IVLCVout.OnNewVideoLayoutListener {
     private static final String TAG = VideoplayerActivity.class.getName();
 
-    private static boolean isSmartphoneMode =false;
-
     public static boolean canCloseSocketConnectionPauseVideoPlayer =true;
 
     private static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
@@ -103,21 +99,6 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         public static ArrayList<Channels.Channel> canalesFavoritos;
         public static ArrayList<Channels.Channel> canalesAux;
 
-    // Variables de Interfaz
-        /*@BindView(R.id.ll_program_list)
-        LinearLayout llProgramList;
-        @BindView(R.id.tv_program_logo_list_top)
-        ImageView tv_program_logo_list_top;
-        @BindView(R.id.tv_program_name_list_top)
-        TextView tv_program_name_list_top;
-        @BindView(R.id.tv_program_logo_list_center)
-        ImageView tv_program_logo_list_center;
-        @BindView(R.id.tv_program_name_list_center)
-        TextView tv_program_name_list_center;
-        @BindView(R.id.tv_program_logo_list_bot)
-        ImageView tv_program_logo_list_bot;
-        @BindView(R.id.tv_program_name_list_bot)
-        TextView tv_program_name_list_bot;*/
 
         @BindView(R.id.tv_channel_number_change)
         TextView tvChannelNumberChange;
@@ -302,7 +283,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     // Variables para el correcto funcionamiento del reproductor con VLC
         private SurfaceHolder surfaceHolder;
         private LibVLC libvlc = null;
-        private MediaPlayer mediaPlayer = null;
+         MediaPlayer mediaPlayer = null;
         private IVLCVout ivlcVout;
         private Media media;
         private MediaController controller;
@@ -323,15 +304,15 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321"; // Ajustes de la app
-    private static final String KEY_OPEN_TECHNICIAN_MODE = "12345"; // Ajustes avanzados de la app
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "54321"; // Ajustes de la app
+    private static final String KEY_OPEN_USER_MODE = "12345"; // Ajustes avanzados de la app
     private String wordKey = "";
 
     // Variables de Canal actual y programa actual
-        private static int channelIndex = 0;
-        private static int idProgramCurrent = 0;
-        private static int lastChannelIndex=0; //el último canal que se reprodujo, esto para volver al canal anterior con el botón "atrás"
-        private boolean isScreenLocked = false; // true significa Bloqueada, la pantalla no recibe gestos ni eventos touch
+         static int channelIndex = 0;
+         static int idProgramCurrent = 0;
+         static int lastChannelIndex=0; //el último canal que se reprodujo, esto para volver al canal anterior con el botón "atrás"
+         boolean isScreenLocked = false; // true significa Bloqueada, la pantalla no recibe gestos ni eventos touch
 
     private static boolean failNet = false; // Controla cualquier fallo de conexion
 
@@ -379,11 +360,11 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         viewCpuRam();
                         delayBusNum = 3000;
                         wordKey = "";
-                    } else if (wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                         openServiceActivityAsAdvancedTechnician();
+                    } else if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)){
+                         openSttingsActivityAsTechnician();
                     }
-                     else if (wordKey.equals(KEY_OPEN_TECHNICIAN_MODE)){
-                         openServiceActivityAsTechnician();
+                     else if (wordKey.equals(KEY_OPEN_USER_MODE)){
+                         openSettingsActivityAsNormalUser();
                      }
                     delayBusNum = 3000;
                     wordKey = "";
@@ -499,7 +480,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_box);
 
@@ -509,7 +490,6 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
             /*Recover props*/
             VideoplayerActivity.channels = (Channels) getIntent().getSerializableExtra("channels");
-            VideoplayerActivity.isSmartphoneMode= getIntent().getBooleanExtra("isSmartphoneMode",false);
 
             if (isNetDisponible()) {
                 //Conectado a internet
@@ -595,24 +575,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 initVolumeControl();
 
                 //si es modo smartphone, habilitar los botones del panel superior
-                if (isSmartphoneMode)
-                    llSmartphoneButtons.setVisibility(View.VISIBLE);
-                else
-                    llSmartphoneButtons.setVisibility(View.INVISIBLE);
-
-                //fix para que las barras superiores e inferiores no ocupen tanto espacio para telefonos. Hice que ocuparan mucho espacio porque
-                //   los televisores recortan la imagen en los extremos.
-
-                if (isSmartphoneMode){
-                    rlPanelUp.setPadding(convertDpToPx(40,this),convertDpToPx(5,this),convertDpToPx(40,this),convertDpToPx(5,this));
-                    rlDisplayDown.setMinimumHeight(convertDpToPx(70,this));
-                    rlLogo.setMinimumHeight(convertDpToPx(70,this));
-                    llChannelName.setMinimumHeight(convertDpToPx(70,this));
-                    panelDownChannelInfo2.setMinimumHeight(convertDpToPx(70,this));
-                }
-
-
-
+                llSmartphoneButtons.setVisibility(View.INVISIBLE);
 
             } else {
                 //no conectado a internet
@@ -846,7 +809,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     /* Iniciar Variables necesarias para la actividad
      * se comprueba el ultimo canal elegido, esto es guardado en la cache de la aplicacion*/
-    private void initData() {
+    void initData() {
 
             channelIndex = StorageUtils.getInt(VideoplayerActivity.this, PROGRAM_KEY, 0);
             if (channelIndex == (channels.getChannels().size()-1))
@@ -942,7 +905,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     /*Para el codigo de la fecha en la pagina https://www.epochconverter.com/ usando local time
      * Se obtiene el id del programa actual del canal actual, esto se actualiza cada que se cambia de canal*/
-    private void setIdProgramaActual() {
+    void setIdProgramaActual() {
         Calendar c = Calendar.getInstance();
 
         for (int i = 0; i < channels.getChannels().get(channelIndex).getProgramas().size(); i++) {
@@ -959,7 +922,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Inicializa todas las variables requeridas para la reproduccion y carga el canal actual
-    private void initPlayer() {
+    void initPlayer() {
         ArrayList<String> options = new ArrayList<>();
         options.add("--aout=opensles");
         options.add("--audio-time-stretch");
@@ -1148,12 +1111,6 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     }
 
-    // Iniciar actividad VideoPlayerActivity
-    public static void openLive(Context context, Channels channels, boolean anIsSmartPhoneMode) {
-        VideoplayerActivity.channels = channels;
-        VideoplayerActivity.isSmartphoneMode=anIsSmartPhoneMode;
-        context.startActivity(new Intent(context, VideoplayerActivity.class));
-    }
 
     // Iniciar actividad VideoPlayerActivity desde la vista de Categorias
     public static void openLiveB(Context context, Channels channels, MensajeBean mensajeBean, String num, String IMEI) {
@@ -1351,7 +1308,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Llenar Lista de Canales en interfaz
-    private void adaptarListaCanales() {
+    void adaptarListaCanales() {
         final ArrayList<Channels.Channel> canales = new ArrayList<>();
         for(Channels.Channel item: channels.getChannels() ){
             if(!item.getNum().equals(numCanalInformativo)){
@@ -1411,7 +1368,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     //Pulsasiones
-    private void onActionTouch(){
+    void onActionTouch(){
 
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
@@ -1931,7 +1888,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         System.exit(0);
     }
 
-    private void releaseResourcesAndFinish(){
+    void releaseResourcesAndFinish(){
         releaseResources();
         finish();
     }
@@ -1952,7 +1909,6 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         tiempo_canal.cancel();
 
-        isSmartphoneMode =false;
 
         StorageUtils.setInt(VideoplayerActivity.this, PROGRAM_KEY, channelIndex);
 
@@ -2159,7 +2115,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
             case KeyEvent.KEYCODE_Q:
                 try {
-                    openServiceActivityAsTechnician();
+                    openSettingsActivityAsNormalUser();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -2275,7 +2231,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Actualiza en la interfaz toda la informacion del canal actual
-    private void showProgramInfo() {
+    void showProgramInfo() {
         pbError.setText("");
         pbError.setVisibility(View.INVISIBLE);
         tvQuality.setText("");
@@ -2804,7 +2760,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Comprobar si la conexion esta disponible
-    private boolean isNetDisponible() {
+    boolean isNetDisponible() {
 
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -3156,17 +3112,16 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     //Abrir el activity principal
-    private void openServiceActivityAsTechnician(){
+    public void openSettingsActivityAsNormalUser(){
         prepareForCloseVideoPlayerActivityBox();
-        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
+        ActivityLauncher.launchSettingsActivityAsNormalUser();
         finish();
     }
 
     //Abrir el activity principal
-    private void openServiceActivityAsAdvancedTechnician(){
+    public void openSttingsActivityAsTechnician(){
         prepareForCloseVideoPlayerActivityBox();
-        ActivityLauncher.launchServiceProgramActivityAsTechnician();
-
+        ActivityLauncher.launchSettingsActivityAsTechnician();
         finish();
     }
 
@@ -3443,7 +3398,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         wasUnmuted=false;
     }
 
-    private void initVolumeControl(){
+    void initVolumeControl(){
       audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }
 
@@ -3463,7 +3418,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         inputConnection.sendKeyEvent(downEvent);
     }
 
-    private void showLogoutDialog(){
+    public void showLogoutDialog(){
 
             AlertDialog.Builder builder= new AlertDialog.Builder(VideoplayerActivity.this);
             builder.setTitle("¿Cerrar sesión?");
@@ -3485,13 +3440,12 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 }
             });
 
-
             //Create Dialog
             AlertDialog ad= builder.create();
             ad.show();
 
-            if (!isSmartphoneMode)
-                ad.getWindow().setLayout(300, 180); //Controlling width and height.
+            //dont add in smartphone
+            ad.getWindow().setLayout(300, 180); //Controlling width and height.
         }
 
 

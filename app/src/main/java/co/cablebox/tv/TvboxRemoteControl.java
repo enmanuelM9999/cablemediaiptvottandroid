@@ -20,9 +20,9 @@ public class TvboxRemoteControl extends Activity {
             switch (msg.what) {
                 case CODE_OPEN_SETTINGS:
                     if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
-                        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
+                        ActivityLauncher.launchSettingsActivityAsNormalUser();
                     } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                        ActivityLauncher.launchServiceProgramActivityAsTechnician();
+                        ActivityLauncher.launchSettingsActivityAsTechnician();
                     }
                     wordKey = "";
                     break;

@@ -7,21 +7,19 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.view.Display;
 
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
-import co.cablebox.tv.activity.login.TvboxLoginActivity;
 import co.cablebox.tv.factory.SmartphoneAppFactory;
 import co.cablebox.tv.factory.TvboxAppFactory;
-import co.cablebox.tv.factory.TvboxSubscriptionsAppFactory;
+import co.cablebox.tv.factory.SubscriptionsAppFactory;
 import co.cablebox.tv.user.User;
+import co.cablebox.tv.utils.StorageUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,13 +53,18 @@ public class MainActivity extends AppCompatActivity {
             AppState.setAppContext(this);
 
             /*Check device type*/
-            int deviceType= getDeviceType();
+            String deviceType= getDeviceType();
+
+            /*Check local storage for saved app style*/
+            deviceType=StorageUtils.getString(AppState.getAppContext(),"DEVICE_TYPE",deviceType);
 
             /*
              *Configure the app style depending on the device type
              * */
-            boolean isSmartphone= deviceType== User.DEVICE_SMARTPHONE;
-            boolean isTvbox= deviceType== User.DEVICE_TVBOX;
+            boolean isSmartphone= deviceType.equals(User.USER_DEVICE_SMARTPHONE);
+            boolean isTvbox= deviceType.equals(User.USER_DEVICE_TVBOX);
+            boolean isTvboxSubscriptions= deviceType.equals(User.USER_DEVICE_TVBOX_SUBSCRIPTIONS);
+
 
             if (isTvbox){
                 AppState.setAppFactory(new TvboxAppFactory());
@@ -69,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
             else if (isSmartphone){
                 AppState.setAppFactory(new SmartphoneAppFactory());
             }
+            else if (isTvboxSubscriptions){
+                AppState.setAppFactory(new SubscriptionsAppFactory());
+            }
             else{
                 ActivityLauncher.launchErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
 
-            AppState.setAppFactory(new TvboxSubscriptionsAppFactory());
             openLogin();
         }catch (Exception e){
             e.printStackTrace();
@@ -87,22 +92,22 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @return the device type.
      */
-    private int getDeviceType(){
+    private String getDeviceType(){
         /* If the device has an @imei, that means the device is a cellphone and can use a simcard.
 
          *  If the device does not have imei, that means the device is a tvbox, then
          *   extract the @serialNumber of it.
          * */
-        int deviceType = User.DEVICE_SMARTPHONE;
+        String deviceType = User.USER_DEVICE_SMARTPHONE;
         String serialNumber="unknown";
         try {
             //Get imei from device
             String imei= checkPermissionsAndGetImei(Manifest.permission.READ_PHONE_STATE, PHONESTATS);
 
             if(imei == null){ //is tvbox
-                deviceType= User.DEVICE_TVBOX;
+                deviceType= User.USER_DEVICE_TVBOX;
             }else{ // is smartphone
-                deviceType= User.DEVICE_SMARTPHONE;
+                deviceType= User.USER_DEVICE_SMARTPHONE;
             }
         }catch (Exception e){
             e.printStackTrace();

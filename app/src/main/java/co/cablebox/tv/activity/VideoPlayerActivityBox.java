@@ -2880,10 +2880,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             handler.postDelayed(this, 500);
         }
     };
-    private static float getCpuUsage() {
+    private static String getCpuUsage() {
         try {
 
-           
+            RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
+            String load = reader.readLine();
+            return load;
+
+            /*
 
             RandomAccessFile randomAccessFile = new RandomAccessFile("/proc/stat", "r");
             String[] split = randomAccessFile.readLine().split(" ");
@@ -2900,14 +2904,16 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
             long parseLong3 = Long.parseLong(split2[5]);
             long parseLong4 = Long.parseLong(split2[8]) + Long.parseLong(split2[2]) + Long.parseLong(split2[3]) + Long.parseLong(split2[4]) + Long.parseLong(split2[6]) + Long.parseLong(split2[7]);
             return ((float) (parseLong4 - parseLong2)) / ((float) ((parseLong4 + parseLong3) - (parseLong + parseLong2)));
+
+            * */
         } catch (IOException e2) {
             e2.printStackTrace();
-            return 0.0f;
+            return "0";
         }
     }
     final Runnable c = new Runnable() {
         public void run() {
-            int a = (int) (getCpuUsage() * 100.0f);
+            String a = getCpuUsage();
             tvCpu.setText("CPU: " + a + "%");
             handler.postDelayed(this, 500);
         }
@@ -3160,14 +3166,14 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     //Abrir el activity principal
     private void openServiceActivityAsNormalUser(){
         prepareForCloseVideoPlayerActivityBox();
-        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
+        ActivityLauncher.launchSettingsActivityAsNormalUser();
         finish();
     }
 
     //Abrir el activity principal
     private void openServiceActivityAsTechnician(){
         prepareForCloseVideoPlayerActivityBox();
-        ActivityLauncher.launchServiceProgramActivityAsTechnician();
+        ActivityLauncher.launchSettingsActivityAsTechnician();
         finish();
     }
 

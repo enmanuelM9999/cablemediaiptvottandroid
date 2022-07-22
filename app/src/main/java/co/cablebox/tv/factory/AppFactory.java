@@ -11,4 +11,7 @@ public interface AppFactory {
     User getUser();
     Class<?>  getLoginActivity();
     Class<?>  getErrorActivity();
+    Class<?> getSettingsActivity();
+    Class<?> getVideoPlayerActivity();
+
 }

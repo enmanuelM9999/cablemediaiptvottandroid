@@ -88,7 +88,7 @@ import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
-import co.cablebox.tv.activity.helpers.ServiceProgramGridViewItem;
+import co.cablebox.tv.activity.helpers.SettingsGridViewItem;
 import co.cablebox.tv.actualizacion.MyReceiver;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
@@ -196,9 +196,9 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //Sirve para administrar el acceso a los items del gridview
     private PackageManager packageManager;
-    private List<ServiceProgramGridViewItem> gridViewItems;
+    private List<SettingsGridViewItem> gridViewItems;
     private GridView gridView;
-    ArrayAdapter<ServiceProgramGridViewItem> gridViewAdapter;
+    ArrayAdapter<SettingsGridViewItem> gridViewAdapter;
 
 
     private Switch mSwitch;
@@ -1899,7 +1899,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
     private void loadConfigurationsToArrayList(){
         Drawable icon;
         String text;
-        String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION;
+        String actionType= SettingsGridViewItem.ACTION_TYPE_START_CONFIGURATION;
         String action;
         String bgColor;
         String bgColorAlpha;
@@ -1907,30 +1907,30 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         //verCanales
         icon = getResources().getDrawable(R.drawable.house);
         text="Ver canales";
-        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
-        bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
-        bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+        action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
+        bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
+        bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
+        gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //net
         icon = getResources().getDrawable(R.drawable.wifi);
         text="Red";
-        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+        action= SettingsGridViewItem.ACTION_START_CONFIGURATION_RED;
+        gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //actualizar
         icon = getResources().getDrawable(R.drawable.download);
         text="Actualizar";
-        action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
-        gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+        action= SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
+        gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //fix para saber si la activity necesita mostrar ajustes importantes o no. Los ajustes importantes o delicados, son los que pueden causar un mal funcionamiento de la app si no se saben usar
         if (needsImportantSettings){
             //cambiarIp
             icon = getResources().getDrawable(R.drawable.icon_ip);
             text="Cambiar IP";
-            action=ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
-            gridViewItems.add(new ServiceProgramGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+            action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
+            gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
         }
 
     }
@@ -1943,12 +1943,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         if (needsImportantSettings){
             Drawable icon= getResources().getDrawable(R.drawable.settings);
             String text= "Ajustes";
-            String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_SETTINGS;
+            String actionType= SettingsGridViewItem.ACTION_TYPE_START_SETTINGS;
             String action =Settings.ACTION_SETTINGS;
-            String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
-            String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+            String bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
+            String bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
 
-            ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
+            SettingsGridViewItem item= new SettingsGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
             gridViewItems.add(item);
         }
     }
@@ -1973,10 +1973,10 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                 {
                     Drawable icon= ri.loadIcon(packageManager);
                     String text= ri.loadLabel(packageManager).toString();
-                    String actionType= ServiceProgramGridViewItem.ACTION_TYPE_START_APP;
+                    String actionType= SettingsGridViewItem.ACTION_TYPE_START_APP;
                     String action =ri.activityInfo.packageName;
-                    String bgColor=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
-                    String bgColorAlpha=ServiceProgramGridViewItem.DEFAULT_BG_COLOR;
+                    String bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
+                    String bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
 
 
                     if (ri.activityInfo.packageName.equals("tv.pluto.android")){
@@ -1990,7 +1990,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     }
 
 
-                    ServiceProgramGridViewItem item= new ServiceProgramGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
+                    SettingsGridViewItem item= new SettingsGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
                     gridViewItems.add(item);
                 }
             }
@@ -2002,7 +2002,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
      */
     private void loadAllArrayListsToGridView(){
 
-        gridViewAdapter = new ArrayAdapter<ServiceProgramGridViewItem>(ServiceProgramActivity.this, R.layout.item, gridViewItems){
+        gridViewAdapter = new ArrayAdapter<SettingsGridViewItem>(ServiceProgramActivity.this, R.layout.item, gridViewItems){
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -2067,21 +2067,21 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     if (isUpdatingApp) throw new Exception("La aplicación se está actualizando, no es permitido acceder a los demás ajustes");
 
                     //obtenemos el item clickeado
-                    ServiceProgramGridViewItem theItem= gridViewItems.get(pos);
+                    SettingsGridViewItem theItem= gridViewItems.get(pos);
                     //obtenemos el tipo de accion del item
                     String theActionType = theItem.getActionType();
 
                     //si el tipo de acción es igual a iniciar configuración...
-                    if (theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_CONFIGURATION)){
+                    if (theActionType.equals(SettingsGridViewItem.ACTION_TYPE_START_CONFIGURATION)){
 
                         switch (theItem.getAction()){
-                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
+                            case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
                                 ActivityLauncher.launchMainActivity();
                                 /*
                                 turnOffTechnicianMode();
                                 guaranteeOpenChannelsWithBusyWaiting();*/
                                 break;
-                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_RED:
+                            case SettingsGridViewItem.ACTION_START_CONFIGURATION_RED:
                                 if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
                                     handler.removeMessages(CODE_ACT_PLAN);
                                     if(llRedes.getVisibility() == View.INVISIBLE) {
@@ -2091,7 +2091,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     }
                                 }
                                 break;
-                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
+                            case SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
                                 if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
                                     handler.removeMessages(CODE_ACT_PLAN);
                                     llDescarga.setVisibility(View.VISIBLE);
@@ -2108,7 +2108,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                                     Toast.makeText(ServiceProgramActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
                                 }
                                 break;
-                            case ServiceProgramGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
+                            case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
                                 showChangeIpDialog();
                                 break;
                         }
@@ -2116,13 +2116,13 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
                     }
 
                     //si el tipo de acción es igual a iniciar app...
-                    else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_APP)){
+                    else if(theActionType.equals(SettingsGridViewItem.ACTION_TYPE_START_APP)){
                         Intent i = packageManager.getLaunchIntentForPackage(theItem.getAction());
                         startActivity(i);
                     }
 
                     //si el tipo de acción es igual a abrir ajustes del S.O. ...
-                    else if(theActionType.equals(ServiceProgramGridViewItem.ACTION_TYPE_START_SETTINGS)){
+                    else if(theActionType.equals(SettingsGridViewItem.ACTION_TYPE_START_SETTINGS)){
                         startActivity(new Intent(theItem.getAction()));
                     }
                 } catch(Exception e){System.out.println(e);}

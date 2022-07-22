@@ -23,9 +23,9 @@ public abstract class LoginActivity extends AppCompatActivity {
             switch (msg.what) {
                 case CODE_SALIR_APP:
                     if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
-                        ActivityLauncher.launchServiceProgramActivityAsNormalUser();
+                        ActivityLauncher.launchSettingsActivityAsNormalUser();
                     } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                        ActivityLauncher.launchServiceProgramActivityAsTechnician();
+                        ActivityLauncher.launchSettingsActivityAsTechnician();
                     }
                     wordKey = "";
                     break;

@@ -5,6 +5,9 @@ import co.cablebox.tv.activity.error.SmartphoneErrorActivity;
 import co.cablebox.tv.activity.error.TvboxErrorActivity;
 import co.cablebox.tv.activity.login.LoginActivity;
 import co.cablebox.tv.activity.login.TvboxLoginActivity;
+import co.cablebox.tv.activity.settings.SmartphoneSettingsActivity;
+import co.cablebox.tv.activity.settings.TvboxSettingsActivity;
+import co.cablebox.tv.activity.videoplayer.TvboxVideoPlayerActivity;
 import co.cablebox.tv.socket.SocketConnection;
 import co.cablebox.tv.socket.TvboxSocketConnection;
 import co.cablebox.tv.user.TvboxUser;
@@ -29,5 +32,15 @@ public class TvboxAppFactory implements AppFactory{
     @Override
     public Class<?> getErrorActivity() {
         return TvboxErrorActivity.class;
+    }
+
+    @Override
+    public Class<?> getSettingsActivity() {
+        return TvboxSettingsActivity.class;
+    }
+
+    @Override
+    public Class<?> getVideoPlayerActivity() {
+        return TvboxVideoPlayerActivity.class;
     }
 }
