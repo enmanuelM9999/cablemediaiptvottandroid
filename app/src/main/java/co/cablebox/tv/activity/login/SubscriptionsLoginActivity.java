@@ -91,7 +91,7 @@ public class SubscriptionsLoginActivity extends LoginActivity implements IpmuxAc
                 AppState.getSocketConnection().socketEmitConnect();
 
                 /*Show loading animation*/
-                Toast.makeText(SubscriptionsLoginActivity.this,"Loggin...",Toast.LENGTH_LONG).show();
+                Toast.makeText(SubscriptionsLoginActivity.this,"Logging...",Toast.LENGTH_LONG).show();
             }
         });
 

@@ -1,7 +1,5 @@
 package co.cablebox.tv.activity.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -93,7 +91,7 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
                 AppState.getSocketConnection().socketEmitConnect();
 
                 /*Show loading animation*/
-                Toast.makeText(SmartphoneLoginActivity.this,"Loggin...",Toast.LENGTH_LONG).show();
+                Toast.makeText(SmartphoneLoginActivity.this,"Logging...",Toast.LENGTH_LONG).show();
             }
         });
 

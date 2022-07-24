@@ -86,6 +86,8 @@ import co.cablebox.tv.utils.Utilidades;
 
 
 public abstract class VideoplayerActivity extends Activity implements IVLCVout.OnNewVideoLayoutListener {
+    Activity activity=this;
+
     private static final String TAG = VideoplayerActivity.class.getName();
 
     public static boolean canCloseSocketConnectionPauseVideoPlayer =true;
@@ -575,7 +577,11 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 initVolumeControl();
 
                 //si es modo smartphone, habilitar los botones del panel superior
-                llSmartphoneButtons.setVisibility(View.INVISIBLE);
+                configTopButtons();
+
+                //Fullscreen
+                System.out.println("-----------------------------------------video oncreate");
+                hideSystemUI(this);
 
             } else {
                 //no conectado a internet
@@ -602,6 +608,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         })
                         .show();
             }
+
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -1432,6 +1440,18 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                                         public void onClick(DialogInterface dialog, int which) {
                                             closeApp();
 
+                                        }
+                                    })
+                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialog) {
+                                            hideSystemUI(activity);
+                                        }
+                                    })
+                                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            hideSystemUI(activity);
                                         }
                                     })
                                     .show();
@@ -3437,17 +3457,62 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    hideSystemUI(activity);
                 }
             });
+
+            builder
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    hideSystemUI(activity);
+                }
+            })
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            hideSystemUI(activity);
+                        }
+                    });
 
             //Create Dialog
             AlertDialog ad= builder.create();
             ad.show();
 
             //dont add in smartphone
-            ad.getWindow().setLayout(300, 180); //Controlling width and height.
+            fixLogoutDialogStyle(ad);
         }
 
+    public static void hideSystemUI(Activity activity) {
+        View decorView = activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
+    }
 
 
+
+    /*Top buttons configs*/
+    public void configTopButtons(){
+        hideTopButtons();
+    }
+    public void hideTopButtons(){
+        llSmartphoneButtons.setVisibility(View.INVISIBLE);
+    }
+    public void showTopButtons(){
+        llSmartphoneButtons.setVisibility(View.VISIBLE);
+    }
+
+
+
+
+
+    /*Fix for logout dialog*/
+    public void fixLogoutDialogStyle(AlertDialog ad){
+        ad.getWindow().setLayout(300, 180); //Controlling width and height.
+    }
 }
