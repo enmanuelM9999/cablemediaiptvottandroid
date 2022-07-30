@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -94,6 +95,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     private static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
     private static final String LOCAL_MESSAGES_FILE = "messageList.xml";
+
+    public AudioManager audio = (AudioManager) AppState.getAppContext().getSystemService(AppState.getAppContext().AUDIO_SERVICE);
 
     //Listas de Canales, Favoritos y Todos los Canales
         public static Channels channels;
@@ -306,8 +309,9 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "54321"; // Ajustes de la app
-    private static final String KEY_OPEN_USER_MODE = "12345"; // Ajustes avanzados de la app
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "54321"; // Ajustes avanzados de la app
+    private static final String KEY_OPEN_USER_MODE = "12345"; // Ajustes de la app
+    private static final String KEY_TOGGLE_TOP_BUTTONS = "11111"; // Show or hide top buttons
     private String wordKey = "";
 
     // Variables de Canal actual y programa actual
@@ -367,6 +371,11 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     }
                      else if (wordKey.equals(KEY_OPEN_USER_MODE)){
                          openSettingsActivityAsNormalUser();
+                     }
+                     else if (wordKey.equals(KEY_TOGGLE_TOP_BUTTONS)){
+                         boolean areVisiblesTopButtons= llSmartphoneButtons.getVisibility()==View.VISIBLE;
+                         if (areVisiblesTopButtons) hideTopButtons();
+                         else showTopButtons();
                      }
                     delayBusNum = 3000;
                     wordKey = "";
@@ -1398,18 +1407,19 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         // Boton para cerrar sesion
         ivLogout.setOnTouchListener(new View.OnTouchListener() {
+            Drawable originalBackground = ivLogout.getBackground();
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
+
                         ivLogout.setBackground(getDrawable(R.drawable.bordes_suave_act));
 
                         break;
                     case MotionEvent.ACTION_UP:
-                        ivLogout.setBackground(getDrawable(R.drawable.borde_volumen));
+                        ivLogout.setBackground(originalBackground);
                         showLogoutDialog();
-
                         break;
                 }
                 return true;
@@ -1420,8 +1430,10 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         // Boton para cerra la app por completo
         ivExitApp.setOnTouchListener(new View.OnTouchListener() {
+            Drawable originalBackground = ivExitApp.getBackground();
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
@@ -1429,7 +1441,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
                         break;
                     case MotionEvent.ACTION_UP:
-                        ivExitApp.setBackground(getDrawable(R.drawable.borde_volumen));
+                        ivExitApp.setBackground(originalBackground);
                             new AlertDialog.Builder(VideoplayerActivity.this)
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .setTitle("¿Seguro que desea cerrar la app?")
@@ -1465,15 +1477,17 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         // Boton para ver la lista de todos los canales en un panel izquierdo
         ivList.setOnTouchListener(new View.OnTouchListener() {
+            Drawable originalBackground = ivList.getBackground();
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
                         ivList.setBackground(getDrawable(R.drawable.bordes_suave_act));
                         break;
                     case MotionEvent.ACTION_UP:
-                        ivList.setBackground(getDrawable(R.drawable.borde_volumen));
+                        ivList.setBackground(originalBackground);
                         showChannelList();
                         clearScreen(HUD_HIDE_TIME);
                         break;
@@ -1486,6 +1500,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         // Boton Bloquear Pantalla
         ivLock.setOnTouchListener(new View.OnTouchListener() {
+            Drawable originalBackground = ivLock.getBackground();
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -1494,7 +1509,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                             ivLock.setBackground(getDrawable(R.drawable.bordes_suave_act));
 
                     case MotionEvent.ACTION_UP:
-                            ivLock.setBackground(getDrawable(R.drawable.borde_volumen));
+                            ivLock.setBackground(originalBackground);
 
                             if(!isScreenLocked){
                                 removeHudDelayedMessages(); //evitar eventos programados que ocuten el hud
@@ -1539,6 +1554,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         // Boton para expandir el panel de numeros para digitar el numero de un canal
         ivTypeNum.setOnTouchListener(new View.OnTouchListener() {
+            Drawable originalBackground = ivTypeNum.getBackground();
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -1547,7 +1563,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         ivTypeNum.setBackground(getDrawable(R.drawable.bordes_suave_act));
                         break;
                     case MotionEvent.ACTION_UP:
-                        ivTypeNum.setBackground(getDrawable(R.drawable.borde_volumen));
+                        ivTypeNum.setBackground(originalBackground);
                         clearScreen();
                         showPanelNum();
                         clearScreen(HUD_HIDE_TIME);
@@ -3423,10 +3439,20 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     private void upVolume(){
-        simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
+        //v1
+        //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
+
+        //v2
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
     }
     private void downVolume(){
-        simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
+        //v1
+        //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
+
+        //v2
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
     }
 
     public void simulateKeyPress(int key){
