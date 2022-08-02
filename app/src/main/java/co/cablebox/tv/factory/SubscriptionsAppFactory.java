@@ -7,6 +7,7 @@ import co.cablebox.tv.activity.login.SubscriptionsLoginActivity;
 import co.cablebox.tv.activity.settings.SmartphoneSettingsActivity;
 import co.cablebox.tv.activity.settings.SubscriptionsSettingsActivity;
 import co.cablebox.tv.activity.videoplayer.SmartphoneVideoPlayerActivity;
+import co.cablebox.tv.activity.videoplayer.TvboxVideoPlayerActivity;
 import co.cablebox.tv.socket.SmartphoneSocketConnection;
 import co.cablebox.tv.socket.SocketConnection;
 import co.cablebox.tv.user.SmartphoneUser;
@@ -40,6 +41,6 @@ public class SubscriptionsAppFactory implements AppFactory{
 
     @Override
     public Class<?> getVideoPlayerActivity() {
-        return SmartphoneVideoPlayerActivity.class;
+        return TvboxVideoPlayerActivity.class;
     }
 }

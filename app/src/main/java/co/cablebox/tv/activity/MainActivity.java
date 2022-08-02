@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 ActivityLauncher.launchErrorActivity("Error","No se reconoce el tipo de dispositivo");
             }
 
-            AppState.setAppFactory(new SubscriptionsAppFactory());
 
             openLogin();
         }catch (Exception e){
