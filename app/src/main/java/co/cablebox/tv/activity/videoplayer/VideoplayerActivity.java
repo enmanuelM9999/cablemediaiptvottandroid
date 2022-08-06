@@ -73,6 +73,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
+import co.cablebox.tv.CustomVolumeManager;
 import co.cablebox.tv.R;
 import co.cablebox.tv.activity.AppsListActivity;
 import co.cablebox.tv.activity.ChannelListActivityBox;
@@ -141,7 +142,9 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         @BindView(R.id.rl_volumenA)
         RelativeLayout rlVolumenA;
         @BindView(R.id.sb_volumenA)
-        SeekBar sbVolumenA;
+        public SeekBar sbVolumenA;
+        @BindView(R.id.tv_volume_indicator)
+        public TextView volumeIndicator;
 
 
 
@@ -259,7 +262,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         private final static int CODE_CLEAR_SCREEN = 8;
 
-        private final static int CODE_HIDE_VOLUMEN = 9;
+        public final static int CODE_HIDE_VOLUMEN = 9;
 
         private final static int CODE_HIDE_OPTION = 10;
 
@@ -304,8 +307,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         WindowManager wmanager;
         LinearLayout llayout;
 
-    //Audio manager
-    AudioManager audioManager;
+
 
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
@@ -387,6 +389,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     break;
 
                 case CODE_HIDE_VOLUMEN:
+                    volumeManager.hideVolumeIndicator();
                     break;
 
                 case CODE_HIDE_OPTION:
@@ -444,6 +447,10 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
             }
         }
     };
+
+    //Audio manager
+    public AudioManager audioManager;
+    public CustomVolumeManager volumeManager;
 
     //Animaciones para cada panel o grupo de items en la interfaz
         private TranslateAnimation animIn;
@@ -584,6 +591,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
                 /*Volume control*/
                 initVolumeControl();
+
 
                 //si es modo smartphone, habilitar los botones del panel superior
                 configTopButtons();
@@ -851,29 +859,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
         try
         {
-            final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            sbVolumenA.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-            sbVolumenA.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 
-            sbVolumenA.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-            {
-                @Override
-                public void onStopTrackingTouch(SeekBar arg0)
-                {
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar arg0)
-                {
-                }
-
-                @Override
-                public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
-                {
-
-                    //tvVolumen.setText(""+progress);
-                }
-            });
 
             //tvVolumen.setText(""+sbVolumenA.getProgress());
         }
@@ -881,7 +867,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         {
             e.printStackTrace();
         }
-        rlVolumenA.setVisibility(View.INVISIBLE);
+        rlVolumenA.setVisibility(View.VISIBLE); //show volume bar seekbar
         ivMute.setVisibility(View.INVISIBLE);
 
 
@@ -3436,6 +3422,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     void initVolumeControl(){
       audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+      volumeManager= new CustomVolumeManager(sbVolumenA,handler,rlVolumenA, volumeIndicator);
     }
 
     private void upVolume(){
@@ -3443,16 +3430,22 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
 
         //v2
-        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+          //      AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+
+        //v3
+        volumeManager.up();
     }
     private void downVolume(){
         //v1
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
 
         //v2
-        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+          //      AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+
+        //v3
+        volumeManager.down();
     }
 
     public void simulateKeyPress(int key){

@@ -850,7 +850,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_volumenA"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="@dimen/h_50"
@@ -863,8 +863,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:layout_marginEnd="297dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="visible"/>
 
 
 
@@ -935,6 +938,22 @@
         android:textSize="@dimen/h_50"
         android:textStyle="bold"
         android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tv_volume_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="@dimen/w_180"
+        android:layout_marginBottom="@dimen/h_30"
+        android:background="@drawable/bg_dark_alpha_rounded"
+        android:padding="5dp"
+        android:textColor="#FFF"
+        android:textSize="@dimen/w_120"
+        android:typeface="sans"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>
