@@ -28,9 +28,15 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-hdpi/blue_circularbutton.xml" value="0.1625" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-hdpi/circularinput.xml" value="0.173" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-xhdpi/circularbutton.xml" value="0.173" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/bg_blue_alpha.xml" value="0.2165" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/bg_border_radius.xml" value="0.2165" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/bg_radius.xml" value="0.2165" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/circularbuttonwhite.xml" value="0.1835" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/circularinputwhite.xml" value="0.1835" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/sel_focus.xml" value="0.143" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/transparent_bg.xml" value="0.194" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_apps_list.xml" value="0.209375" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_detail.xml" value="0.1328125" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_live_box.xml" value="0.22" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_login_dark.xml" value="0.22" />
@@ -38,9 +44,10 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_login_light.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_login_subscriptions.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_login_suscriptions.xml" value="0.209375" />
-        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_service_list.xml" value="0.21" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_service_list.xml" value="0.33" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_tvbox_loading_channels.xml" value="0.33" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/new_login.xml" value="0.25" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/row_item.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_login.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_service_list.xml" value="0.1962962962962963" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_tvbox_loading_channels.xml" value="0.1" />
@@ -108,5 +115,5 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>

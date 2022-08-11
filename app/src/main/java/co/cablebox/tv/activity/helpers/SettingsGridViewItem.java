@@ -26,7 +26,9 @@ public class SettingsGridViewItem {
     public static final String ACTION_START_CONFIGURATION_LOGOUT ="startLogout";
 
     //public static final String DEFAULT_BG_COLOR ="#D92B2D2E";
-    public static final String DEFAULT_BG_COLOR ="#D909162A";
+    //public static final String DEFAULT_BG_COLOR ="#D909162A";
+    public static final String DEFAULT_BG_COLOR ="#FF151823";
+
 
 
 

@@ -1299,7 +1299,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         String bgColorAlpha;
 
         //verCanales
-        icon = getResources().getDrawable(R.drawable.house);
+        icon = getResources().getDrawable(R.drawable.watch_tv_3d);
         text="Ver canales";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
@@ -1321,7 +1321,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         //fix para saber si la activity necesita mostrar ajustes importantes o no. Los ajustes importantes o delicados, son los que pueden causar un mal funcionamiento de la app si no se saben usar
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
-            icon = getResources().getDrawable(R.drawable.icon_ip);
+            icon = getResources().getDrawable(R.drawable.icon_ip_3d);
             text="Cambiar IP";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
