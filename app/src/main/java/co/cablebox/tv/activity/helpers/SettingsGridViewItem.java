@@ -27,7 +27,8 @@ public class SettingsGridViewItem {
 
     //public static final String DEFAULT_BG_COLOR ="#D92B2D2E";
     //public static final String DEFAULT_BG_COLOR ="#D909162A";
-    public static final String DEFAULT_BG_COLOR ="#FF151823";
+    //public static final String DEFAULT_BG_COLOR ="#FF151823";
+    public static final String DEFAULT_BG_COLOR ="#338c8c8c";
 
 
 

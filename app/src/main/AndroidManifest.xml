@@ -30,7 +30,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission  android:name="android.permission.SHUTDOWN"
-        tools:ignore="ProtectedPermissions" />
+        tools:ignore="ProtectedPermissions"
+        />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
 
 

@@ -25,6 +25,7 @@ import java.io.FileFilter;
 
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
+import co.cablebox.tv.ToastManager;
 
 public class MyReceiver extends BroadcastReceiver {
 
@@ -78,7 +79,9 @@ public class MyReceiver extends BroadcastReceiver {
 
 
             //abrir el apk descargado
-            try {
+
+            /*
+try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
                     intent.setData(apkUri);
@@ -96,9 +99,35 @@ public class MyReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
 
+            */
+
+            ToastManager.toast("Downloadedapk!");
+            installAPKWithRoot(file.getAbsolutePath());
+
+
             Log.e("MsjDescargar", "Se descargó sin problemas");
             handler.sendEmptyMessageDelayed(CODE_DOWNLOAD_SUCCESES, 3000);
         }
+    }
+
+    public static void installAPKWithRootBK(String filename){
+        File file = new File(filename);
+        if(file.exists()){
+            try {
+                String command;
+                command = "adb install -r " + filename;
+                Process proc = Runtime.getRuntime().exec(new String[] { "su", "-c", command });
+                proc.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+                ToastManager.toast(e.getMessage());
+            }
+        }
+    }
+
+    public static void installAPKWithRoot(String filename){
+        boolean appWasInstalled= RootApkInstaller.install(filename);
+        ToastManager.toast("Was installed "+appWasInstalled);
     }
 
     public void onReceiveBK(Context context, Intent intent) {

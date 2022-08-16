@@ -229,7 +229,7 @@
                 android:padding="8dp"
                 android:alpha="0.9"
                 android:background="@drawable/borde_volumen_blue"
-                android:src="@drawable/logout" />
+                android:src="@drawable/logout_flat_white" />
 
             <ImageView
                 android:id="@+id/iv_exit_app"
