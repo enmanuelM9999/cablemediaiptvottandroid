@@ -278,7 +278,7 @@ try {
                     }
                     cursor.close();
 
-                    //cuando finaliza la descarga, se invoca el método onReceive de esta clase
+                    //cuando finaliza la descarga, se invoca el método onReceive(...) de esta clase
                 }
             }
         }).start();

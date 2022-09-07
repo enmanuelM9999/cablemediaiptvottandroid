@@ -129,8 +129,12 @@ public abstract class ErrorActivity extends AppCompatActivity {
                 pressNumber("8");
                 break;
 
-            case KeyEvent.FLAG_EDITOR_ACTION:
-                System.out.println("Oprimio Enter");
+            case KeyEvent.KEYCODE_9:
+                pressNumber("9");
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                pressNumber(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE);
                 break;
 
             case KeyEvent.KEYCODE_MENU:

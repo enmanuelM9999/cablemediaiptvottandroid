@@ -6,6 +6,7 @@ import android.content.Intent;
 import co.cablebox.tv.activity.MainActivity;
 import co.cablebox.tv.activity.VideoPlayerActivityBox;
 import co.cablebox.tv.activity.settings.SettingsActivity;
+import co.cablebox.tv.activity.updating.UpdatingActivity;
 import co.cablebox.tv.activity.videoplayer.VideoplayerActivity;
 import co.cablebox.tv.bean.Channels;
 
@@ -75,6 +76,14 @@ public class ActivityLauncher {
         Context context= AppState.getAppContext();
         Intent i= new Intent(context, MainActivity.class);
         //i.putExtra("errorType",errorType); //pass props to the activity
+        context.startActivity(i);
+    }
+
+    public static void launchUpdatingActivity(String host, String fileName){
+        Context context= AppState.getAppContext();
+        Intent i= new Intent(context, UpdatingActivity.class);
+        i.putExtra("host",host); //pass props to the activity
+        i.putExtra("fileName",fileName); //pass props to the activity
         context.startActivity(i);
     }
 

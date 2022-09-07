@@ -1928,6 +1928,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         handler.removeCallbacks(r);
         handler.removeCallbacks(c);
         handler.removeCallbacks(d);
+        handler.removeMessages(CODE_MEDIA_PLAYER_UNMUTE);
 
         tiempo_canal.cancel();
 

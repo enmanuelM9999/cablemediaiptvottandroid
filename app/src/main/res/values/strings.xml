@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">IpMUX</string>
+    <string name="app_name">Tvonn.</string>
     <string name="reintentar">Reintentar</string>
     <string name="si">Si</string>
     <string name="no">No</string>
-    <string name="powered_by">Powered By IpMUX</string>
+    <string name="powered_by">Powered By Tvonn.</string>
     <string name="title_activity_login2">Login2Activity</string>
     <string name="prompt_username">Usuario</string>
     <string name="prompt_email">Email</string>
@@ -14,7 +14,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="cableoperador">Cable Éxito</string>
-    <string name="cableoperador_go">Cable Éxito GO</string>
+    <string name="cableoperador">Tvonn</string>
+    <string name="cableoperador_go">Tvonn GO</string>
 
 </resources>

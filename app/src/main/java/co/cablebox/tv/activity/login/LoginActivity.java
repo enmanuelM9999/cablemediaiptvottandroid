@@ -75,7 +75,7 @@ public abstract class LoginActivity extends AppCompatActivity {
                 break;
 
             case KeyEvent.KEYCODE_MENU:
-                //"return true" evita comportamientos por defecto del S.O. para el botón presionado
+                pressNumber(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE);
                 return true;
 
         }

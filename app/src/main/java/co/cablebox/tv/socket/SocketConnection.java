@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.ToastManager;
+import co.cablebox.tv.actualizacion.DtoUpdating;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import io.socket.client.IO;
@@ -206,6 +207,23 @@ public abstract class SocketConnection {
                     }
                 } catch (Exception e) {
                     Log.d("error mostrar_mensaje ", ""+e.toString());
+                }
+            }
+        });
+
+        socket.on("de_servidor:actualizar_app", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                try {
+                    System.out.println("-------------------------------de_servidor:actualizar_app");
+                    /* Extract json with updating data*/
+                    JSONObject data = (JSONObject) args[0];
+                    DtoUpdating updatingData = new Gson().fromJson(data.toString(), DtoUpdating.class); //convert json string into a java object
+
+                    /*Update app*/
+                    AppState.updateApp(updatingData);
+                } catch (Exception e) {
+                    Log.d("error de_servidor:actualizar_app ", ""+e.toString());
                 }
             }
         });

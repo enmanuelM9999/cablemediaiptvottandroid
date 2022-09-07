@@ -2,6 +2,7 @@ package co.cablebox.tv;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -9,6 +10,7 @@ import co.cablebox.tv.activity.VideoPlayerActivityBox;
 import co.cablebox.tv.activity.error.ErrorActivity;
 import co.cablebox.tv.activity.error.TvboxErrorActivity;
 import co.cablebox.tv.activity.login.LoginActivity;
+import co.cablebox.tv.actualizacion.DtoUpdating;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.factory.AppFactory;
 import co.cablebox.tv.factory.SmartphoneAppFactory;
@@ -68,6 +70,39 @@ public class AppState {
         if (socketConnection != null) {
             socketConnection.disconnect();
             socketConnection = null;
+        }
+    }
+
+    public static String getAppVersion(){
+        return BuildConfig.VERSION_NAME;
+    }
+
+    /**
+     * Update app only if local version is lower than server version
+     * @param updatingData
+     * @return if application was updated
+     */
+    public static boolean updateApp(DtoUpdating updatingData){
+        boolean applicationWasUpdated=false;
+        try {
+            String localVersion=getAppVersion();
+            String serverVersion=updatingData.getVersion_actual();
+            int resultComparation= localVersion.compareToIgnoreCase(serverVersion);
+            boolean localVersionIsOutdated=resultComparation<0;
+
+            if(localVersionIsOutdated){ //app outdated
+                String host=updatingData.getRuta();
+                String fileName=updatingData.getArchivo();
+                ActivityLauncher.launchUpdatingActivity(host, fileName);
+                applicationWasUpdated=true;
+            }
+            else{//app already updated
+                applicationWasUpdated=false;
+            }
+        }catch(Exception e){
+            Log.d("err updateApp",e.toString());
+        }finally {
+            return applicationWasUpdated;
         }
     }
 }

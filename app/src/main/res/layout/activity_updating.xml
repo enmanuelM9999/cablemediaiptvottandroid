@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient_settings" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_panel_up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="60dp"
+        android:paddingTop="35dp"
+        android:paddingBottom="10dp"
+        android:visibility="visible">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:src="@drawable/icono_cablebox" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/cablebox_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center"
+            android:alpha="0.5"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/app_name"
+            android:textSize="25dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_descarga"
+        android:layout_width="@dimen/h_700"
+        android:layout_height="@dimen/h_400"
+        android:background="@drawable/bg_border_radius"
+        android:backgroundTintMode="screen"
+        android:backgroundTint="#18ffffff"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/h_50"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_60"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Actualizando..."></TextView>
+
+        <TextView
+            android:id="@+id/tv_por_descarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_40"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="%"></TextView>
+
+        <SeekBar
+            android:id="@+id/sb_descarga"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:progress="0"
+            android:focusable="false"></SeekBar>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_mns_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_descarga"
+        android:layout_marginHorizontal="@dimen/h_50"
+        android:layout_marginVertical="@dimen/h_10"
+        android:background="#3B504E"
+        android:fontFamily="@font/segoe_ui"
+        android:padding="@dimen/h_28"
+        android:text="Si la instalacion Automática no se inició, vaya a su almacenamiento interno y en la carpeta /apk encontrará CableBoxTv.apk para instalar.\nRecuerde permitir la instalación de aplicaciones de fuentes desconocidas en la configuración del dispositivo."
+        android:textSize="@dimen/h_45"
+        android:visibility="invisible"></TextView>
+
+</RelativeLayout>

@@ -3,12 +3,15 @@ package co.cablebox.tv.activity.settings;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import co.cablebox.tv.AppState;
+import co.cablebox.tv.R;
+import co.cablebox.tv.activity.helpers.SettingsGridViewItem;
 
 public class SmartphoneSettingsActivity extends SettingsActivity {
     private void showChangeIpDialog(){
@@ -69,6 +72,44 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
             //Only for smartphones
             ad.getWindow().setLayout(300, 180); //Controlling width and height.
         }
+    }
+
+    /**
+     * Remove "Actualizar" button
+     */
+    @Override
+    public void loadConfigurationsToArrayList(){
+        Drawable icon;
+        String text;
+        String actionType= SettingsGridViewItem.ACTION_TYPE_START_CONFIGURATION;
+        String action;
+        String bgColor;
+        String bgColorAlpha;
+
+        //verCanales
+        icon = getResources().getDrawable(R.drawable.watch_tv_3d);
+        text="Ver canales";
+        action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
+        bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
+        bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
+        gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+
+        //net
+        icon = getResources().getDrawable(R.drawable.wifi);
+        text="Red";
+        action= SettingsGridViewItem.ACTION_START_CONFIGURATION_RED;
+        gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+
+        //fix para saber si la activity necesita mostrar ajustes importantes o no. Los ajustes importantes o delicados, son los que pueden causar un mal funcionamiento de la app si no se saben usar
+        if (SettingsActivity.needsImportantSettings){
+            //cambiarIp
+            icon = getResources().getDrawable(R.drawable.icon_ip_3d);
+            text="Cambiar IP";
+            action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
+            gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
+        }
+
+        loadMoreConfigurations();
     }
 
 }

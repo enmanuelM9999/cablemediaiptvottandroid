@@ -714,7 +714,12 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         removeAllHandlerMessages();
         hideAllFailureScreens();
         isUpdatingApp =false;
+        unregisterReceiver();
         finish();
+    }
+
+    private void unregisterReceiver() {
+        myReceiver.borrarRegistro(myReceiver);
     }
 
     @Override
@@ -1290,7 +1295,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
     /**
      * Ver loadItemsToGridView()
      */
-    private void loadConfigurationsToArrayList(){
+    public void loadConfigurationsToArrayList(){
         Drawable icon;
         String text;
         String actionType= SettingsGridViewItem.ACTION_TYPE_START_CONFIGURATION;
@@ -1494,6 +1499,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
                                 if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
+                                    /*
                                     handler.removeMessages(CODE_ACT_PLAN);
                                     llDescarga.setVisibility(View.VISIBLE);
                                     isUpdatingApp=true;
@@ -1501,7 +1507,10 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
                                     String fileName=AppState.getUrlService().getApkName();
                                     myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
-
+                                    * */
+                                    String fileName=AppState.getUrlService().getApkName();
+                                    String host=AppState.getUrlService().generateAndReturnApkDownloadUri();
+                                    ActivityLauncher.launchUpdatingActivity(host,fileName);
                                 }
                                 else{
                                     Toast.makeText(SettingsActivity.this,"No requiere actualización",Toast.LENGTH_LONG);

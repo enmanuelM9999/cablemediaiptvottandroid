@@ -4,17 +4,23 @@ apply plugin: 'com.jakewharton.butterknife'*/
 
 android {
     compileSdkVersion 31
+//    compileSdkVersion 30
     //buildToolsVersion '26.0.3'
 
     defaultConfig {
-        //applicationId "co.ipmux.smartphone.prototype"
-        //applicationId "co.ipmux.tvbox.prototype"
-        applicationId "com.ipmux.tv"
+        applicationId "co.ipmux.tv"
+        //applicationId "com.ipmux.tv"
 
-        minSdkVersion 31
+        minSdkVersion 21
         targetSdkVersion 31
-        versionCode 70
-        versionName "7.06"
+        versionCode 710
+
+//        minSdkVersion 21
+//        targetSdkVersion 30
+//        versionCode 710
+
+        versionName "7.13"
+
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -39,7 +45,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "IpMUX.apk"
+            outputFileName = "IPMUX_TV.apk"
         }
     }
 
@@ -53,6 +59,7 @@ dependencies {
     implementation files('libs/gson-2.3.1.jar')
 
     implementation 'com.jakewharton:butterknife:10.2.3'
+    //implementation 'com.google.android.material:material:1.6.1'
     //implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
     /*implementation 'com.jakewharton:butterknife:10.2.3'
