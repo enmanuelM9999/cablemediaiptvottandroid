@@ -560,7 +560,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        clearScreen(20000);
+                        clearScreen(HUD_HIDE_TIME);
                     }
 
                     @Override
@@ -571,7 +571,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 lvCanales.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        clearScreen(20000);
+                        clearScreen(HUD_HIDE_TIME);
                         return false;
                     }
                 });
@@ -2018,6 +2018,10 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 break;
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
+                if(!isSomeHudActive()){
+                    clearAndShowChannelInfo();
+                }
+                break;
 
             case KeyEvent.KEYCODE_DPAD_UP:
 
@@ -2032,6 +2036,21 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 }
                 break;
 
+            case KeyEvent.KEYCODE_CHANNEL_UP:
+                //Agregar el último canal visitado
+                lastChannelIndex=channelIndex;
+
+                handler.removeMessages(CODE_CLEAR_SCREEN);
+                nextChannelInScreen();
+                break;
+
+            case KeyEvent.KEYCODE_CHANNEL_DOWN:
+                //Agregar el último canal visitado
+                lastChannelIndex=channelIndex;
+
+                handler.removeMessages(CODE_CLEAR_SCREEN);
+                previousChannelInScreen();
+                break;
 
             case KeyEvent.KEYCODE_MENU:
                 /*
