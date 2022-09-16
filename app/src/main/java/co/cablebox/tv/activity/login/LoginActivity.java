@@ -76,7 +76,7 @@ public abstract class LoginActivity extends AppCompatActivity {
 
             case KeyEvent.KEYCODE_BOOKMARK:
             case KeyEvent.KEYCODE_MENU:
-                pressNumber(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE);
+                ActivityLauncher.launchSettingsActivityAsTechnician();
                 return true;
 
         }

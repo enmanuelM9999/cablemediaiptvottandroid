@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:background="#FFF"
+        android:background="@drawable/bgbluedarkdegree"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
@@ -44,7 +44,7 @@
             android:layout_marginTop="0dp"
             android:fontFamily="@font/segoe_ui_bold"
             android:text="@string/powered_by"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textSize="13dp" />
     </LinearLayout>
 
@@ -74,7 +74,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-4dp"
                     android:text="ID: "
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="15dp" />
                 <TextView
                     android:id="@+id/tvSerialNumber"
@@ -83,7 +83,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-4dp"
                     android:text="123456789"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="15dp" />
             </LinearLayout>
         </RelativeLayout>
@@ -101,7 +101,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-4dp"
                     android:text="Server: "
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="15dp" />
                 <TextView
                     android:id="@+id/tvServerInfo"
@@ -110,7 +110,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-4dp"
                     android:text="51.111.11.11:1111"
-                    android:textColor="#000"
+                    android:textColor="#fff"
                     android:textSize="15dp" />
             </LinearLayout>
         </RelativeLayout>

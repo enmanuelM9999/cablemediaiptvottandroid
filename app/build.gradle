@@ -8,18 +8,18 @@ android {
     //buildToolsVersion '26.0.3'
 
     defaultConfig {
-        applicationId "co.ipmux.tv"
+        applicationId "co.cmedia.tvonn"
         //applicationId "com.ipmux.tv"
 
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 710
+        versionCode 206
 
 //        minSdkVersion 21
 //        targetSdkVersion 30
 //        versionCode 710
 
-        versionName "7.14"
+        versionName "2.05"
 
 
         compileOptions {

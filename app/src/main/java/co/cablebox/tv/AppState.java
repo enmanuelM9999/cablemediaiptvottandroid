@@ -73,6 +73,11 @@ public class AppState {
         }
     }
 
+    public static void rebootSocketConnection() {
+        restartSocketConnection();
+        setSocketConnection(getAppFactory().getSocketConnection());
+    }
+
     public static String getAppVersion(){
         return BuildConfig.VERSION_NAME;
     }

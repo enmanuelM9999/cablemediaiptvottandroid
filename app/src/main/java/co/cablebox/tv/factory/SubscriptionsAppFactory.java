@@ -31,7 +31,7 @@ public class SubscriptionsAppFactory implements AppFactory{
 
     @Override
     public Class<?>  getErrorActivity() {
-        return  TvboxErrorActivity.class;
+        return  SmartphoneErrorActivity.class;
     }
 
     @Override

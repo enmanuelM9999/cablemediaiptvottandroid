@@ -119,8 +119,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         ImageView tvClassification;
         @BindView(R.id.rl_panel_down)
         RelativeLayout rlDisplayDown;
-        @BindView(R.id.ll_panel_up)
-        LinearLayout llDisplayUp;
+        @BindView(R.id.ll_panel_up) // DEPRECATED
+        LinearLayout llDisplayUp;   // DEPRECATED
         @BindView(R.id.rl_panel_up)
         RelativeLayout rlPanelUp;
         @BindView(R.id.panel_down_channel_info_2)
@@ -1176,7 +1176,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
             tvChannelNumberChange.setVisibility(View.VISIBLE);
             tvChannelNumberChange.setText(numChange);
-            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, HUD_HIDE_TIME);
+            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, 5000);
         }
     }
 
@@ -1443,6 +1443,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         clearScreen();
         showPanelNum();
         clearScreen(HUD_HIDE_TIME);
+        numOne.requestFocus();
     }
 
     void pressSettingsButton(){
@@ -1453,9 +1454,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         ActivityLauncher.launchSettingsActivityAsTechnician();
     }
 
-
-
     void onActionTouch(){
+        lvCanales.setItemsCanFocus(true);
 
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
@@ -2017,22 +2017,55 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 }
                 break;
 
-            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_BOOKMARK:
                 if(!isSomeHudActive()){
                     clearAndShowChannelInfo();
+                }
+                else{
+                    clearScreen();
                 }
                 break;
 
             case KeyEvent.KEYCODE_DPAD_UP:
+                if(!isSomeHudActive() || isOnlyChannelInfoActive()){
+                    ActivityLauncher.launchSettingsActivityAsNormalUser();
+                }
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+                break;
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
+                if(!isSomeHudActive() || isOnlyChannelInfoActive()){
+                    return super.onKeyUp(keyCode, event);
+                }
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if(!isSomeHudActive() || isOnlyChannelInfoActive() || isOnlyChannelListActive()){
+                    pressTypeNumberButton();
+                }
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+                break;
 
             case KeyEvent.KEYCODE_DPAD_LEFT:
-
-                if(isSomeHudActive()){
+                if(!isSomeHudActive() || isOnlyChannelInfoActive()){
+                    clearAndShowChannelList();
+                }
+                else if (isChannelListActive()){
+                    clearScreen();
+                }
+                else{
                     extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
                 }
                 break;
 
@@ -3062,7 +3095,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     //-----enmanuel
 
     /*Cantidad de tiempo en milisegundos que debe pasar antes de que se oculte todo el hud */
-    public int HUD_HIDE_TIME=4000;
+    public static int HUD_HIDE_TIME=4000;
     /*Cantidad de tiempo en milisegundos que debe durar las animaciones de mostrar y ocultar elementos del hud*/
     public int ANIM_TIME=1000;
 
@@ -3108,7 +3141,9 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void clearAndShowChannelList(){
         clearScreen();
         showChannelList();
+        lvCanales.requestFocus();
         clearScreen(HUD_HIDE_TIME);
+
     }
 
     // Canal siguiente
@@ -3334,14 +3369,26 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         return llList.getVisibility() == View.VISIBLE;
     }
 
+
+    public boolean isOnlyChannelListActive(){
+        return rlDisplayDown.getVisibility() == View.INVISIBLE &&
+                rlPanelUp.getVisibility() == View.INVISIBLE &&
+                llOptions.getVisibility() == View.INVISIBLE &&
+                llList.getVisibility() == View.VISIBLE &&
+                rlPanelNum.getVisibility() == View.INVISIBLE;
+    }
+
+
     /**
      *Método para saber si la barra inferior con la informacion del canal está visible y ningun otro elemento hud más
      * @return true o false
      */
     public boolean isOnlyChannelInfoActive(){
         return rlDisplayDown.getVisibility() == View.VISIBLE &&
+                rlPanelUp.getVisibility() == View.VISIBLE &&
                 llOptions.getVisibility() == View.INVISIBLE &&
-                llList.getVisibility() == View.INVISIBLE;
+                llList.getVisibility() == View.INVISIBLE &&
+                rlPanelNum.getVisibility() == View.INVISIBLE;
     }
 
     /**

@@ -6,21 +6,27 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
 import co.cablebox.tv.utils.OnSwipeTouchListener;
 
 public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
+    /*Milliseconds to hide channel info and top buttons*/
+
+    public int CHANNEL_HIDE_TIME=HUD_HIDE_TIME;
+
     @Override
     public void configTopButtons(){
         showTopButtons();
 
-        ivLogout.setVisibility(View.VISIBLE);
-        ivTypeNum.setVisibility(View.VISIBLE);
-
-        ivExitApp.setVisibility(View.GONE);
+        ivSettings.setVisibility(View.GONE);
+        ivLogout.setVisibility(View.GONE);
+        ivTypeNum.setVisibility(View.GONE);
         ivList.setVisibility(View.GONE);
+        ivAdvanceSettings.setVisibility(View.GONE);
+        ivExitApp.setVisibility(View.GONE);
         ivLock.setVisibility(View.GONE);
         ivUnLock.setVisibility(View.GONE);
         ivLogout.setVisibility(View.GONE);
@@ -35,6 +41,7 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
     @Override
     void onActionTouch(){
+        VideoplayerActivity.HUD_HIDE_TIME=10000;
 
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
@@ -553,183 +560,7 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-
-            case KeyEvent.KEYCODE_ENTER:
-                if (writingNum) {
-                    System.out.println("Escribiendo Enter");
-                    delayBusNum = 0;
-                    handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, delayBusNum);
-                } else if(llOptions.getVisibility() == View.VISIBLE){
-                    System.out.println("Opcion Enter");
-                    selecOpcion();
-                }else {
-                    System.out.println("Informacion Enter");
-                    if(rlDisplayDown.getVisibility() == View.INVISIBLE){
-                        clearAndShowChannelInfo();
-                    }else{
-                        clearScreen();
-                    }
-                    setIdProgramaActual();
-                    showProgramInfo();
-
-                    //Pausar Canal Actual y Reanudar al presente
-                    /*if(mediaPlayer.isPlaying()){
-                        mediaPlayer.pause();
-                        controlError = true;
-                    } else
-                        playerInterface.seekTo(0);*/
-                }
-                break;
-
-            case KeyEvent.KEYCODE_BOOKMARK:
-                if (isSomeHudActive()){
-                    clearScreen();
-                }
-                else if(!isSomeHudActive()){
-                    clearAndShowChannelInfo();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-
-            case KeyEvent.KEYCODE_DPAD_UP:
-
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-
-                if(isSomeHudActive()){
-
-                }
-                else{
-                    extendClearScreenTimeout();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_MENU:
-                /*
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
-                    clearAndShowOptionsAndChannelInfo();
-                }
-                return true;
-                //break;
-                 */
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    clearAndShowChannelList();
-                }
-                return true;
-
-            case KeyEvent.KEYCODE_0:
-                pressNumber("0");
-                break;
-
-            case KeyEvent.KEYCODE_1:
-                pressNumber("1");
-                break;
-
-            case KeyEvent.KEYCODE_2:
-                pressNumber("2");
-                break;
-
-            case KeyEvent.KEYCODE_3:
-                pressNumber("3");
-                break;
-
-            case KeyEvent.KEYCODE_4:
-                pressNumber("4");
-                break;
-
-            case KeyEvent.KEYCODE_5:
-                pressNumber("5");
-                break;
-
-            case KeyEvent.KEYCODE_6:
-                pressNumber("6");
-                break;
-
-            case KeyEvent.KEYCODE_7:
-                pressNumber("7");;
-                break;
-
-            case KeyEvent.KEYCODE_8:
-                pressNumber("8");
-                break;
-
-            case KeyEvent.KEYCODE_9:
-                pressNumber("9");
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_MUTE:
-                if(ivMute.getVisibility() == View.INVISIBLE){
-                    ivMute.setVisibility(View.VISIBLE);
-
-                    rlVolumenA.setVisibility(View.INVISIBLE);
-                }else{
-                    ivMute.setVisibility(View.INVISIBLE);
-                }
-                break;
-
-            case KeyEvent.KEYCODE_BACK:
-                int tempLastChannelIndex= lastChannelIndex;
-                lastChannelIndex=channelIndex;
-                channelIndex=tempLastChannelIndex;
-                changeChannelInScreen();
-
-                return true;
-            case KeyEvent.KEYCODE_SETTINGS:
-                Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show();
-                System.out.println("++++++++++++++++++++++++SETTINGS");
-                return true;
-
-            case KeyEvent.KEYCODE_W:
-                try {
-                    releaseResources();
-                    Process proc = Runtime.getRuntime()
-                            .exec(new String[]{ "su", "-c", "reboot -p" });
-                    proc.waitFor();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_Q:
-                try {
-                    openSettingsActivityAsNormalUser();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
-
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-
-    /*Milliseconds to hide channel info and top buttons*/
-    public int HUD_HIDE_TIME=20000;
-    public int CHANNEL_HIDE_TIME=HUD_HIDE_TIME;
-
-    @Override
     public void clearScreen(){
-        ivSettings.requestFocus();
         removeHudDelayedMessages();
         hideOptions();
         hideChannelInfo();
@@ -738,10 +569,7 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
         //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void clearAndShowChannelInfo(){
-        clearAndShowListAndChannelInfo();
-    }
+
 
     @Override
     public void clearAndShowOptionsAndChannelInfo(){

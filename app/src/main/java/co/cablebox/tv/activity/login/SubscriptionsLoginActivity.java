@@ -55,8 +55,10 @@ public class SubscriptionsLoginActivity extends LoginActivity implements IpmuxAc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_subscriptions);
+        setContentView(R.layout.activity_login_landscape);
         ButterKnife.bind(this);
+
+        etUsername.requestFocus();
 
         /* App state configs */
         setMessageOnAppState();
@@ -88,6 +90,7 @@ public class SubscriptionsLoginActivity extends LoginActivity implements IpmuxAc
                 AppState.getUser().setUserCredentials(new String[]{username,password});
 
                 /*Connect app with server usign socket*/
+                AppState.rebootSocketConnection();
                 AppState.getSocketConnection().socketEmitConnect();
 
                 /*Show loading animation*/
