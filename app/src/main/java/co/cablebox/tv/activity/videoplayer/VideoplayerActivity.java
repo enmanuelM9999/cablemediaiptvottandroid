@@ -2069,6 +2069,15 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 }
                 break;
 
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                if(isOnlyChannelInfoActive()){
+                    return true;
+                }
+                else{
+                    return super.onKeyUp(keyCode, event);
+                }
+
+
             case KeyEvent.KEYCODE_CHANNEL_UP:
                 //Agregar el último canal visitado
                 lastChannelIndex=channelIndex;
@@ -2085,25 +2094,12 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 previousChannelInScreen();
                 break;
 
-            case KeyEvent.KEYCODE_MENU:
-                /*
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
-                    clearAndShowOptionsAndChannelInfo();
-                }
-                return true;
-                //break;
-                 */
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    clearAndShowChannelList();
-                }
-                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                upVolume();
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                downVolume();
+                break;
 
             case KeyEvent.KEYCODE_0:
                 pressNumber("0");
@@ -3491,22 +3487,22 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
 
         //v2
-        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-          //      AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
 
         //v3
-        volumeManager.up();
+//        volumeManager.up();
     }
     public void downVolume(){
         //v1
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
 
         //v2
-        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-          //      AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
 
         //v3
-        volumeManager.down();
+//        volumeManager.down();
     }
 
     public void simulateKeyPress(int key){

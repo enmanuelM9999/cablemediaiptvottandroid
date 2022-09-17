@@ -577,7 +577,9 @@
                     android:layout_below="@+id/rl_program_b"
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="20dp"
-                    android:layout_marginRight="@dimen/h_180">
+                    android:layout_marginRight="@dimen/h_180"
+                    android:focusable="false"
+                    android:clickable="false">
 
                     <ImageView
                         android:id="@+id/iv_opciones"
