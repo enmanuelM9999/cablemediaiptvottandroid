@@ -28,12 +28,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.text.InputType;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -1597,6 +1599,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
             //Pintar la ip configurada en el EditText
             inputNewIp.setText(AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
             inputNewIp.setMaxLines(1);
+            inputNewIp.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
             inputNewIp.setPadding(20,10,20,10);
             builder.setView(inputNewIp);
 
@@ -1640,6 +1643,13 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
             //Create Dialog
             AlertDialog ad= builder.create();
+
+            Window window = ad.getWindow();
+            WindowManager.LayoutParams wlp = window.getAttributes();
+
+            wlp.gravity = Gravity.TOP;
+            wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+            window.setAttributes(wlp);
             ad.show();
 
         }
