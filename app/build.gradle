@@ -13,13 +13,13 @@ android {
 
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 206
+        versionCode 207
 
 //        minSdkVersion 21
 //        targetSdkVersion 30
 //        versionCode 710
 
-        versionName "2.05"
+        versionName "2.07"
 
 
         compileOptions {

@@ -2145,21 +2145,21 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 pressNumber("9");
                 break;
 
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_MUTE:
-                if(ivMute.getVisibility() == View.INVISIBLE){
-                    ivMute.setVisibility(View.VISIBLE);
-
-                    rlVolumenA.setVisibility(View.INVISIBLE);
-                }else{
-                    ivMute.setVisibility(View.INVISIBLE);
-                }
-                break;
+//            case KeyEvent.KEYCODE_VOLUME_UP:
+//                break;
+//
+//            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                break;
+//
+//            case KeyEvent.KEYCODE_VOLUME_MUTE:
+//                if(ivMute.getVisibility() == View.INVISIBLE){
+//                    ivMute.setVisibility(View.VISIBLE);
+//
+//                    rlVolumenA.setVisibility(View.INVISIBLE);
+//                }else{
+//                    ivMute.setVisibility(View.INVISIBLE);
+//                }
+//                break;
 
             case KeyEvent.KEYCODE_BACK:
                 int tempLastChannelIndex= lastChannelIndex;
@@ -2173,25 +2173,25 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 System.out.println("++++++++++++++++++++++++SETTINGS");
                 return true;
 
-            case KeyEvent.KEYCODE_W:
-                try {
-                    releaseResources();
-                    Process proc = Runtime.getRuntime()
-                            .exec(new String[]{ "su", "-c", "reboot -p" });
-                    proc.waitFor();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_Q:
-                try {
-                    openSettingsActivityAsNormalUser();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
+//            case KeyEvent.KEYCODE_W:
+//                try {
+//                    releaseResources();
+//                    Process proc = Runtime.getRuntime()
+//                            .exec(new String[]{ "su", "-c", "reboot -p" });
+//                    proc.waitFor();
+//
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                break;
+//
+//            case KeyEvent.KEYCODE_Q:
+//                try {
+//                    openSettingsActivityAsNormalUser();
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                break;
 
         }
         return super.onKeyDown(keyCode, event);
