@@ -701,12 +701,28 @@
             android:screenReaderFocusable="true"
             android:nextFocusDown="@id/lv_canales"
             android:nextFocusLeft="@id/tv_num_six"
+            android:nextFocusRight="@id/viewHideHud"
          >
         </ListView>
 
     </LinearLayout>
 
-
+    <RelativeLayout
+        android:id="@+id/viewHideHud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        android:clickable="true"
+        android:visibility="visible"
+        android:nextFocusRight="@id/tv_num_four"
+        android:nextFocusLeft="@id/lv_canales"
+        android:nextFocusUp="@id/lv_canales"
+        android:nextFocusDown="@id/lv_canales"
+        android:background="@drawable/button_behavior_exit"
+        android:alpha="0.5"
+        >
+    </RelativeLayout>
 
     <!--Panel Numeros-->
     <TextView
@@ -745,10 +761,11 @@
                 android:id="@+id/tv_num_one"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
-                android:background="@drawable/button_behavior_blue"
+                android:background="@drawable/button_behavior_dark"
                 android:clickable="true"
                 android:focusable="true"
                 android:nextFocusUp="@id/tv_num_seven"
+                android:nextFocusLeft="@id/viewHideHud"
                 android:gravity="center"
                 android:text="1"
                 android:textAlignment="center"
@@ -759,7 +776,7 @@
                 android:layout_width="43dp"
                 android:layout_height="43dp"
                 android:layout_toEndOf="@+id/tv_num_one"
-                android:background="@drawable/button_behavior_blue"
+                android:background="@drawable/button_behavior_dark"
                 android:clickable="true"
                 android:focusable="true"
                 android:nextFocusUp="@id/tv_num_zero"
@@ -773,7 +790,7 @@
                 android:layout_width="43dp"
                 android:layout_height="43dp"
                 android:layout_toEndOf="@+id/tv_num_two"
-                android:background="@drawable/button_behavior_blue"
+                android:background="@drawable/button_behavior_dark"
                 android:clickable="true"
                 android:focusable="true"
                 android:nextFocusUp="@id/iv_enter_num"
@@ -800,8 +817,8 @@
                 android:textSize="30dp"
                 android:focusable="true"
                 android:clickable="true"
-                android:nextFocusLeft="@id/tv_num_six"
-                android:background="@drawable/button_behavior_blue"/>
+                android:nextFocusLeft="@id/viewHideHud"
+                android:background="@drawable/button_behavior_dark"/>
 
             <TextView
                 android:id="@+id/tv_num_five"
@@ -816,23 +833,21 @@
                 android:textSize="30dp"
                 android:focusable="true"
                 android:clickable="true"
-                android:background="@drawable/button_behavior_blue"/>
+                android:background="@drawable/button_behavior_dark"/>
 
             <TextView
                 android:id="@+id/tv_num_six"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
-
                 android:layout_toEndOf="@+id/tv_num_five"
-
                 android:gravity="center"
                 android:text="6"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 android:focusable="true"
                 android:clickable="true"
-                android:nextFocusRight="@id/tv_num_four"
-                android:background="@drawable/button_behavior_blue"/>
+                android:nextFocusRight="@id/lv_canales"
+                android:background="@drawable/button_behavior_dark"/>
         </LinearLayout>
 
         <LinearLayout
@@ -852,8 +867,8 @@
                 android:focusable="true"
                 android:clickable="true"
                 android:nextFocusDown="@id/tv_num_one"
-                android:nextFocusLeft="@id/tv_num_nine"
-                android:background="@drawable/button_behavior_blue"/>
+                android:nextFocusLeft="@id/viewHideHud"
+                android:background="@drawable/button_behavior_dark"/>
 
             <TextView
                 android:id="@+id/tv_num_eight"
@@ -868,24 +883,22 @@
                 android:textSize="30dp"
                 android:focusable="true"
                 android:clickable="true"
-                android:background="@drawable/button_behavior_blue"
+                android:background="@drawable/button_behavior_dark"
                 />
 
             <TextView
                 android:id="@+id/tv_num_nine"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
-
                 android:layout_toEndOf="@+id/tv_num_eight"
-
                 android:gravity="center"
                 android:text="9"
                 android:textAlignment="center"
                 android:textSize="30dp"
                 android:focusable="true"
                 android:clickable="true"
-                android:nextFocusRight="@id/tv_num_seven"
-                android:background="@drawable/button_behavior_blue"
+                android:nextFocusRight="@id/lv_canales"
+                android:background="@drawable/button_behavior_dark"
                 />
         </LinearLayout>
 
@@ -918,8 +931,8 @@
                 android:focusable="true"
                 android:clickable="true"
                 android:nextFocusDown="@id/tv_num_two"
-                android:nextFocusLeft="@id/iv_enter_num"
-                android:background="@drawable/button_behavior_blue"/>
+                android:nextFocusLeft="@id/viewHideHud"
+                android:background="@drawable/button_behavior_dark"/>
 
             <ImageView
                 android:id="@+id/iv_enter_num"
@@ -927,7 +940,7 @@
                 android:layout_height="@dimen/w_100"
                 android:focusable="true"
                 android:clickable="true"
-                android:nextFocusRight="@id/tv_num_zero"
+                android:nextFocusRight="@id/lv_canales"
                 android:nextFocusDown="@id/tv_num_three"
                 android:layout_gravity="center"
                 android:padding="8dp"

@@ -75,7 +75,6 @@ import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.CustomVolumeManager;
 import co.cablebox.tv.R;
-import co.cablebox.tv.ToastManager;
 import co.cablebox.tv.activity.AppsListActivity;
 import co.cablebox.tv.activity.ChannelListActivityBox;
 import co.cablebox.tv.activity.ServiceProgramActivity;
@@ -181,10 +180,15 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         ImageView ivSettings;
         @BindView(R.id.ivAdvanceSettings)
         ImageView ivAdvanceSettings;
+        @BindView(R.id.viewHideHud)
+        RelativeLayout viewHideHud;
 
 
 
-        //Panel de Numeros
+
+
+
+    //Panel de Numeros
         @BindView(R.id.rl_panel_num)
         RelativeLayout rlPanelNum;
         @BindView(R.id.tv_num_one)
@@ -238,6 +242,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         RelativeLayout fondoNot;
         @BindView(R.id.mensaje_not)
         TextView mensajeNot;
+
 
     // Variables de control de tiempo actual
         int hour=0, minute =0, second = 0, year = 0, month = 0, day = 0;
@@ -3123,7 +3128,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         showChannelInfo();
         showChannelList();
         showPanelNum();
-
+        showHideHud();
         clearScreen(HUD_HIDE_TIME);
     }
 
@@ -3253,6 +3258,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         hideChannelInfo();
         hideChannelList();
         hidePanelNum();
+        hideHideHud();
         //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 
@@ -3340,6 +3346,14 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void hideChannelList(){
         llList.setVisibility(View.INVISIBLE);
 
+    }
+
+
+    public void showHideHud() {
+        viewHideHud.setVisibility(View.VISIBLE);
+    }
+    public void hideHideHud() {
+        viewHideHud.setVisibility(View.INVISIBLE);
     }
 
     /**

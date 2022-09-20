@@ -1,15 +1,10 @@
 package co.cablebox.tv.activity.videoplayer;
 
 import android.graphics.drawable.Drawable;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-import co.cablebox.tv.ActivityLauncher;
-import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
-import co.cablebox.tv.utils.OnSwipeTouchListener;
 
 public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
@@ -44,6 +39,27 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
         VideoplayerActivity.HUD_HIDE_TIME=10000;
 
 
+        viewHideHud.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        pressHideHud();
+                        break;
+                }
+                return true;
+            }
+
+        });
+        viewHideHud.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                pressHideHud();
+            }
+        });
 
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
@@ -558,17 +574,6 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
     public void extendClearScreenTimeout(){
         handler.removeMessages(CODE_CLEAR_SCREEN);
         handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,CHANNEL_HIDE_TIME);
-    }
-
-
-    @Override
-    public void clearScreen(){
-        removeHudDelayedMessages();
-        hideOptions();
-        hideChannelInfo();
-        hideChannelList();
-        hidePanelNum();
-        //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 
 
