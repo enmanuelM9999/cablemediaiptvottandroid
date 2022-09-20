@@ -43,6 +43,8 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
     void onActionTouch(){
         VideoplayerActivity.HUD_HIDE_TIME=10000;
 
+
+
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
             @Override
