@@ -3129,6 +3129,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         showChannelList();
         showPanelNum();
         showHideHud();
+        viewHideHud.requestFocus();
         clearScreen(HUD_HIDE_TIME);
     }
 
@@ -3161,7 +3162,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void clearAndShowChannelList(){
         clearScreen();
         showChannelList();
-        lvCanales.requestFocus();
+//        lvCanales.requestFocus();
+
         clearScreen(HUD_HIDE_TIME);
     }
 
