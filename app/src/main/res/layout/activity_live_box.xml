@@ -141,8 +141,8 @@
         android:background="@drawable/degradado_panel_down"
         android:orientation="horizontal"
         android:paddingHorizontal="40dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:visibility="visible">
 
         <LinearLayout
@@ -151,13 +151,13 @@
             android:layout_marginVertical="0dp">
 
             <RelativeLayout
-                android:layout_width="67dp"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="67dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/cableoperador2" />
 
             </RelativeLayout>
@@ -195,8 +195,6 @@
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:typeface="sans" />
-
-
 
 
         </LinearLayout>
@@ -240,6 +238,7 @@
                 android:nextFocusDown="@id/lv_canales"
                 android:padding="4dp"
                 android:src="@drawable/admin_panel_settings_flat_white" />
+
             <ImageView
                 android:id="@+id/ivLogout"
                 android:layout_width="40dp"
@@ -430,7 +429,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/degradado_panel_down"
-        android:minHeight="100dp"
+
         android:visibility="visible">
 
 
@@ -439,14 +438,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:minHeight="100dp"
-            android:paddingTop="10dp">
+            android:minHeight="50dp"
+            android:paddingTop="0dp"
+            >
 
             <ImageView
                 android:id="@+id/tv_channel_logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
                 android:src="@drawable/ic_no_logo" />
 
         </RelativeLayout>
@@ -458,7 +459,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="30dp"
-            android:layout_toEndOf="@+id/rl_logo">
+            android:layout_toEndOf="@+id/rl_logo"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/tv_channel_number"
@@ -467,8 +469,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="20dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
 
                 android:text="500"
                 android:textAlignment="center"
@@ -476,7 +478,6 @@
                 android:textSize="25dp"
                 android:textStyle="bold"
                 android:typeface="sans" />
-
 
 
             <LinearLayout
@@ -491,17 +492,17 @@
                 android:background="#B33D3D3D"
                 android:gravity="center_vertical"
                 android:minWidth="220dp"
-                android:minHeight="100dp"
+                android:minHeight="50dp"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingTop="10dp"
+                android:paddingTop="0dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="0dp"
 
                 android:text="Canal Prueba"
                 android:textColor="#fff"
                 android:textSize="18dp"
-                android:typeface="sans" >
+                android:typeface="sans">
 
 
                 <TextView
@@ -517,26 +518,27 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/panel_down_channel_info_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
                 android:layout_gravity="right"
                 android:background="#B33D3D3D"
-                android:minHeight="100dp"
+                android:gravity="center"
+                android:minHeight="50dp"
                 android:orientation="horizontal"
-                android:paddingTop="10dp"
+                android:paddingTop="0dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="0dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:orientation="vertical">
 
                     <TextView
@@ -547,7 +549,8 @@
                         android:text="Calidad:"
                         android:textColor="#fff"
                         android:textSize="18dp"
-                        android:typeface="sans" />
+                        android:typeface="sans"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tv_quality"
@@ -578,8 +581,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginStart="20dp"
                     android:layout_marginRight="@dimen/h_180"
+                    android:clickable="false"
                     android:focusable="false"
-                    android:clickable="false">
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/iv_opciones"
@@ -656,7 +660,7 @@
 
     <LinearLayout
         android:id="@+id/ll_list"
-        android:layout_width="220dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_panel_down"
         android:layout_below="@+id/rl_panel_up"
@@ -681,7 +685,7 @@
                 android:gravity="center"
                 android:text="Lista de Canales"
                 android:textAlignment="center"
-                android:textSize="15dp"
+                android:textSize="12dp"
                 android:textStyle="bold"></TextView>
 
         </RelativeLayout>
@@ -717,8 +721,8 @@
         android:visibility="visible"
         android:nextFocusRight="@id/tv_num_four"
         android:nextFocusLeft="@id/lv_canales"
-        android:nextFocusUp="@id/lv_canales"
-        android:nextFocusDown="@id/lv_canales"
+        android:nextFocusUp="@id/viewHideHud"
+        android:nextFocusDown="@id/viewHideHud"
         android:background="@drawable/button_behavior_exit"
         android:alpha="0.5"
         >
@@ -959,7 +963,7 @@
         android:layout_marginHorizontal="@dimen/h_50"
         android:background="@drawable/borde_volumen_a"
         android:layout_marginTop="10dp"
-        android:visibility="visible" >
+        android:visibility="invisible" >
 
         <SeekBar
             android:id="@+id/sb_volumenA"
