@@ -2,12 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bgbluedarkdegree">
 
     <LinearLayout
+        android:id="@+id/llLoginData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="500dp"
@@ -95,7 +98,6 @@
                         android:background="@android:color/transparent"
                         android:clickable="true"
                         android:focusable="true"
-                        android:focusedByDefault="true"
                         android:hint="Usuario"
                         android:inputType="textPersonName"
                         android:minWidth="150dp"
@@ -371,5 +373,47 @@
                 android:textSize="30dp" />
         </LinearLayout>
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llLoadingChannels"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/bgbluedarkdegree"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/logoCableoperador"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:src="@drawable/cableoperador"></ImageView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_animation"
+            android:layout_width="300dp"
+            android:layout_height="110dp"
+            android:layout_below="@+id/logoCableoperador"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading_spinner.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loading_animation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:text="@string/powered_by"
+            android:textColor="#fff"
+            android:textSize="13dp" />
+    </LinearLayout>
 
 </RelativeLayout>

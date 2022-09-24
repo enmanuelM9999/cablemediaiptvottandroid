@@ -52,11 +52,14 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
     @BindView(R.id.tv_num_zero)
     TextView numZero;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+
 
         /* App state configs */
         setMessageOnAppState();
@@ -67,8 +70,6 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
         /*Check if user already logged in*/
         if (AppState.getUser().isLoggedIn())
             AppState.getSocketConnection().socketEmitConnect();
-
-
     }
 
     @Override
@@ -88,10 +89,13 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
                 AppState.getUser().setUserCredentials(new String[]{username,password});
 
                 /*Connect app with server usign socket*/
+                AppState.rebootSocketConnection();
                 AppState.getSocketConnection().socketEmitConnect();
 
                 /*Show loading animation*/
                 Toast.makeText(SmartphoneLoginActivity.this,"Logging...",Toast.LENGTH_LONG).show();
+
+                loginExtraSteps();
             }
         });
 
@@ -303,4 +307,6 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
 
         });
     }
+
+    void loginExtraSteps(){}
 }
