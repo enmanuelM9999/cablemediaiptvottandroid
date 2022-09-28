@@ -216,7 +216,7 @@ public class ChannelListActivityBox extends Activity {
 
     // Claves
         private static final String Q15QSFD = "55555"; // Lista de Programas instalados en el dispositivo (En el celular no funciona)
-        private static final String Q12FAFD = "99999"; // Visualisar Consumo de CPU y RAM
+        private static final String Q12FAFD = "7777777"; // Visualisar Consumo de CPU y RAM
         private String palCalve = "";
     private int delayBusNum = 3000;
 

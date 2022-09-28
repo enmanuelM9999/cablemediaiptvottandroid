@@ -282,9 +282,9 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
 
 
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
     private static final String SH0W1M31 = "88888";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "666666";
     private String wordKey = "";
     private int delayBusNum = 3000;
 

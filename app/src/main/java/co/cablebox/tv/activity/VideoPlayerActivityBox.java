@@ -322,9 +322,9 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
     AudioManager audioManager;
 
     // Claves
-    private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_LAUNCH_SETTINGS_AS_TECHNICIAN = "54321"; // Ajustes de la app
-    private static final String KEY_LAUNCH_SETTINGS_AS_NORMAL_USER = "12345"; // Ajustes avanzados de la app
+    private static final String KEY_VIEW_DEVICE_STATS = "7777777"; // Visualizar Consumo de CPU y RAM
+    private static final String KEY_LAUNCH_SETTINGS_AS_TECHNICIAN = "666666"; // Ajustes de la app
+    private static final String KEY_LAUNCH_SETTINGS_AS_NORMAL_USER = "55555"; // Ajustes avanzados de la app
     private String wordKey = "";
 
     // Variables de Canal actual y programa actual

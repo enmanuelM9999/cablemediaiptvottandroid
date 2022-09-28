@@ -8,8 +8,8 @@ import android.view.KeyEvent;
 public class TvboxRemoteControl extends Activity {
 
 
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "666666";
     private String wordKey = "";
     private final static int CODE_OPEN_SETTINGS = 3;
     private int delayBusNum = 3000;

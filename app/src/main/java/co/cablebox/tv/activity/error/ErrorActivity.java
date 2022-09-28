@@ -70,8 +70,8 @@ public abstract class ErrorActivity extends AppCompatActivity {
     public void loadComponents(){}
 
 
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "666666";
     private String wordKey = "";
     private final static int CODE_SALIR_APP = 3;
     private int delayBusNum = 3000;

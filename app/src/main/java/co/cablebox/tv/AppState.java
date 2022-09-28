@@ -21,8 +21,8 @@ import co.cablebox.tv.user.User;
 
 public class AppState {
     /*Constants*/
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "12345";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "54321";
+    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "666666";
 
     /*Vars*/
     private static AppFactory appFactory=new SmartphoneAppFactory();
