@@ -8,7 +8,7 @@ import android.widget.Toast;
 public class ToastManager {
     public static void toast(String text) {
         showToast(text);
-        showToast(text);
+//        showToast(text);
     }
 
     private static void showToast(String text){

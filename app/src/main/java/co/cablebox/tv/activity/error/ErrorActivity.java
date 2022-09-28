@@ -133,6 +133,7 @@ public abstract class ErrorActivity extends AppCompatActivity {
                 pressNumber("9");
                 break;
 
+            case KeyEvent.KEYCODE_BOOKMARK:
             case KeyEvent.KEYCODE_DPAD_CENTER:
                 pressNumber(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE);
                 break;

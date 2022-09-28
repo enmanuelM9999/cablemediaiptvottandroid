@@ -74,8 +74,9 @@ public abstract class LoginActivity extends AppCompatActivity {
                 System.out.println("Oprimio Enter");
                 break;
 
+            case KeyEvent.KEYCODE_BOOKMARK:
             case KeyEvent.KEYCODE_MENU:
-                pressNumber(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE);
+                ActivityLauncher.launchSettingsActivityAsTechnician();
                 return true;
 
         }

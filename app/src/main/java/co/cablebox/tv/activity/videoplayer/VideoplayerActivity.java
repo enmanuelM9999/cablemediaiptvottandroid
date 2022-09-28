@@ -90,12 +90,12 @@ import co.cablebox.tv.utils.Utilidades;
 public abstract class VideoplayerActivity extends Activity implements IVLCVout.OnNewVideoLayoutListener {
     Activity activity=this;
 
-    private static final String TAG = VideoplayerActivity.class.getName();
+    public static final String TAG = VideoplayerActivity.class.getName();
 
     public static boolean canCloseSocketConnectionPauseVideoPlayer =true;
 
-    private static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
-    private static final String LOCAL_MESSAGES_FILE = "messageList.xml";
+    public static final String MESSAGE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/MessageInfo";
+    public static final String LOCAL_MESSAGES_FILE = "messageList.xml";
 
     public AudioManager audio = (AudioManager) AppState.getAppContext().getSystemService(AppState.getAppContext().AUDIO_SERVICE);
 
@@ -118,8 +118,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         ImageView tvClassification;
         @BindView(R.id.rl_panel_down)
         RelativeLayout rlDisplayDown;
-        @BindView(R.id.ll_panel_up)
-        LinearLayout llDisplayUp;
+        @BindView(R.id.ll_panel_up) // DEPRECATED
+        LinearLayout llDisplayUp;   // DEPRECATED
         @BindView(R.id.rl_panel_up)
         RelativeLayout rlPanelUp;
         @BindView(R.id.panel_down_channel_info_2)
@@ -176,9 +176,19 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         ImageView ivUnLock;
         @BindView(R.id.iv_type_num)
         ImageView ivTypeNum;
+        @BindView(R.id.ivSettings)
+        ImageView ivSettings;
+        @BindView(R.id.ivAdvanceSettings)
+        ImageView ivAdvanceSettings;
+        @BindView(R.id.viewHideHud)
+        RelativeLayout viewHideHud;
 
 
-        //Panel de Numeros
+
+
+
+
+    //Panel de Numeros
         @BindView(R.id.rl_panel_num)
         RelativeLayout rlPanelNum;
         @BindView(R.id.tv_num_one)
@@ -233,6 +243,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         @BindView(R.id.mensaje_not)
         TextView mensajeNot;
 
+
     // Variables de control de tiempo actual
         int hour=0, minute =0, second = 0, year = 0, month = 0, day = 0;
         Thread initClock = null;
@@ -241,67 +252,67 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         String curTime;
 
     //Medidor de Banda Ancha
-        private String mDownloadSpeedOutput;
-        private String mUnits;
-        private boolean meterOn = false;
+        public String mDownloadSpeedOutput;
+        public String mUnits;
+        public boolean meterOn = false;
 
     // Eventos
-        private final static int CODE_SHOWLOADING = 1;
+        public final static int CODE_SHOWLOADING = 1;
 
-        private final static int CODE_STOP_SHOWLOADING = 2;
+        public final static int CODE_STOP_SHOWLOADING = 2;
 
-        private final static int CODE_NET_STATE = 3;
+        public final static int CODE_NET_STATE = 3;
 
-        private final static int CODE_HIDE_BLACK = 4;
+        public final static int CODE_HIDE_BLACK = 4;
 
-        private final static int CODE_CHANGE_BY_NUM = 5;
+        public final static int CODE_CHANGE_BY_NUM = 5;
 
-        private final static int CODE_HIDE_ERROR = 6;
+        public final static int CODE_HIDE_ERROR = 6;
 
-        private final static int CODE_SALIR_APP = 7;
+        public final static int CODE_SALIR_APP = 7;
 
-        private final static int CODE_CLEAR_SCREEN = 8;
+        public final static int CODE_CLEAR_SCREEN = 8;
 
         public final static int CODE_HIDE_VOLUMEN = 9;
 
-        private final static int CODE_HIDE_OPTION = 10;
+        public final static int CODE_HIDE_OPTION = 10;
 
-        private final static int CODE_DEG_LOCK = 11;
+        public final static int CODE_DEG_LOCK = 11;
 
-        private final static int CODE_COLOR_NUM = 12;
+        public final static int CODE_COLOR_NUM = 12;
 
-        private final static int CODE_CHANGE_CHANNEL = 13;
+        public final static int CODE_CHANGE_CHANNEL = 13;
 
-        private final static int CODE_HIDE_NOT = 14;
+        public final static int CODE_HIDE_NOT = 14;
 
-        private final static int CODE_RESTART_APP = 15;
+        public final static int CODE_RESTART_APP = 15;
 
-        private final static int CODE_NOTF_VIEW = 16;
+        public final static int CODE_NOTF_VIEW = 16;
 
-        private final static int CODE_NOTF_VIEW_OPC = 17;
+        public final static int CODE_NOTF_VIEW_OPC = 17;
 
-        private final static int CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW = 18;
+        public final static int CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW = 18;
 
-        private final static int CODE_MEDIA_PLAYER_UNMUTE = 19;
+        public final static int CODE_MEDIA_PLAYER_UNMUTE = 19;
 
 
     // Variable guardar No. de canal
-        private final static String PROGRAM_KEY = "lastProIndex";
+        public final static String PROGRAM_KEY = "lastProIndex";
 
     // Variables para el correcto funcionamiento del reproductor con VLC
-        private SurfaceHolder surfaceHolder;
-        private LibVLC libvlc = null;
+        public SurfaceHolder surfaceHolder;
+        public LibVLC libvlc = null;
          MediaPlayer mediaPlayer = null;
-        private IVLCVout ivlcVout;
-        private Media media;
-        private MediaController controller;
-        private SurfaceView mSubtitlesSurface = null;
+        public IVLCVout ivlcVout;
+        public Media media;
+        public MediaController controller;
+        public SurfaceView mSubtitlesSurface = null;
 
     //fix contar que se mutee y desmutee una sola vez cuando el buffer es 100%
-        private boolean wasMuted=false;
-        private boolean wasUnmuted=false;
+        public boolean wasMuted=false;
+        public boolean wasUnmuted=false;
 
-        private Reproduccion reproduccion = null;
+        public Reproduccion reproduccion = null;
 
     // Variables para bloquear la el tactil y barras de notificacion y navegacion
         WindowManager wmanager;
@@ -310,11 +321,11 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
 
     // Claves
-    private static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "54321"; // Ajustes avanzados de la app
-    private static final String KEY_OPEN_USER_MODE = "12345"; // Ajustes de la app
-    private static final String KEY_TOGGLE_TOP_BUTTONS = "11111"; // Show or hide top buttons
-    private String wordKey = "";
+    public static final String KEY_VIEW_DEVICE_STATS = "99999"; // Visualizar Consumo de CPU y RAM
+    public static final String KEY_OPEN_APP_TECHNICIAN_MODE = "54321"; // Ajustes avanzados de la app
+    public static final String KEY_OPEN_USER_MODE = "12345"; // Ajustes de la app
+    public static final String KEY_TOGGLE_TOP_BUTTONS = "11111"; // Show or hide top buttons
+    public String wordKey = "";
 
     // Variables de Canal actual y programa actual
          static int channelIndex = 0;
@@ -322,10 +333,10 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
          static int lastChannelIndex=0; //el último canal que se reprodujo, esto para volver al canal anterior con el botón "atrás"
          boolean isScreenLocked = false; // true significa Bloqueada, la pantalla no recibe gestos ni eventos touch
 
-    private static boolean failNet = false; // Controla cualquier fallo de conexion
+    public static boolean failNet = false; // Controla cualquier fallo de conexion
 
     // Eventos
-    private Handler handler = new Handler() {
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -453,44 +464,44 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public CustomVolumeManager volumeManager;
 
     //Animaciones para cada panel o grupo de items en la interfaz
-        private TranslateAnimation animIn;
-        private TranslateAnimation exitAnim;
-        private TranslateAnimation animInBot;
-        private TranslateAnimation exitAnimBot;
-        private TranslateAnimation animInOptions;
-        private TranslateAnimation exitAnimOptions;
+        public TranslateAnimation animIn;
+        public TranslateAnimation exitAnim;
+        public TranslateAnimation animInBot;
+        public TranslateAnimation exitAnimBot;
+        public TranslateAnimation animInOptions;
+        public TranslateAnimation exitAnimOptions;
 
-        private TranslateAnimation animInPanelNum;
-        private TranslateAnimation exitAnimPanelNum;
-        private TranslateAnimation animInList;
-        private TranslateAnimation exitAnimList;
-        private TranslateAnimation animNotif;
-        private TranslateAnimation animInListNot;
-        private TranslateAnimation exitAnimListNot;
+        public TranslateAnimation animInPanelNum;
+        public TranslateAnimation exitAnimPanelNum;
+        public TranslateAnimation animInList;
+        public TranslateAnimation exitAnimList;
+        public TranslateAnimation animNotif;
+        public TranslateAnimation animInListNot;
+        public TranslateAnimation exitAnimListNot;
 
-    private NetworkReceiver networkReceiver;
+    public NetworkReceiver networkReceiver;
 
     // Variables de control y administracion de eventos
-        private boolean change = false;
-        private boolean onVolumen = false;
-        private boolean controlError = false;
-        private int numCurrent = 0;
+        public boolean change = false;
+        public boolean onVolumen = false;
+        public boolean controlError = false;
+        public int numCurrent = 0;
 
-        private String numChange = "";
-        private boolean writingNum = false;
-        private boolean viewInfo = false;
-        private int delayBusNum = 3000;
-        private int delayExitInfoChannel = 3000;
+        public String numChange = "";
+        public boolean writingNum = false;
+        public boolean viewInfo = false;
+        public int delayBusNum = 3000;
+        public int delayExitInfoChannel = 3000;
 
-        private boolean acFavoritos = false;
-        private boolean enAnimacion = false;
-        private int posOpcion = 1;
+        public boolean acFavoritos = false;
+        public boolean enAnimacion = false;
+        public int posOpcion = 1;
 
-        private boolean cambCanal = false;
+        public boolean cambCanal = false;
 
 
     //Canal Informativo
-    private String numCanalInformativo = "-1";
+    public String numCanalInformativo = "-1";
 
     //Timer Canal
     Timer tiempo_canal = new Timer();
@@ -528,7 +539,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 clearAndShowChannelInfo();
 
                 adaptarListaCanales();
-                //Celular
+
+                //All nav actions like control app with fingers or with a remote control
                 onActionTouch();
 
                 // Elegir un canal en la lista de canales
@@ -553,7 +565,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 lvCanales.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        clearScreen(10000);
+                        clearScreen(HUD_HIDE_TIME);
                     }
 
                     @Override
@@ -564,7 +576,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 lvCanales.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        clearScreen(10000);
+                        clearScreen(HUD_HIDE_TIME);
                         return false;
                     }
                 });
@@ -763,20 +775,20 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         System.out.println("OnStop......");
     }
 
-    private void registerNetReceiver() {
+    public void registerNetReceiver() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         networkReceiver = new NetworkReceiver();
         registerReceiver(networkReceiver, filter);
     }
 
-    private void getCodec(){
+    public void getCodec(){
         System.out.println("AspectRatio: "+mediaPlayer.getAspectRatio()+"");
         System.out.println("Id Original Video: "+mediaPlayer.getVideoTrack());
         System.out.println("Id Original Audio: "+mediaPlayer.getAudioTrack());
     }
 
     // Cambiar lista de Canales en la Interfaz
-    private void changeChannelList() {
+    public void changeChannelList() {
         int programBack = 0;
         int programNext = 0;
 
@@ -812,7 +824,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Buscar imagen en la drawable y actualizar imagen en la interfaz
-    private void selecImg(ImageView imageView, String nombre) {
+    public void selecImg(ImageView imageView, String nombre) {
         boolean aux = false;
         Field[] drawables = R.drawable.class.getFields();
         for (Field f : drawables) {
@@ -874,7 +886,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Verificar si los favoritos guardados en la base SQLite existe en la lista de canales actual
-    private void organizarFavoritos(){
+    public void organizarFavoritos(){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(VideoplayerActivity.this, "db_favoritos",null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         Cursor c = db.query(
@@ -1148,7 +1160,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Reproduce canal actual
-    private void play(int position) {
+    public void play(int position) {
         reproduccion = (Reproduccion) new Reproduccion().execute();
 
         /*Uri parse = Uri.parse(channels.getData().get(position).getUrl());
@@ -1162,26 +1174,26 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Escribiendo el numero del canal
-    private void canalNum(String num) {
+    public void canalNum(String num) {
         if (numChange.length() <= 3) { //permite 3 digitos antes de agregar otro, max 4 digitos
             handler.removeMessages(CODE_CHANGE_BY_NUM);
             numChange += num;
 
             tvChannelNumberChange.setVisibility(View.VISIBLE);
             tvChannelNumberChange.setText(numChange);
-            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, HUD_HIDE_TIME);
+            handler.sendEmptyMessageDelayed(CODE_CHANGE_BY_NUM, 5000);
         }
     }
 
     // Acumulado de numeros y comprobar claves
-    private void claveExit(String letra) {
+    public void claveExit(String letra) {
         wordKey += letra;
         handler.removeMessages(CODE_SALIR_APP);
         handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
     }
 
     // Inicializa la actividad AppsListActivity para ver la lista de aplicaciones instaladas en el dispositivo
-    private void viewListApps() {
+    public void viewListApps() {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
@@ -1196,7 +1208,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Mostrar u ocultar el consumo de Ram y CPU
-    private void viewCpuRam() {
+    public void viewCpuRam() {
         if (llCpuRam.getVisibility() == View.INVISIBLE) {
             //Mostrar CPU y RAM
             llCpuRam.setVisibility(View.VISIBLE);
@@ -1212,7 +1224,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void viewRed(){
+    public void viewRed(){
         if (llCpuRam.getVisibility() == View.INVISIBLE) {
             llCpuRam.setVisibility(View.VISIBLE);
             handler.postDelayed(d, 1000);
@@ -1223,7 +1235,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     //Actualizar los datos de descarga
-    private void getDownloadSpeed() {
+    public void getDownloadSpeed() {
 
 
         long mRxBytesPrevious = TrafficStats.getTotalRxBytes();
@@ -1270,7 +1282,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     /* Inicializa la actividad ChannelListActivity en esta vista se listan los canales
      * por categorias y muestra la programacion de cada canal*/
-    private void getChannelListActivity() {
+    public void getChannelListActivity() {
         if (channels != null) {
             try {
                 if (mediaPlayer.isPlaying()) {
@@ -1304,7 +1316,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void openServiceActivity() {
+    public void openServiceActivity() {
         prepareForCloseVideoPlayerActivityBox();
         ServiceProgramActivity.openLive(VideoplayerActivity.this);
         finish();
@@ -1353,7 +1365,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Comprobar si existe Favoritos guardados en la base de datos SQLite
-    private boolean existenFavs(){
+    public boolean existenFavs(){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(VideoplayerActivity.this, "db_favoritos",null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         Cursor c = db.query(
@@ -1370,8 +1382,89 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         return c.getCount() > 0;
     }
 
-    //Pulsasiones
+
+
+    //when a view is touched with fingers or is pressed with a remote control
+
+    //First, declare actions on pressed. Then, use that actions to declare input methods
+
+    //actions of buttons:
+    void pressExitAppButton(){
+        new AlertDialog.Builder(VideoplayerActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("¿Seguro que desea cerrar la app?")
+                .setMessage("")
+                .setNegativeButton(R.string.no, null)// sin listener
+                .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {// un listener que al pulsar, cierre la aplicacion
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        closeApp();
+
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        hideSystemUI(activity);
+                    }
+                })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        hideSystemUI(activity);
+                    }
+                })
+                .show();
+    }
+    void pressOptionButton(){
+        showChannelList();
+        clearScreen(HUD_HIDE_TIME);
+    }
+    void pressLogoutButton(){
+        showLogoutDialog();
+    }
+    void pressLockScreenButton(){
+        if(!isScreenLocked){
+            removeHudDelayedMessages(); //evitar eventos programados que ocuten el hud
+            clearScreen();
+            isScreenLocked = true;
+            ivNav.setVisibility(View.INVISIBLE); //ivNav recibe todos los toques en pantalla, si es invisible no se reciben eventos touch
+            ivUnLock.setVisibility(View.VISIBLE); //boton para volver a activar los eventos touch en pantalla
+            handler.sendEmptyMessageDelayed(CODE_DEG_LOCK, 2000); // hace semitransparente el boton de desbloquear para que no moleste al usuario
+
+        }
+    }
+    void pressUnlockScreenButton(){
+        if(isScreenLocked){
+            isScreenLocked = false;
+            ivNav.setVisibility(View.VISIBLE);
+            ivUnLock.setAlpha(1.0f);
+            ivUnLock.setVisibility(View.INVISIBLE);
+
+            clearAndShowChannelInfo();
+        }
+    }
+    void pressTypeNumberButton(){
+        clearScreen();
+        showPanelNum();
+        clearScreen(HUD_HIDE_TIME);
+        numOne.requestFocus();
+    }
+
+    void pressSettingsButton(){
+        ActivityLauncher.launchSettingsActivityAsNormalUser();
+    }
+
+    void pressAdvanceSettingsButton(){
+        ActivityLauncher.launchSettingsActivityAsTechnician();
+    }
+
+    void pressHideHud(){
+        clearScreen();
+    }
+
     void onActionTouch(){
+        lvCanales.setItemsCanFocus(true);
 
         //otro boton que abre lista de canales
         rlOpciones.setOnTouchListener(new View.OnTouchListener() {
@@ -1382,8 +1475,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     case MotionEvent.ACTION_DOWN:
                         break;
                     case MotionEvent.ACTION_UP:
-                        showChannelList();
-                        clearScreen(HUD_HIDE_TIME);
+                        pressOptionButton();
                         break;
                 }
                 return true;
@@ -1405,7 +1497,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         break;
                     case MotionEvent.ACTION_UP:
                         ivLogout.setBackground(originalBackground);
-                        showLogoutDialog();
+                        pressLogoutButton();
                         break;
                 }
                 return true;
@@ -1428,31 +1520,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         break;
                     case MotionEvent.ACTION_UP:
                         ivExitApp.setBackground(originalBackground);
-                            new AlertDialog.Builder(VideoplayerActivity.this)
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setTitle("¿Seguro que desea cerrar la app?")
-                                    .setMessage("")
-                                    .setNegativeButton(R.string.no, null)// sin listener
-                                    .setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {// un listener que al pulsar, cierre la aplicacion
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            closeApp();
-
-                                        }
-                                    })
-                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                        @Override
-                                        public void onCancel(DialogInterface dialog) {
-                                            hideSystemUI(activity);
-                                        }
-                                    })
-                                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            hideSystemUI(activity);
-                                        }
-                                    })
-                                    .show();
+                        pressExitAppButton();
 
                         break;
                 }
@@ -1474,8 +1542,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         break;
                     case MotionEvent.ACTION_UP:
                         ivList.setBackground(originalBackground);
-                        showChannelList();
-                        clearScreen(HUD_HIDE_TIME);
+                        pressOptionButton();
                         break;
                 }
                 return true;
@@ -1496,16 +1563,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
                     case MotionEvent.ACTION_UP:
                             ivLock.setBackground(originalBackground);
+                            pressLockScreenButton();
 
-                            if(!isScreenLocked){
-                                removeHudDelayedMessages(); //evitar eventos programados que ocuten el hud
-                                clearScreen();
-                                isScreenLocked = true;
-                                ivNav.setVisibility(View.INVISIBLE); //ivNav recibe todos los toques en pantalla, si es invisible no se reciben eventos touch
-                                ivUnLock.setVisibility(View.VISIBLE); //boton para volver a activar los eventos touch en pantalla
-                                handler.sendEmptyMessageDelayed(CODE_DEG_LOCK, 2000); // hace semitransparente el boton de desbloquear para que no moleste al usuario
-
-                            }
                         break;
                 }
                 return true;
@@ -1521,16 +1580,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     case MotionEvent.ACTION_DOWN:
 
                     case MotionEvent.ACTION_UP:
-
-                        if(isScreenLocked){
-                            isScreenLocked = false;
-                            ivNav.setVisibility(View.VISIBLE);
-                            ivUnLock.setAlpha(1.0f);
-                            ivUnLock.setVisibility(View.INVISIBLE);
-
-                            clearAndShowChannelInfo();
-                        }
-
+                        pressUnlockScreenButton();
                         break;
                 }
                 return true;
@@ -1550,9 +1600,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                         break;
                     case MotionEvent.ACTION_UP:
                         ivTypeNum.setBackground(originalBackground);
-                        clearScreen();
-                        showPanelNum();
-                        clearScreen(HUD_HIDE_TIME);
+                        pressTypeNumberButton();
                         break;
                 }
                 return true;
@@ -1847,7 +1895,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Guardar en base de datos SQLite un canal favorito
-    private void registrarFavorito(String name){
+    public void registrarFavorito(String name){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(VideoplayerActivity.this, "db_favoritos",null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -1862,7 +1910,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Eliminar de la base de datos SQLite un canal
-    private void eliminarFavorito(String name){
+    public void eliminarFavorito(String name){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(VideoplayerActivity.this, "db_favoritos",null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -1874,7 +1922,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Consultar si el nombre de un canal se encuentra registrado en los favoritos
-    private boolean consultarFavorito(String name){
+    public boolean consultarFavorito(String name){
         ConexionSQLiteHelper conn = new ConexionSQLiteHelper(VideoplayerActivity.this, "db_favoritos",null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
 
@@ -1915,7 +1963,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         finish();
     }
 
-    private void releaseResources(){
+    public void releaseResources(){
         reproduccion.cancel(true);
 
         mediaPlayer.stop();
@@ -1978,83 +2026,92 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 }
                 break;
 
-            case KeyEvent.KEYCODE_DPAD_CENTER:
-                if (isOnlyChannelInfoActive()){
-                    clearScreen();
-                }
-                else if(!isSomeHudActive()){
-                    clearAndShowChannelInfo();
-                }
+            case KeyEvent.KEYCODE_BOOKMARK:
+                pressSettingsButton();
                 break;
-            case KeyEvent.KEYCODE_DPAD_UP:
 
-                if(llList.getVisibility() == View.INVISIBLE){
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if(canUseArrowsForChangeChannelAndChangeVolume()){
                     //Agregar el último canal visitado
                     lastChannelIndex=channelIndex;
 
                     handler.removeMessages(CODE_CLEAR_SCREEN);
                     nextChannelInScreen();
-
+                    break;
                 }
-                break;
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+
 
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                if(llList.getVisibility() == View.INVISIBLE){
+                if(canUseArrowsForChangeChannelAndChangeVolume()){
                     //Agregar el último canal visitado
                     lastChannelIndex=channelIndex;
+
                     handler.removeMessages(CODE_CLEAR_SCREEN);
                     previousChannelInScreen();
-
+                    break;
                 }
-                break;
-
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                if(llOptions.getVisibility() == View.VISIBLE){
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    posOpcion++;
-                    navOpciones();
-                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
-                }else{
-                    onVolumen = true;
-                    //Accion Barra de Volumen DOWN
-                    downVolume();
-                    ivMute.setVisibility(View.INVISIBLE); // eliminar indicador de mute
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
                 }
-                break;
+
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if(llOptions.getVisibility() == View.VISIBLE){
-                    handler.removeMessages(CODE_CLEAR_SCREEN);
-                    posOpcion--;
-                    navOpciones();
-                    handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN, 5000);
-                }else{
-                    onVolumen = true;
-                    //Accion Barra de Volumen UP
+                if(canUseArrowsForChangeChannelAndChangeVolume()){
                     upVolume();
-                    ivMute.setVisibility(View.INVISIBLE);
+                    break;
                 }
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                if(canUseArrowsForChangeChannelAndChangeVolume()){
+                    downVolume();
+                    break;
+                }
+                else{
+                    extendClearScreenTimeout();
+                    return super.onKeyUp(keyCode, event);
+                }
+
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                if(isOnlyChannelInfoActive() || !isSomeHudActive()){
+                    clearAndShowChannelInfoChannelListAndNumericPanel();
+                    break;
+                }
+                else{
+                    return super.onKeyUp(keyCode, event);
+                }
+
+
+            case KeyEvent.KEYCODE_CHANNEL_UP:
+                //Agregar el último canal visitado
+                lastChannelIndex=channelIndex;
+
+                handler.removeMessages(CODE_CLEAR_SCREEN);
+                nextChannelInScreen();
                 break;
 
-            case KeyEvent.KEYCODE_MENU:
-                /*
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    rlOpciones.setBackground(getDrawable(R.drawable.bordes_suave_act));
-                    clearAndShowOptionsAndChannelInfo();
-                }
-                return true;
-                //break;
-                 */
-                if(isOptionsActive() || isChannelListActive()){
-                    clearScreen();
-                }
-                else{
-                    clearAndShowChannelList();
-                }
-                return true;
+            case KeyEvent.KEYCODE_CHANNEL_DOWN:
+                //Agregar el último canal visitado
+                lastChannelIndex=channelIndex;
+
+                handler.removeMessages(CODE_CLEAR_SCREEN);
+                previousChannelInScreen();
+                break;
+
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                upVolume();
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                downVolume();
+                break;
 
             case KeyEvent.KEYCODE_0:
                 pressNumber("0");
@@ -2096,21 +2153,21 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 pressNumber("9");
                 break;
 
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                break;
-
-            case KeyEvent.KEYCODE_VOLUME_MUTE:
-                if(ivMute.getVisibility() == View.INVISIBLE){
-                    ivMute.setVisibility(View.VISIBLE);
-
-                    rlVolumenA.setVisibility(View.INVISIBLE);
-                }else{
-                    ivMute.setVisibility(View.INVISIBLE);
-                }
-                break;
+//            case KeyEvent.KEYCODE_VOLUME_UP:
+//                break;
+//
+//            case KeyEvent.KEYCODE_VOLUME_DOWN:
+//                break;
+//
+//            case KeyEvent.KEYCODE_VOLUME_MUTE:
+//                if(ivMute.getVisibility() == View.INVISIBLE){
+//                    ivMute.setVisibility(View.VISIBLE);
+//
+//                    rlVolumenA.setVisibility(View.INVISIBLE);
+//                }else{
+//                    ivMute.setVisibility(View.INVISIBLE);
+//                }
+//                break;
 
             case KeyEvent.KEYCODE_BACK:
                 int tempLastChannelIndex= lastChannelIndex;
@@ -2124,47 +2181,47 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 System.out.println("++++++++++++++++++++++++SETTINGS");
                 return true;
 
-            case KeyEvent.KEYCODE_W:
-                try {
-                    releaseResources();
-                    Process proc = Runtime.getRuntime()
-                            .exec(new String[]{ "su", "-c", "reboot -p" });
-                    proc.waitFor();
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
-
-            case KeyEvent.KEYCODE_Q:
-                try {
-                    openSettingsActivityAsNormalUser();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                break;
+//            case KeyEvent.KEYCODE_W:
+//                try {
+//                    releaseResources();
+//                    Process proc = Runtime.getRuntime()
+//                            .exec(new String[]{ "su", "-c", "reboot -p" });
+//                    proc.waitFor();
+//
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                break;
+//
+//            case KeyEvent.KEYCODE_Q:
+//                try {
+//                    openSettingsActivityAsNormalUser();
+//                } catch (Exception ex) {
+//                    ex.printStackTrace();
+//                }
+//                break;
 
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if(llOptions.getVisibility() == View.INVISIBLE){
-                    onVolumen = false;
-                    handler.sendEmptyMessageDelayed(CODE_HIDE_VOLUMEN, 3000);
-                }
-                break;
-
-        }
-        return super.onKeyUp(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyUp(int keyCode, KeyEvent event) {
+//        switch (keyCode) {
+//
+//            case KeyEvent.KEYCODE_DPAD_RIGHT:
+//                if(llOptions.getVisibility() == View.INVISIBLE){
+//                    onVolumen = false;
+//                    handler.sendEmptyMessageDelayed(CODE_HIDE_VOLUMEN, 3000);
+//                }
+//                break;
+//
+//        }
+//        return super.onKeyUp(keyCode, event);
+//    }
 
     // Animaciones para navegar entre las opciones(Solo para TvBox)
-    private void navOpciones(){
+    public void navOpciones(){
         if(posOpcion > 2)
             posOpcion  = 1;
         else if(posOpcion < 1)
@@ -2189,7 +2246,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Seleccionar la opcion, se maneja por casos en una variable posOpcion (Solo para TvBox)
-    private void selecOpcion(){
+    public void selecOpcion(){
 
         switch (posOpcion){
             case 1:
@@ -2386,7 +2443,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void exitOptions() {
+    public void exitOptions() {
 
         if(llOptions.getVisibility() == View.VISIBLE && !enAnimacion){
             if (exitAnimOptions == null) {
@@ -2416,16 +2473,17 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     //Animacion de Panel de Numeros
     public void showPanelNum() {
-
         rlPanelNum.setVisibility(View.VISIBLE);
-
     }
 
-    private void hidePanelNum() {
+    public void hidePanelNum() {
 
         rlPanelNum.setVisibility(View.INVISIBLE);
 
     }
+
+
+
 
     //Animacion de Lista de Canales
     public void toggleList() {
@@ -2456,7 +2514,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void hideList() {
+    public void hideList() {
 
 
             if (exitAnimList == null) {
@@ -2486,7 +2544,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
 
-    private void exitInfoChannel() {
+    public void exitInfoChannel() {
         if(!change){
             if(rlDisplayDown.getVisibility() == View.VISIBLE){
                 if (exitAnimBot == null) {
@@ -2515,7 +2573,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void exitProgramList() {
+    public void exitProgramList() {
         //Desactivados para Celular
         /*if(!change){
             if(llProgramList.getVisibility() == View.VISIBLE){
@@ -2579,7 +2637,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Pone una pantalla negra sobre el SurfaceView para ocultar el canal anterior  mientras carga el actual
-    private void showLoading() {
+    public void showLoading() {
         if (tvBlack.getVisibility() == View.INVISIBLE) {
             tvBlack.setVisibility(View.VISIBLE);
             pbError.setText("");
@@ -2588,7 +2646,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Iniciar actividad ChannelListActivity
-    private void hideLoading() {
+    public void hideLoading() {
         if (tvBlack.getVisibility() == View.VISIBLE) {
             pbError.setText("");
             pbError.setVisibility(View.INVISIBLE);
@@ -2596,7 +2654,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Ejecuta el play del canal actual
-    private void changeChannel() {
+    public void changeChannel() {
         /*
         //ivlcVout.detachViews();
 
@@ -2630,7 +2688,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Metodo para cambiar canal por numero
-    private void cambiarPorNumero(int channelNumber) {
+    public void cambiarPorNumero(int channelNumber) {
         //Agregar el último canal visitado
         lastChannelIndex=channelIndex;
 
@@ -2654,7 +2712,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Canal siguiente
-    private void next() {
+    public void next() {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
@@ -2671,7 +2729,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Canal Anterior
-    private void previous() {
+    public void previous() {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
@@ -2844,7 +2902,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     //CPU y RAM
-    private long getMemorySize() {
+    public long getMemorySize() {
 
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -2860,7 +2918,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
             handler.postDelayed(this, 500);
         }
     };
-    private static float getCpuUsage() {
+    public static float getCpuUsage() {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile("/proc/stat", "r");
             String[] split = randomAccessFile.readLine().split(" ");
@@ -2903,7 +2961,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
 
     //Control de tiempos
-    private void updateTime(){
+    public void updateTime(){
         Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
@@ -2914,7 +2972,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         setZeroClock();
     }
 
-    private void setZeroClock(){
+    public void setZeroClock(){
         if(hour >= 0 && hour <= 9){
             hor = "0";
         }else{
@@ -2934,7 +2992,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private void initClock(){
+    public void initClock(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -2973,7 +3031,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private class Reproduccion extends AsyncTask<Void, Integer, Media> {
+    public class Reproduccion extends AsyncTask<Void, Integer, Media> {
         @Override
         protected Media doInBackground(Void... params) {
             Uri parse = Uri.parse(channels.getChannels().get(channelIndex).getUrl());
@@ -2996,7 +3054,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         }
     }
 
-    private MediaController.MediaPlayerControl playerInterface = new MediaController.MediaPlayerControl() {
+    public MediaController.MediaPlayerControl playerInterface = new MediaController.MediaPlayerControl() {
         public int getBufferPercentage() {
             return 0;
         }
@@ -3048,7 +3106,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     //-----enmanuel
 
     /*Cantidad de tiempo en milisegundos que debe pasar antes de que se oculte todo el hud */
-    public int HUD_HIDE_TIME=4000;
+    public static int HUD_HIDE_TIME=4000;
     /*Cantidad de tiempo en milisegundos que debe durar las animaciones de mostrar y ocultar elementos del hud*/
     public int ANIM_TIME=1000;
 
@@ -3062,6 +3120,16 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void clearAndShowChannelInfo(){
         clearScreen();
         showChannelInfo();
+        clearScreen(HUD_HIDE_TIME);
+    }
+
+    public void clearAndShowChannelInfoChannelListAndNumericPanel(){
+        clearScreen();
+        showChannelInfo();
+        showChannelList();
+        showPanelNum();
+        showHideHud();
+        viewHideHud.requestFocus();
         clearScreen(HUD_HIDE_TIME);
     }
 
@@ -3094,12 +3162,13 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void clearAndShowChannelList(){
         clearScreen();
         showChannelList();
-        clearScreen(HUD_HIDE_TIME);
+//        lvCanales.requestFocus();
 
+        clearScreen(HUD_HIDE_TIME);
     }
 
     // Canal siguiente
-    private void showNextChannel() {
+    public void showNextChannel() {
         //pausar la reproduccion
         try {
             if (mediaPlayer.isPlaying()) {
@@ -3117,7 +3186,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     // Canal Anterior
-    private void showPreviousChannel() {
+    public void showPreviousChannel() {
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
@@ -3191,6 +3260,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         hideChannelInfo();
         hideChannelList();
         hidePanelNum();
+        hideHideHud();
         //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 
@@ -3280,6 +3350,14 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     }
 
+
+    public void showHideHud() {
+        viewHideHud.setVisibility(View.VISIBLE);
+    }
+    public void hideHideHud() {
+        viewHideHud.setVisibility(View.INVISIBLE);
+    }
+
     /**
      *Método para saber si hay algún elemento visual (HUD) activo
      * @return true o false
@@ -3295,7 +3373,30 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
             isActive= true;
         }
         return isActive;
+    }
 
+    public boolean isChannelInfoChannelListoAndNumericPanelActive(){
+        boolean isActive=false;
+        if(
+                rlDisplayDown.getVisibility() == View.VISIBLE &&
+                        llList.getVisibility() == View.VISIBLE &&
+                        rlPanelNum.getVisibility() == View.VISIBLE &&
+                        rlPanelUp.getVisibility() == View.VISIBLE
+        ){
+            isActive= true;
+        }
+        return isActive;
+    }
+
+    public boolean canUseArrowsForChangeChannelAndChangeVolume(){
+        boolean can=false;
+        if(
+                        llList.getVisibility() == View.INVISIBLE &&
+                        rlPanelNum.getVisibility() == View.INVISIBLE
+        ){
+            can= true;
+        }
+        return can;
     }
 
     /**
@@ -3321,14 +3422,26 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         return llList.getVisibility() == View.VISIBLE;
     }
 
+
+    public boolean isOnlyChannelListActive(){
+        return rlDisplayDown.getVisibility() == View.INVISIBLE &&
+                rlPanelUp.getVisibility() == View.INVISIBLE &&
+                llOptions.getVisibility() == View.INVISIBLE &&
+                llList.getVisibility() == View.VISIBLE &&
+                rlPanelNum.getVisibility() == View.INVISIBLE;
+    }
+
+
     /**
      *Método para saber si la barra inferior con la informacion del canal está visible y ningun otro elemento hud más
      * @return true o false
      */
     public boolean isOnlyChannelInfoActive(){
         return rlDisplayDown.getVisibility() == View.VISIBLE &&
+                rlPanelUp.getVisibility() == View.VISIBLE &&
                 llOptions.getVisibility() == View.INVISIBLE &&
-                llList.getVisibility() == View.INVISIBLE;
+                llList.getVisibility() == View.INVISIBLE &&
+                rlPanelNum.getVisibility() == View.INVISIBLE;
     }
 
     /**
@@ -3384,7 +3497,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
 
 
-    private void socketEmitPlayingChannel(){
+    public void socketEmitPlayingChannel(){
         AppState.getSocketConnection().socketEmitPlayingChannel(channels,channelIndex);
     }
 
@@ -3393,13 +3506,13 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     * Sirve para extender el tiempo en que se ocultan los elementos en pantalla. Ejm: Cuando se presiona un boton del panel numérico,
     * es necesario agregar más tiempo para que el usuario pueda presionar más números
     * */
-    private void extendClearScreenTimeout(){
+    public void extendClearScreenTimeout(){
         handler.removeMessages(CODE_CLEAR_SCREEN);
         handler.sendEmptyMessageDelayed(CODE_CLEAR_SCREEN,HUD_HIDE_TIME);
     }
 
 
-    private void muteAudio(){
+    public void muteAudio(){
         /*
         AudioManager amanager= (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         amanager.setStreamMute(AudioManager.STREAM_MUSIC,true);
@@ -3408,7 +3521,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         mediaPlayer.setVolume(0);
     }
 
-    private void unMuteAudio(){
+    public void unMuteAudio(){
          /*
         AudioManager amanager= (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         amanager.setStreamMute(AudioManager.STREAM_MUSIC,false);
@@ -3416,7 +3529,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         mediaPlayer.setVolume(100);
     }
 
-    private void restartMuteVariables(){
+    public void restartMuteVariables(){
         wasMuted=false;
         wasUnmuted=false;
     }
@@ -3426,27 +3539,27 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
       volumeManager= new CustomVolumeManager(sbVolumenA,handler,rlVolumenA, volumeIndicator);
     }
 
-    private void upVolume(){
+    public void upVolume(){
         //v1
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_UP);
 
         //v2
-        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-          //      AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
 
         //v3
-        volumeManager.up();
+//        volumeManager.up();
     }
-    private void downVolume(){
+    public void downVolume(){
         //v1
         //simulateKeyPress(KeyEvent.KEYCODE_VOLUME_DOWN);
 
         //v2
-        //audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-          //      AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+        audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
 
         //v3
-        volumeManager.down();
+//        volumeManager.down();
     }
 
     public void simulateKeyPress(int key){

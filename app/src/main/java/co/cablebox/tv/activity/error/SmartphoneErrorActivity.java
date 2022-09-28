@@ -51,8 +51,7 @@ public class SmartphoneErrorActivity extends ErrorActivity{
 
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                AppState.getUser().resetUserCredentials();
-                ActivityLauncher.launchMainActivity();
+                ActivityLauncher.logout();
             }
         });
 
