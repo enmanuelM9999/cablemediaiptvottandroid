@@ -82,6 +82,10 @@ public class AppState {
         return BuildConfig.VERSION_NAME;
     }
 
+    public static void requestUpdateApp(){
+        getSocketConnection().emitUpdateApp();
+    }
+
     /**
      * Update app only if local version is lower than server version
      * @param updatingData
@@ -90,14 +94,11 @@ public class AppState {
     public static boolean updateApp(DtoUpdating updatingData){
         boolean applicationWasUpdated=false;
         try {
-            String localVersion=getAppVersion();
-            String serverVersion=updatingData.getVersion_actual();
-            int resultComparation= localVersion.compareToIgnoreCase(serverVersion);
-            boolean localVersionIsOutdated=resultComparation<0;
+            boolean localVersionIsOutdated=updatingData.getActualizar();
 
             if(localVersionIsOutdated){ //app outdated
-                String host=updatingData.getRuta();
-                String fileName=updatingData.getArchivo();
+                String host=updatingData.getUrl_base_apk();
+                String fileName=updatingData.getNombre_apk();
                 ActivityLauncher.launchUpdatingActivity(host, fileName);
                 applicationWasUpdated=true;
             }

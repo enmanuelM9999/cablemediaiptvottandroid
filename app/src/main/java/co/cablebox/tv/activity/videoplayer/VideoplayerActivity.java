@@ -514,6 +514,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         setContentView(R.layout.activity_live_box);
 
         try {
+            AppState.requestUpdateApp();
             /*Default*/
             canCloseSocketConnectionPauseVideoPlayer=true;
 

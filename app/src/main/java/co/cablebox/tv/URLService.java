@@ -14,7 +14,7 @@ public class URLService {
     private  String socketIP = ipmuxIP;
     private  String socketPort = "4010";
 
-    private String apkName ="IPMUX_TV.apk";
+    private String apkName ="Tvonn.apk";
     private String tvboxApkName =apkName;
     private String smartphoneApkName =apkName;
 

@@ -2,6 +2,7 @@ package co.cablebox.tv.actualizacion;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,18 +21,22 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.FileFilter;
 
 import co.cablebox.tv.AppState;
+import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
 import co.cablebox.tv.ToastManager;
 
 public class MyReceiver extends BroadcastReceiver {
 
     DownloadManager myDownloadManager;
-    long downloadedId;
+    static long downloadedId;
     IntentFilter myIntentFilter;
+    static String fileNameToDownload=AppState.getUrlService().getApkName();
 
     private Context myContext;
     private Activity myActivity;
@@ -70,39 +75,19 @@ public class MyReceiver extends BroadcastReceiver {
             Uri apkUri = downloadManager.getUriForDownloadedFile(downloadedId);
             System.out.println("---------path download id: "+apkUri);
 
-            String fileName= AppState.getUrlService().getApkName();
+            String fileName= fileNameToDownload;
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File file = new File(downloadsDir, fileName);
-            apkUri= Uri.parse("file://"+file.getAbsolutePath());
 
-            System.out.println("---------path absolute: "+apkUri);
+//            //install with root
+//            ToastManager.toast("Downloadedapk!");
+//            installAPKWithRoot(file.getAbsolutePath());
 
-
-            //abrir el apk descargado
-
-            /*
-try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-                    intent.setData(apkUri);
-                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    myContext.startActivity(intent);
-                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    myContext.startActivity(intent);
-                }else {
-                    Toast.makeText(myContext, "File not found.", Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            */
-
-            ToastManager.toast("Downloadedapk!");
-            installAPKWithRoot(file.getAbsolutePath());
+            //Or intall without root
+//            apkUri= Uri.parse("file://"+file.getAbsolutePath());
+//            System.out.println("---------path absolute: "+apkUri);
+//            installAPKWithUserPermissions(apkUri);
+            installAPK(file.getAbsolutePath());
 
 
             Log.e("MsjDescargar", "Se descargó sin problemas");
@@ -129,6 +114,72 @@ try {
         boolean appWasInstalled= RootApkInstaller.install(filename);
         ToastManager.toast("Was installed "+appWasInstalled);
     }
+
+    public static void installAPKWithUserPermissions(Uri apkUri){
+        try {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+//                intent.setData(apkUri);
+//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                AppState.getAppContext().startActivity(intent);
+//            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                AppState.getAppContext().startActivity(intent);
+//            }else {
+//                Toast.makeText( AppState.getAppContext(), "File not found.", Toast.LENGTH_LONG).show();
+//            }
+
+
+//            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+//            intent.setData(apkUri);
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            AppState.getAppContext().startActivity(intent);
+
+
+            installAPK("");
+
+
+
+        }catch (Exception e){ e.printStackTrace();}
+    }
+    static void installAPK(String PATH){
+//        String PATH = " file://"+Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + fileNameToDownload;
+        System.out.println("---------install APK: "+PATH);
+
+        File file = new File(PATH);
+        if(file.exists()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(uriFromFile(AppState.getAppContext(), new File(PATH)), "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try {
+                AppState.getAppContext().startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                Log.e("TAG", "Error in opening the file!");
+            }
+        }else{
+            Toast.makeText(AppState.getAppContext(),"installing failed",Toast.LENGTH_LONG).show();
+        }
+    }
+    static  Uri uriFromFile(Context context, File file) {
+        DownloadManager downloadManager = (DownloadManager) AppState.getAppContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uriForNougatOrAbove = downloadManager.getUriForDownloadedFile(downloadedId);
+//        Uri uriForNougatOrAbove=FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+        Uri uriForBelowNougat=Uri.fromFile(file);
+        System.out.println("-----uriForNougatOrAbove "+uriForNougatOrAbove);
+        System.out.println("-----uriForBelowNougat "+uriForBelowNougat);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return uriForNougatOrAbove;
+        } else {
+            return uriForBelowNougat;
+        }
+    }
+
 
     public void onReceiveBK(Context context, Intent intent) {
 
@@ -223,13 +274,26 @@ try {
     }
 
     public void download (String ipmuxApksUrl, String fileName){
+        fileNameToDownload=fileName;
         System.out.println("-----------------------------------------downloading"+ipmuxApksUrl+"/"+fileName);
 
         /*Delete file before download*/
+//        apkUri= Uri.parse("file://"+file.getAbsolutePath());
+//        System.out.println("---------path absolute: "+apkUri);
+//        installAPKWithUserPermissions(apkUri);
+
         File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(downloadsDir, fileName);
+        File file2= new File("file://"+file.getAbsolutePath());
+
+        boolean exists= file.exists();
+        System.out.println("-----------exists " +exists+ file.getAbsolutePath());
+
+        boolean exists2= file2.exists();
+        System.out.println("-----------exists2 " +exists2 + file2.getAbsolutePath());
+
         boolean deleted = file.delete();
-        System.out.println("-----------was deleted" +deleted);
+        System.out.println("-----------was deleted " +deleted);
 
         //definir la url del archivo a descargar
         DownloadManager downloadmanager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -242,6 +306,7 @@ try {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setVisibleInDownloadsUi(true);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);//donde se guarda el archivo descargado
+        request.addRequestHeader("Accept", "application/vnd.android.package-archive");
         downloadedId = downloadmanager.enqueue(request); //guardar el id de la descarga en una variable. Esto nos evita tener que borrar el apk del dispositivo si existe.
 
         //informar al usuario de la descarga con una barra de progreso

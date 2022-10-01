@@ -211,19 +211,21 @@ public abstract class SocketConnection {
             }
         });
 
-        socket.on("de_servidor:actualizar_app", new Emitter.Listener() {
+        socket.on("actualizar_version_apk", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
                 try {
-                    System.out.println("-------------------------------de_servidor:actualizar_app");
+                    ToastManager.toast("on actualizar_version_apk");
+                    System.out.println("-------------------------------actualizar_version_apk");
                     /* Extract json with updating data*/
                     JSONObject data = (JSONObject) args[0];
                     DtoUpdating updatingData = new Gson().fromJson(data.toString(), DtoUpdating.class); //convert json string into a java object
 
+                    ToastManager.toast(updatingData.toString());
                     /*Update app*/
                     AppState.updateApp(updatingData);
                 } catch (Exception e) {
-                    Log.d("error de_servidor:actualizar_app ", ""+e.toString());
+                    Log.d("ErrActualizarVersionApk", ""+e.toString());
                 }
             }
         });
@@ -282,6 +284,12 @@ public abstract class SocketConnection {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void emitUpdateApp(){
+        ToastManager.toast("Emiting update");
+        String appVersion= AppState.getAppVersion();
+        socket.emit("validar_version_apk",appVersion);
     }
 
     public void disconnect(){

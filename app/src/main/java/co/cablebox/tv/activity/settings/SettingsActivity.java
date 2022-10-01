@@ -1500,23 +1500,24 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                                 }
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
-                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
-                                    /*
-                                    handler.removeMessages(CODE_ACT_PLAN);
-                                    llDescarga.setVisibility(View.VISIBLE);
-                                    isUpdatingApp=true;
-                                    //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
-
-                                    String fileName=AppState.getUrlService().getApkName();
-                                    myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
-                                    * */
-                                    String fileName=AppState.getUrlService().getApkName();
-                                    String host=AppState.getUrlService().generateAndReturnApkDownloadUri();
-                                    ActivityLauncher.launchUpdatingActivity(host,fileName);
-                                }
-                                else{
-                                    Toast.makeText(SettingsActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
-                                }
+//                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
+//                                    /*
+//                                    handler.removeMessages(CODE_ACT_PLAN);
+//                                    llDescarga.setVisibility(View.VISIBLE);
+//                                    isUpdatingApp=true;
+//                                    //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
+//
+//                                    String fileName=AppState.getUrlService().getApkName();
+//                                    myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
+//                                    * */
+//                                    String fileName=AppState.getUrlService().getApkName();
+//                                    String host=AppState.getUrlService().generateAndReturnApkDownloadUri();
+//                                    ActivityLauncher.launchUpdatingActivity(host,fileName);
+//                                }
+//                                else{
+//                                    Toast.makeText(SettingsActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
+//                                }
+                                AppState.requestUpdateApp();
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
                                 showChangeIpDialog();
