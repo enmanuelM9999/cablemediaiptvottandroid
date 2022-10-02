@@ -215,13 +215,13 @@ public abstract class SocketConnection {
             @Override
             public void call(final Object... args) {
                 try {
-                    ToastManager.toast("on actualizar_version_apk");
+//                    ToastManager.toast("on actualizar_version_apk");
                     System.out.println("-------------------------------actualizar_version_apk");
                     /* Extract json with updating data*/
                     JSONObject data = (JSONObject) args[0];
                     DtoUpdating updatingData = new Gson().fromJson(data.toString(), DtoUpdating.class); //convert json string into a java object
 
-                    ToastManager.toast(updatingData.toString());
+//                    ToastManager.toast(updatingData.toString());
                     /*Update app*/
                     AppState.updateApp(updatingData);
                 } catch (Exception e) {
@@ -287,7 +287,7 @@ public abstract class SocketConnection {
     }
 
     public void emitUpdateApp(){
-        ToastManager.toast("Emiting update");
+//        ToastManager.toast("Emiting update");
         String appVersion= AppState.getAppVersion();
         socket.emit("validar_version_apk",appVersion);
     }

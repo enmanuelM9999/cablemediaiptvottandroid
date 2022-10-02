@@ -101,6 +101,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     //Listas de Canales, Favoritos y Todos los Canales
         public static Channels channels;
+        public static boolean checkIfMustUpdate=false;
         public static MensajeBean mensajeBean;
         public static ArrayList<Channels.Channel> canalesFavoritos;
         public static ArrayList<Channels.Channel> canalesAux;
@@ -514,12 +515,18 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         setContentView(R.layout.activity_live_box);
 
         try {
-            AppState.requestUpdateApp();
+//            AppState.requestUpdateApp();
             /*Default*/
             canCloseSocketConnectionPauseVideoPlayer=true;
 
             /*Recover props*/
             VideoplayerActivity.channels = (Channels) getIntent().getSerializableExtra("channels");
+//            VideoplayerActivity.checkIfMustUpdate = getIntent().getBooleanExtra("checkIfMustUpdate",false);
+
+            if(checkIfMustUpdate){
+                AppState.requestUpdateApp();
+                checkIfMustUpdate=false;
+            }
 
             if (isNetDisponible()) {
                 //Conectado a internet

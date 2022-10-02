@@ -26,6 +26,7 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.FileFilter;
 
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
@@ -161,9 +162,12 @@ public class MyReceiver extends BroadcastReceiver {
             } catch (ActivityNotFoundException e) {
                 e.printStackTrace();
                 Log.e("TAG", "Error in opening the file!");
+                Toast.makeText(AppState.getAppContext(),"Error instalando el paquete",Toast.LENGTH_LONG).show();
+                ActivityLauncher.launchMainActivity();
             }
         }else{
-            Toast.makeText(AppState.getAppContext(),"installing failed",Toast.LENGTH_LONG).show();
+            Toast.makeText(AppState.getAppContext(),"El paquete de instalación no existe",Toast.LENGTH_LONG).show();
+            ActivityLauncher.launchMainActivity();
         }
     }
     static  Uri uriFromFile(Context context, File file) {

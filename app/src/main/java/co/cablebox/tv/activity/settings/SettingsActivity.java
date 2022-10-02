@@ -1517,7 +1517,15 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 //                                else{
 //                                    Toast.makeText(SettingsActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
 //                                }
-                                AppState.requestUpdateApp();
+
+
+
+
+//                                AppState.requestUpdateApp();
+
+
+                                VideoplayerActivity.checkIfMustUpdate=true;
+                                ActivityLauncher.launchMainActivity();
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
                                 showChangeIpDialog();

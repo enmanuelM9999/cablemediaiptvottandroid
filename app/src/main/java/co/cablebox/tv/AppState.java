@@ -103,10 +103,12 @@ public class AppState {
                 applicationWasUpdated=true;
             }
             else{//app already updated
+                ToastManager.toast("La aplicación ya está actualizada");
                 applicationWasUpdated=false;
             }
         }catch(Exception e){
             Log.d("err updateApp",e.toString());
+            ActivityLauncher.launchMainActivity();
         }finally {
             return applicationWasUpdated;
         }

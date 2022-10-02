@@ -24,12 +24,17 @@ public class ActivityLauncher {
         }
     }
     public static void launchVideoPlayer(Channels channels){
+        launchVideoPlayer( channels, false);
+    }
+
+    public static void launchVideoPlayer(Channels channels,boolean checkIfMustUpdate){
         try {
             Context context= AppState.getAppContext();
             Class<?> playerActivity= AppState.getAppFactory().getVideoPlayerActivity();
 
             Intent i= new Intent(context, playerActivity);
             i.putExtra("channels", channels); //pass props to the activity
+            i.putExtra("checkIfMustUpdate",checkIfMustUpdate);
             context.startActivity(i);
         } catch(Exception e){
             e.printStackTrace();

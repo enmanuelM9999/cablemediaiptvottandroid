@@ -53,5 +53,11 @@ public class UpdatingActivity extends AppCompatActivity {
         myReceiver.Registrar(myReceiver);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
 
 }
