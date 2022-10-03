@@ -255,6 +255,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     //Medidor de Banda Ancha
         public String mDownloadSpeedOutput;
         public String mUnits;
+        public long mRxBytesPrevious;
         public boolean meterOn = false;
 
     // Eventos
@@ -295,6 +296,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         public final static int CODE_HIDE_CHANNEL_NUMBER_TEXT_VIEW = 18;
 
         public final static int CODE_MEDIA_PLAYER_UNMUTE = 19;
+
+    public final static int CODE_TRACK_NETWORK_STATS = 20;
 
 
     // Variable guardar No. de canal
@@ -456,6 +459,37 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     unMuteAudio();
                     break;
 
+                case CODE_TRACK_NETWORK_STATS:
+                    long mRxBytesCurrent = TrafficStats.getTotalRxBytes();
+
+                    long mDownloadSpeed = mRxBytesCurrent - mRxBytesPrevious;
+
+                    float mDownloadSpeedWithDecimals;
+                    System.out.println("Bajada: "+mDownloadSpeed);
+
+                    if (mDownloadSpeed >= (1024*1024*1024)) {
+                        mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) (1024*1024*1024);
+                        mUnits = "GB/s";
+                    }
+                    else if (mDownloadSpeed >= (1024*1024)) {
+                        mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) (1024*1024);
+                        mUnits = "MB/s";
+
+                    } else {
+                        mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) 1024;
+                        mUnits = "KB/s";
+                    }
+
+
+                    if (!mUnits.equals("KB/s") && mDownloadSpeedWithDecimals < 100) {
+                        System.out.println("Es igual KB/s");
+                        mDownloadSpeedOutput = String.format(Locale.US, "%.1f", mDownloadSpeedWithDecimals);
+                    } else {
+                        mDownloadSpeedOutput = String.format(Locale.US, "%.1f", mDownloadSpeedWithDecimals);
+                        //mDownloadSpeedOutput = Float.toString((float) mDownloadSpeedWithDecimals);
+                    }
+                    break;
+
             }
         }
     };
@@ -520,6 +554,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
             canCloseSocketConnectionPauseVideoPlayer=true;
 
             /*Recover props*/
+            checkIfMustUpdate=true; //always try update app. Remove this if you dont want
             VideoplayerActivity.channels = (Channels) getIntent().getSerializableExtra("channels");
 //            VideoplayerActivity.checkIfMustUpdate = getIntent().getBooleanExtra("checkIfMustUpdate",false);
 
@@ -1244,44 +1279,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     //Actualizar los datos de descarga
     public void getDownloadSpeed() {
-
-
-        long mRxBytesPrevious = TrafficStats.getTotalRxBytes();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        long mRxBytesCurrent = TrafficStats.getTotalRxBytes();
-
-        long mDownloadSpeed = mRxBytesCurrent - mRxBytesPrevious;
-
-        float mDownloadSpeedWithDecimals;
-        System.out.println("Bajada: "+mDownloadSpeed);
-
-        if (mDownloadSpeed >= 1000000000) {
-            mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) 1000000000;
-            mUnits = "GB/s";
-        } else if (mDownloadSpeed >= 1000000) {
-            mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) 1000000;
-            mUnits = "MB/s";
-
-        } else {
-            mDownloadSpeedWithDecimals = (float) mDownloadSpeed / (float) 1000;
-            mUnits = "KB/s";
-        }
-
-
-        if (!mUnits.equals("KB/s") && mDownloadSpeedWithDecimals < 100) {
-            System.out.println("Es igual KB/s");
-            mDownloadSpeedOutput = String.format(Locale.US, "%.1f", mDownloadSpeedWithDecimals);
-        } else {
-            mDownloadSpeedOutput = String.format(Locale.US, "%.1f", mDownloadSpeedWithDecimals);
-            //mDownloadSpeedOutput = Float.toString((float) mDownloadSpeedWithDecimals);
-        }
-
+        mRxBytesPrevious = TrafficStats.getTotalRxBytes();
+       handler.sendEmptyMessageDelayed(CODE_TRACK_NETWORK_STATS,1000);
     }
 
     public void stopMeter(){
@@ -2910,52 +2909,80 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     }
 
     //CPU y RAM
-    public long getMemorySize() {
 
-        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        activityManager.getMemoryInfo(mi);
-        long j = mi.totalMem / 1048576;
-        long j2 = ((j - (mi.availMem / 1048576)) * 100) / j;
-        return j2;
-    }
-    final Runnable r = new Runnable() {
-        public void run() {
-            int a = (int) getMemorySize();
-            tvRam.setText("RAM: " + a + "%");
-            handler.postDelayed(this, 500);
-        }
-    };
+
     public static float getCpuUsage() {
+//        try {
+//            RandomAccessFile randomAccessFile = new RandomAccessFile("/proc/stat", "r");
+//            String[] split = randomAccessFile.readLine().split(" ");
+//            long parseLong = Long.parseLong(split[5]);
+//            long parseLong2 = Long.parseLong(split[2]) + Long.parseLong(split[3]) + Long.parseLong(split[4]) + Long.parseLong(split[6]) + Long.parseLong(split[7]) + Long.parseLong(split[8]);
+//            try {
+//                Thread.sleep(360);
+//            } catch (Exception e) {
+//            }
+//            randomAccessFile.seek(0);
+//            String readLine = randomAccessFile.readLine();
+//            randomAccessFile.close();
+//            String[] split2 = readLine.split(" ");
+//            long parseLong3 = Long.parseLong(split2[5]);
+//            long parseLong4 = Long.parseLong(split2[8]) + Long.parseLong(split2[2]) + Long.parseLong(split2[3]) + Long.parseLong(split2[4]) + Long.parseLong(split2[6]) + Long.parseLong(split2[7]);
+//            return ((float) (parseLong4 - parseLong2)) / ((float) ((parseLong4 + parseLong3) - (parseLong + parseLong2)));
+//
+//
+//
+//        } catch (Exception e2) {
+//            e2.printStackTrace();
+//            return 0.0f;
+//        }
+
+
         try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile("/proc/stat", "r");
-            String[] split = randomAccessFile.readLine().split(" ");
-            long parseLong = Long.parseLong(split[5]);
-            long parseLong2 = Long.parseLong(split[2]) + Long.parseLong(split[3]) + Long.parseLong(split[4]) + Long.parseLong(split[6]) + Long.parseLong(split[7]) + Long.parseLong(split[8]);
-            try {
-                Thread.sleep(360);
-            } catch (Exception e) {
-            }
-            randomAccessFile.seek(0);
-            String readLine = randomAccessFile.readLine();
-            randomAccessFile.close();
-            String[] split2 = readLine.split(" ");
-            long parseLong3 = Long.parseLong(split2[5]);
-            long parseLong4 = Long.parseLong(split2[8]) + Long.parseLong(split2[2]) + Long.parseLong(split2[3]) + Long.parseLong(split2[4]) + Long.parseLong(split2[6]) + Long.parseLong(split2[7]);
-            return ((float) (parseLong4 - parseLong2)) / ((float) ((parseLong4 + parseLong3) - (parseLong + parseLong2)));
-        } catch (IOException e2) {
-            e2.printStackTrace();
-            return 0.0f;
+
+        }catch (Exception e){
+
         }
+        return 0.0f;
+
     }
+
     final Runnable c = new Runnable() {
         public void run() {
             int a = (int) (getCpuUsage() * 100.0f);
             tvCpu.setText("CPU: " + a + "%");
-            handler.postDelayed(this, 500);
+            handler.postDelayed(this, 1000);
         }
     };
 
+    //Ram
+    public String getMemorySize() {
+//
+//        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+//        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//        activityManager.getMemoryInfo(mi);
+//        long j = mi.totalMem / 1048576;
+//        long j2 = ((j - (mi.availMem / 1048576)) * 100) / j;
+//        return j2;
+
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        activityManager.getMemoryInfo(mi);
+        long availableMem= (mi.availMem)/(1024*1024);
+        long totalMem=(mi.totalMem)/(1024*1024);
+        return ""+availableMem+"Mb/"+totalMem+"Mb";
+//        long j = mi.totalMem / 1048576; mi.availMem()
+//        long j2 = ((j - (mi.availMem / 1048576)) * 100) / j;
+//        return j2;
+    }
+    final Runnable r = new Runnable() {
+        public void run() {
+            String memoryUsage  =getMemorySize();
+            tvRam.setText("RAM: " + memoryUsage);
+            handler.postDelayed(this, 1000);
+        }
+    };
+
+    //network traking
     final Runnable d = new Runnable() {
         public void run() {
             getDownloadSpeed();
