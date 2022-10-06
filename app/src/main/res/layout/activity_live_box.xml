@@ -36,59 +36,7 @@
         android:textAlignment="center"
         android:typeface="sans"/>
 
-    <LinearLayout
-        android:id="@+id/ll_cpu_ram"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="175dp"
-        android:layout_above="@+id/rl_panel_down"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/degradado_b"
-        android:orientation="vertical"
-        android:visibility="invisible">
 
-        <TextView
-            android:id="@+id/tv_red"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:typeface="sans"/>
-
-        <TextView
-            android:id="@+id/tv_cpu"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:typeface="sans" />
-
-        <TextView
-            android:id="@+id/tv_ram"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:typeface="sans" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_net_state"
@@ -205,6 +153,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginVertical="5dp"
             android:layout_marginEnd="0dp">
+
 
             <ImageView
                 android:id="@+id/ivSettings"
@@ -1075,6 +1024,61 @@
         android:textSize="@dimen/w_120"
         android:typeface="sans"
         android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/ll_cpu_ram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="175dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/tv_red"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:textColor="#34eb43"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:text="Red: 00/00"
+            android:typeface="sans"/>
+
+        <TextView
+            android:id="@+id/tv_cpu"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:textColor="#fff"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:text="Cpu: 0%"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/tv_ram"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:textColor="#eddc1a"
+            android:textSize="13dp"
+            android:textStyle="bold"
+            android:text="Ram: 0/0"
+            android:typeface="sans" />
+    </LinearLayout>
 
 
 </RelativeLayout>
