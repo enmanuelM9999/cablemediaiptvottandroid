@@ -29,6 +29,15 @@ public class SmartphoneVideoPlayerActivity extends VideoplayerActivity{
     @Override
     public void configTopButtons() {
         showTopButtons();
+
+        ivSettings.setVisibility(View.GONE);
+//        ivLogout.setVisibility(View.GONE);
+//        ivTypeNum.setVisibility(View.GONE);
+//        ivList.setVisibility(View.GONE);
+        ivAdvanceSettings.setVisibility(View.GONE);
+//        ivExitApp.setVisibility(View.GONE);
+        ivLock.setVisibility(View.GONE);
+//        ivUnLock.setVisibility(View.GONE);
     }
 
     @Override

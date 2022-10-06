@@ -73,10 +73,21 @@ public class Channels implements Serializable {
             String logo2 = logo
                     .replace("&", "_")
                     .replace("+", "_")
-                    .replace("-", "_");
+                    .replace("-", "_")
+                    .replace("!", "_")
+                    .replace("ñ", "_")
+                    .replace("*", "_")
+                    .replaceAll("\b[0-9]", "_") ; // starts with number
 
+            System.out.println("------------------------------------------------------------------------------------log "+logo2);
+            //remove extension
+            if(logo2.contains(".")){
+                String[] str= logo2.split("\\.");
+                logo2= str[0];
+            }
             return logo2;
         }
+
 
         public void setLogo(String logo) {
             this.logo = logo;

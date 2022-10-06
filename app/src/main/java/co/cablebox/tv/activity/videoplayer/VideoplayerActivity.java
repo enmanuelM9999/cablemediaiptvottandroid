@@ -462,7 +462,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 case CODE_TRACK_NETWORK_STATS:
                     long mRxBytesCurrent = TrafficStats.getTotalRxBytes();
 
-                    long mDownloadSpeed = mRxBytesCurrent - mRxBytesPrevious;
+                    long mDownloadSpeed = (mRxBytesCurrent - mRxBytesPrevious)*10;
 
                     float mDownloadSpeedWithDecimals;
                     System.out.println("Bajada: "+mDownloadSpeed);
@@ -1256,13 +1256,13 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
             //Mostrar CPU y RAM
             llCpuRam.setVisibility(View.VISIBLE);
             handler.postDelayed(r, 1000);
-            handler.postDelayed(c, 1000);
+//            handler.postDelayed(c, 1000);
             handler.postDelayed(d, 1000);
         } else {
             //Detener
             llCpuRam.setVisibility(View.INVISIBLE);
             handler.removeCallbacks(r);
-            handler.removeCallbacks(c);
+//            handler.removeCallbacks(c);
             handler.removeCallbacks(d);
         }
     }

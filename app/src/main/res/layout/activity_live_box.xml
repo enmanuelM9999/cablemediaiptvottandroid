@@ -39,7 +39,7 @@
     <LinearLayout
         android:id="@+id/ll_cpu_ram"
         android:layout_width="wrap_content"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:minWidth="175dp"
         android:layout_above="@+id/rl_panel_down"
         android:layout_alignParentEnd="true"
@@ -64,6 +64,7 @@
 
         <TextView
             android:id="@+id/tv_cpu"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
@@ -265,7 +266,7 @@
                 android:focusable="true"
                 android:nextFocusDown="@id/lv_canales"
                 android:padding="4dp"
-                android:src="@drawable/ic_exit" />
+                android:src="@drawable/ic_exit_png" />
 
             <ImageView
                 android:id="@+id/iv_lock"
@@ -714,17 +715,15 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
-        android:focusable="true"
+        android:alpha="0.5"
+        android:background="@drawable/button_behavior_exit"
         android:clickable="true"
-        android:visibility="visible"
-        android:nextFocusRight="@id/tv_num_four"
+        android:focusable="true"
         android:nextFocusLeft="@id/lv_canales"
+        android:nextFocusRight="@id/tv_num_four"
         android:nextFocusUp="@id/viewHideHud"
         android:nextFocusDown="@id/viewHideHud"
-        android:background="@drawable/button_behavior_exit"
-        android:alpha="0.5"
-        >
-    </RelativeLayout>
+        android:visibility="visible"></RelativeLayout>
 
     <!--Panel Numeros-->
     <TextView
@@ -1004,7 +1003,7 @@
         android:layout_centerInParent="true"
         android:background="#CC3A4053"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

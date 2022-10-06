@@ -19,7 +19,7 @@ android {
 //        targetSdkVersion 30
 //        versionCode 710
 
-        versionName "2.16"
+        versionName "2.18"
 
 
         compileOptions {
