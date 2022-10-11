@@ -237,12 +237,12 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
     //SharedPreferences sharIp = getSharedPreferences("ArchivoIP", getApplicationContext().MODE_PRIVATE);
         private static String ipmuxProtocol = "http://";
-        private static String ipmuxIP = "51.161.73.217";
+        private static String ipmuxIP = "51.161.73.215";
         private static String ipmuxPort = "5508";
         private static String ipmuxApiPath = "/api/RestController.php";
     // Leer y obtener informacion de los canales a traves de un JSON
         private static String BASE_URI = "http://"+ ipmuxIP +":5509/api/RestController.php";
-        private static String BASE_URI_AUX = "http://51.161.73.204:5509/api/RestController.php";
+        private static String BASE_URI_AUX = "http://51.161.73.215:5509/api/RestController.php";
 
         private static final String LIVE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MyApp/LiveInfo";
         private static final String LOCAL_URL = Environment.getExternalStorageDirectory() + File.separator + "MyApp" + File.separator + "AppServer";
@@ -436,7 +436,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
         builder.detectFileUriExposure();
 
         versionLocal = BuildConfig.VERSION_NAME;
-        tvVersion.setText("v"+versionLocal+" - CableMEDIA® 2022");
+        tvVersion.setText("versión "+versionLocal);
         setLocationPermission();
         createWifiConnectorObject();
 

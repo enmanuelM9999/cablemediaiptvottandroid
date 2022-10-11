@@ -6,7 +6,7 @@ public class URLService {
     private final String portNotation=":";
 
     private  String ipmuxProtocol = "http://";
-    private  String ipmuxIP = "51.161.73.217";
+    private  String ipmuxIP = "51.161.73.215";
     private  String ipmuxPort = "5508";
     private  String ipmuxApiPath = "/api/RestController.php";
 

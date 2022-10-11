@@ -31,6 +31,9 @@ public class AppState {
     private static SocketConnection socketConnection = null;
     private static URLService urlService = null;
 
+    /*Util vars*/
+    public static boolean notifyAppAlreadyUpdated=false;
+
     /*Getters*/
     public static AppFactory getAppFactory() {
         return appFactory;
@@ -103,7 +106,10 @@ public class AppState {
                 applicationWasUpdated=true;
             }
             else{//app already updated
-                ToastManager.toast("La aplicación ya está actualizada");
+                if(notifyAppAlreadyUpdated){
+                    ToastManager.toast("La aplicación ya está actualizada");
+                    notifyAppAlreadyUpdated=false;
+                }
                 applicationWasUpdated=false;
             }
         }catch(Exception e){

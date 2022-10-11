@@ -549,14 +549,13 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         setContentView(R.layout.activity_live_box);
 
         try {
-//            AppState.requestUpdateApp();
+
             /*Default*/
             canCloseSocketConnectionPauseVideoPlayer=true;
 
             /*Recover props*/
             checkIfMustUpdate=true; //always try update app. Remove this if you dont want
             VideoplayerActivity.channels = (Channels) getIntent().getSerializableExtra("channels");
-//            VideoplayerActivity.checkIfMustUpdate = getIntent().getBooleanExtra("checkIfMustUpdate",false);
 
             if(checkIfMustUpdate){
                 AppState.requestUpdateApp();

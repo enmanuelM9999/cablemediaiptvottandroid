@@ -7,7 +7,7 @@ public class IpmuxUrlManager {
     private final static String IP_KEY = "ipLista";
 
     public static String ipmuxProtocol = "http://";
-    public static String ipmuxIP = "51.161.73.214";
+    public static String ipmuxIP = "51.161.73.215";
     public static String ipmuxPort = "5509";
     private static String ipmuxApiPath = "/api/RestController.php";
     private static String ipmuxApksPath = "/file";

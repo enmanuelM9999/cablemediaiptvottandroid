@@ -13,6 +13,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.cablebox.tv.AppState;
+import co.cablebox.tv.ToastManager;
 import co.cablebox.tv.activity.IpmuxActivity;
 import co.cablebox.tv.R;
 
@@ -85,17 +86,41 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
                 String username= etUsername.getText().toString().trim();
                 String password= etPassword.getText().toString().trim();
 
-                /*Set username and pass in User object*/
-                AppState.getUser().setUserCredentials(new String[]{username,password});
+                /**
+                 * Validate data
+                 * */
+                boolean canLogin=true;
 
-                /*Connect app with server usign socket*/
-                AppState.rebootSocketConnection();
-                AppState.getSocketConnection().socketEmitConnect();
+                boolean usernameEmpty= username.isEmpty();
+                boolean passEmpty= password.isEmpty();
 
-                /*Show loading animation*/
-                Toast.makeText(SmartphoneLoginActivity.this,"Logging...",Toast.LENGTH_LONG).show();
+                if (usernameEmpty){
+                    canLogin=false;
+                    ToastManager.toast("Ingresa tu usuario");
+                    etUsername.requestFocus();
+                }
 
-                loginExtraSteps();
+                else if (passEmpty){
+                    canLogin=false;
+                    ToastManager.toast("Ingresa tu contraseña");
+                    etPassword.requestFocus();
+                }
+
+
+                //Login
+               if (canLogin){
+                   /*Set username and pass in User object*/
+                   AppState.getUser().setUserCredentials(new String[]{username,password});
+
+                   /*Connect app with server usign socket*/
+                   AppState.rebootSocketConnection();
+                   AppState.getSocketConnection().socketEmitConnect();
+
+                   /*Show loading animation*/
+                   Toast.makeText(SmartphoneLoginActivity.this,"Logging...",Toast.LENGTH_LONG).show();
+
+                   loginExtraSteps();
+               }
             }
         });
 

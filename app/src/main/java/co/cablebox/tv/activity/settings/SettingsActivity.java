@@ -354,7 +354,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         builder.detectFileUriExposure();
 
         versionLocal = BuildConfig.VERSION_NAME;
-        tvVersion.setText("v"+versionLocal+" - CableMEDIA® 2022");
+        tvVersion.setText("Versión "+versionLocal);
         setLocationPermission();
         createWifiConnectorObject();
 
@@ -1525,6 +1525,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
 
                                 VideoplayerActivity.checkIfMustUpdate=true;
+                                AppState.notifyAppAlreadyUpdated=true;
                                 ActivityLauncher.launchMainActivity();
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:

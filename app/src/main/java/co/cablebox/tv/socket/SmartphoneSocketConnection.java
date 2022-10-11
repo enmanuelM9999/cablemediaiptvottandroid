@@ -16,7 +16,7 @@ public class SmartphoneSocketConnection extends SocketConnection {
         /*Password is in second position when User is a SmartphoneUser */
         String password= userCredentials[1];
 
-        System.out.println("--------Login"+user+password);
+        System.out.println("--------Login "+user+" "+password);
         socket.emit("join",user,password);
     }
 }

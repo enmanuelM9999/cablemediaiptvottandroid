@@ -25,14 +25,14 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginRight="10dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="35dp"
-                android:src="@drawable/icono_cablebox" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/cableoperador2" />
 
         </RelativeLayout>
 
@@ -101,7 +101,7 @@
         android:background="#3B504E"
         android:fontFamily="@font/segoe_ui"
         android:padding="@dimen/h_28"
-        android:text="Si la instalacion Automática no se inició, vaya a su almacenamiento interno y en la carpeta /apk encontrará CableBoxTv.apk para instalar.\nRecuerde permitir la instalación de aplicaciones de fuentes desconocidas en la configuración del dispositivo."
+        android:text="Si la instalacion Automática no se inició, vaya a su almacenamiento interno y en la carpeta /apk encontrará Tvonn.apk para instalar.\nRecuerde permitir la instalación de aplicaciones de fuentes desconocidas en la configuración del dispositivo."
         android:textSize="@dimen/h_45"
         android:visibility="invisible"></TextView>
 

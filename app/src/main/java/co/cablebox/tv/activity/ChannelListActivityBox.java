@@ -91,7 +91,7 @@ import co.cablebox.tv.utils.VolleyService;
 public class ChannelListActivityBox extends Activity {
     private static final String TAG = ChannelListActivityBox.class.getName();
 
-    private static String direcPag = "51.161.73.204";
+    private static String direcPag = "51.161.73.215";
     private String numRepro = "1"; // No del canal que se esta reproduciendo
 
     //Volley
