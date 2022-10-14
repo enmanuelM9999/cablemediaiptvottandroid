@@ -1287,9 +1287,9 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         loadAllArrayListsToGridView();
         loadGridViewListeners();
         if (!SettingsActivity.needsImportantSettings){
-            gridView.setNumColumns(3);
-            gridView.setHorizontalSpacing(convertDpToPx(40,this));
-            gridView.setPadding(convertDpToPx(50,this),convertDpToPx(0,this),convertDpToPx(50,this),convertDpToPx(0,this));
+            gridView.setNumColumns(5);
+//            gridView.setHorizontalSpacing(convertDpToPx(40,this));
+//            gridView.setPadding(convertDpToPx(50,this),convertDpToPx(0,this),convertDpToPx(50,this),convertDpToPx(0,this));
         }
 
     }
