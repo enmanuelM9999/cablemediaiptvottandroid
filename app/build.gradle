@@ -19,7 +19,7 @@ android {
 //        targetSdkVersion 30
 //        versionCode 710
 
-        versionName "2.20"
+        versionName "2.22"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8

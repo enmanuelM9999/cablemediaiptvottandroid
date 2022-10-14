@@ -5,11 +5,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import co.cablebox.tv.R;
+import co.cablebox.tv.ToastManager;
 
 public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
     /*Milliseconds to hide channel info and top buttons*/
-
     public int CHANNEL_HIDE_TIME=HUD_HIDE_TIME;
 
     @Override
@@ -36,7 +36,8 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
 
     @Override
     void onActionTouch(){
-        VideoplayerActivity.HUD_HIDE_TIME=10000;
+        VideoplayerActivity.HUD_HIDE_TIME=5000;
+        CHANNEL_HIDE_TIME= HUD_HIDE_TIME;
 
 
         viewHideHud.setOnTouchListener(new View.OnTouchListener() {
@@ -583,7 +584,8 @@ public class TvboxVideoPlayerActivity extends VideoplayerActivity{
         clearScreen();
         showChannelInfo();
         showOptions();
-        clearScreen(CHANNEL_HIDE_TIME);
+        clearScreen(
+        );
 
     }
 

@@ -37,8 +37,7 @@ public class Channels implements Serializable {
         public void setId(String id) {
             this.id = id;
         }
-
-
+        
         public String getNum() { return num; }
 
         public void setNum(String num) {

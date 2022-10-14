@@ -75,6 +75,7 @@ import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.CustomVolumeManager;
 import co.cablebox.tv.R;
+import co.cablebox.tv.ToastManager;
 import co.cablebox.tv.activity.AppsListActivity;
 import co.cablebox.tv.activity.ChannelListActivityBox;
 import co.cablebox.tv.activity.ServiceProgramActivity;
@@ -2687,6 +2688,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         pbError.setText("Problemas técnicos en el canal");
         muteAudio();
         restartMuteVariables();
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++Logo for num "+channels.getChannels().get(channelIndex).getNum()+" : "+channels.getChannels().get(channelIndex).getLogo());
         play(channelIndex);
 
         socketEmitPlayingChannel();
