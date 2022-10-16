@@ -323,7 +323,7 @@ public class VideoPlayerActivityBox extends Activity implements IVLCVout.OnNewVi
 
     // Claves
     private static final String KEY_VIEW_DEVICE_STATS = "7777777"; // Visualizar Consumo de CPU y RAM
-    private static final String KEY_LAUNCH_SETTINGS_AS_TECHNICIAN = "666666"; // Ajustes de la app
+    private static final String KEY_LAUNCH_SETTINGS_AS_TECHNICIAN = "02468"; // Ajustes de la app
     private static final String KEY_LAUNCH_SETTINGS_AS_NORMAL_USER = "55555"; // Ajustes avanzados de la app
     private String wordKey = "";
 

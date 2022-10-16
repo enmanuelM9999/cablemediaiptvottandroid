@@ -327,7 +327,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
     // Claves
     public static final String KEY_VIEW_DEVICE_STATS = "7777777"; // Visualizar Consumo de CPU y RAM
-    public static final String KEY_OPEN_APP_TECHNICIAN_MODE = "666666"; // Ajustes avanzados de la app
+    public static final String KEY_OPEN_APP_TECHNICIAN_MODE = "02468"; // Ajustes avanzados de la app
     public static final String KEY_OPEN_USER_MODE = "55555"; // Ajustes de la app
     public static final String KEY_TOGGLE_TOP_BUTTONS = "11111"; // Show or hide top buttons
     public String wordKey = "";

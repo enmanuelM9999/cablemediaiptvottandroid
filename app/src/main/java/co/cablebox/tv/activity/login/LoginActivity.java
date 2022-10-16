@@ -12,7 +12,7 @@ import co.cablebox.tv.ActivityLauncher;
 
 public abstract class LoginActivity extends AppCompatActivity {
     private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
-    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "666666";
+    private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "02468";
     private String wordKey = "";
     private final static int CODE_SALIR_APP = 3;
     private int delayBusNum = 3000;

@@ -8,18 +8,12 @@ android {
     //buildToolsVersion '26.0.3'
 
     defaultConfig {
-        applicationId "co.cmedia.tvonn"
-        //applicationId "com.ipmux.tv"
+        applicationId "com.stream.tvonn"
 
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 207
-
-//        minSdkVersion 21
-//        targetSdkVersion 30
-//        versionCode 710
-
-        versionName "2.22"
+        versionName "2.24"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -44,7 +38,7 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "IPMUX_TV.apk"
+            outputFileName = "Tvonn.apk"
         }
     }
 

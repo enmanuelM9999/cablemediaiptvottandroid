@@ -1029,6 +1029,7 @@
         android:layout_height="wrap_content"
         android:minWidth="175dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="45dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
         android:orientation="horizontal"
@@ -1045,7 +1046,7 @@
             android:textColor="#34eb43"
             android:textSize="13dp"
             android:textStyle="bold"
-            android:text="Red: 00/00"
+            android:text="Red: 6.9 Mb/s"
             android:typeface="sans"/>
 
         <TextView
@@ -1074,7 +1075,7 @@
             android:textColor="#eddc1a"
             android:textSize="13dp"
             android:textStyle="bold"
-            android:text="Ram: 0/0"
+            android:text="Ram: 2222Mb/2222Mb"
             android:typeface="sans" />
     </LinearLayout>
 

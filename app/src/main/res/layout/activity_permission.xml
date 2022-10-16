@@ -16,9 +16,9 @@
     <ImageView
         android:layout_width="@dimen/h_1000"
         android:layout_height="@dimen/h_1000"
-        android:src="@drawable/icono_cablebox"
         android:layout_centerInParent="true"
-        android:layout_marginStart="50dp"/>
+        android:layout_marginStart="50dp"
+        android:src="@drawable/icono_cablebox" />
 
     <TextView
         android:layout_width="wrap_content"
