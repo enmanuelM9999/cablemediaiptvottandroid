@@ -89,7 +89,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="40dp"
         android:paddingTop="15dp"
-        android:paddingBottom="2dp"
+        android:paddingBottom="20dp"
         android:visibility="visible">
 
         <LinearLayout
@@ -110,6 +110,7 @@
             </RelativeLayout>
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -117,8 +118,39 @@
                 android:foregroundGravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/cableoperador_go"
-                android:textSize="18dp"></TextView>
+                android:textSize="15dp"></TextView>
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="0dp"
+                    android:paddingRight="6dp"
+                    android:text="@string/cableoperador"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="GO"
+                    android:textColor="#BF084E"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -351,7 +383,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="60dp"
         android:paddingTop="20dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="20dp"
         android:visibility="invisible">
 
 
