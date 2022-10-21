@@ -24,6 +24,8 @@ public class SubscriptionsLoginActivity extends SmartphoneLoginActivity implemen
         setContentView(R.layout.activity_login_landscape);
         ButterKnife.bind(this);
 
+        checkNetwork();
+
         /* Hide loading screen */
         hideLoading();
 

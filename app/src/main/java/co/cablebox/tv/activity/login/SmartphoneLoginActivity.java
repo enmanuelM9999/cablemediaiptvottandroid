@@ -60,7 +60,7 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-
+        checkNetwork();
 
         /* App state configs */
         setMessageOnAppState();
@@ -71,6 +71,8 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
         /*Check if user already logged in*/
         if (AppState.getUser().isLoggedIn())
             AppState.getSocketConnection().socketEmitConnect();
+
+
     }
 
     @Override

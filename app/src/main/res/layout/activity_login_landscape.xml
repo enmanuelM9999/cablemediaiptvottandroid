@@ -436,4 +436,32 @@
             android:textSize="13dp" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_mensaje_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h_10"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/h_100"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/tv_inf_wi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_40"
+            android:text="No tienes conexión"></TextView>
+
+        <ImageView
+            android:layout_width="@dimen/h_40"
+            android:layout_height="@dimen/h_40"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/tv_inf_wi"
+            android:src="@drawable/no_signal"></ImageView>
+    </RelativeLayout>
+
 </RelativeLayout>

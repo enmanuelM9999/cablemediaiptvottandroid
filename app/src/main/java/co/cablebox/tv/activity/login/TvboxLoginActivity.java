@@ -43,6 +43,8 @@ public class TvboxLoginActivity extends LoginActivity {
         setContentView(R.layout.activity_tvbox_loading_channels);
         ButterKnife.bind(this);
 
+        checkNetwork();
+
         /*Active full screen*/
         setFullScreenMode();
 

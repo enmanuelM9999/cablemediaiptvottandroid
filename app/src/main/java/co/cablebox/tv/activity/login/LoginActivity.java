@@ -1,14 +1,20 @@
 package co.cablebox.tv.activity.login;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.View;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import co.cablebox.tv.ActivityLauncher;
+import co.cablebox.tv.R;
+import co.cablebox.tv.ToastManager;
 
 public abstract class LoginActivity extends AppCompatActivity {
     private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
@@ -88,5 +94,44 @@ public abstract class LoginActivity extends AppCompatActivity {
         handler.removeMessages(CODE_SALIR_APP);
         handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
     }
+
+
+    // Comprobar si la conexion esta disponible
+    public boolean isNetDisponible() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    public void showNoInternet(){
+        try {
+            View messageBox = findViewById(R.id.rl_mensaje_wifi);
+            messageBox.setVisibility(View.VISIBLE);
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+    public void hideNoInternet(){
+        try {
+            View messageBox = findViewById(R.id.rl_mensaje_wifi);
+            messageBox.setVisibility(View.INVISIBLE);
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void checkNetwork(){
+        if(!isNetDisponible()){
+            showNoInternet();
+        }else{
+            hideNoInternet();
+        }
+    }
+
+
 
 }
