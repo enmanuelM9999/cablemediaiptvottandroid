@@ -35,7 +35,7 @@ import co.cablebox.tv.ToastManager;
 public class MyReceiver extends BroadcastReceiver {
 
     DownloadManager myDownloadManager;
-    static long downloadedId;
+    public static long downloadedId;
     IntentFilter myIntentFilter;
     static String fileNameToDownload=AppState.getUrlService().getApkName();
 
@@ -277,7 +277,7 @@ public class MyReceiver extends BroadcastReceiver {
         }).start();
     }
 
-    public void download (String ipmuxApksUrl, String fileName){
+    public DownloadManager download (String ipmuxApksUrl, String fileName){
         fileNameToDownload=fileName;
         System.out.println("-----------------------------------------downloading"+ipmuxApksUrl+"/"+fileName);
 
@@ -318,39 +318,45 @@ public class MyReceiver extends BroadcastReceiver {
         final TextView mPorcentaje = (TextView) myActivity.findViewById(R.id.tv_por_descarga);
         new Thread(new Runnable() {
             @Override public void run() {
-                System.out.println("Entro");
-                myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
-                boolean downloading = true;
-                while (downloading) {
-                    DownloadManager.Query q = new DownloadManager.Query();
-                    q.setFilterById(downloadedId);
-                    Cursor cursor = myDownloadManager.query(q);
-                    cursor.moveToFirst();
-                    int bytes_downloaded = cursor.getInt(cursor .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                    int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                try {
+                    System.out.println("Entro");
+                    myDownloadManager = (DownloadManager) myContext.getSystemService(Context.DOWNLOAD_SERVICE);
+                    boolean downloading = true;
+                    while (downloading) {
+                        DownloadManager.Query q = new DownloadManager.Query();
+                        q.setFilterById(downloadedId);
+                        Cursor cursor = myDownloadManager.query(q);
+                        cursor.moveToFirst();
+                        int bytes_downloaded = cursor.getInt(cursor .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                        int bytes_total = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 
-                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
-                        downloading = false;
-                    }
-                    final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
-
-                    myActivity.runOnUiThread(new Runnable() {
-                        @Override public void run() {
-                            mProgressBar.setProgress((int) dl_progress);
-                            mPorcentaje.setText(dl_progress+"%");
+                        if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                            downloading = false;
                         }
-                    });
+                        final int dl_progress = (int) ((bytes_downloaded * 100l) / bytes_total);
 
-                    Log.d("Progreso", statusMessage(cursor)+" - "+dl_progress);
-                    if(dl_progress == 100){
-                        //estadoBotones(true);
+                        myActivity.runOnUiThread(new Runnable() {
+                            @Override public void run() {
+                                mProgressBar.setProgress((int) dl_progress);
+                                mPorcentaje.setText(dl_progress+"%");
+                            }
+                        });
+
+                        Log.d("Progreso", statusMessage(cursor)+" - "+dl_progress);
+                        if(dl_progress == 100){
+                            //estadoBotones(true);
+                        }
+                        cursor.close();
+
+                        //cuando finaliza la descarga, se invoca el método onReceive(...) de esta clase
                     }
-                    cursor.close();
-
-                    //cuando finaliza la descarga, se invoca el método onReceive(...) de esta clase
+                }catch (Exception e){
+                    System.out.println(e.toString());
                 }
             }
         }).start();
+
+        return downloadmanager;
     }
     public void Descargar(String dir){
         eliminarPorExtension("/storage/emulated/0/apk/", "apk");
