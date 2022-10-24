@@ -166,13 +166,17 @@ public abstract class LoginActivity extends AppCompatActivity {
     }
 
     void onStartActivity(){
-        View button= findViewById(R.id.btnOpenSettings);
-        button.setOnClickListener(new View.OnClickListener() {
+       try {
+           View button= findViewById(R.id.btnOpenSettings);
+           button.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View v) {
-                openSettingsAsNormalUser();
-            }
-        });
+               public void onClick(View v) {
+                   openSettingsAsNormalUser();
+               }
+           });
+       }catch(Exception e){
+           e.printStackTrace();
+       }
     }
 
 
