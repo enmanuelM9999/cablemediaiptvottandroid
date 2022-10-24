@@ -127,6 +127,12 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
         });
 
         numberTypingOnActionTouch();
+
+        try {
+            onStartActivity();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

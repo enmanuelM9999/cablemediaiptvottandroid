@@ -464,4 +464,26 @@
             android:src="@drawable/no_signal"></ImageView>
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:clipToPadding="true"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_alignParentLeft="true"
+        >
+
+        <Button
+            android:id="@+id/btnOpenSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AJUSTES"
+            android:visibility="invisible"
+            ></Button>
+    </LinearLayout>
+
 </RelativeLayout>

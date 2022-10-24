@@ -45,6 +45,8 @@ public class TvboxLoginActivity extends LoginActivity {
 
         checkNetwork();
 
+        onStartActivity();
+
         /*Active full screen*/
         setFullScreenMode();
 

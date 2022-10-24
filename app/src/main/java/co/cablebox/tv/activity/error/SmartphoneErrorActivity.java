@@ -55,6 +55,8 @@ public class SmartphoneErrorActivity extends ErrorActivity{
             }
         });
 
+
+
         /*Number typing*/
         llTypeNum.setVisibility(View.VISIBLE);
         numberTypingOnActionTouch();

@@ -85,6 +85,23 @@ public abstract class LoginActivity extends AppCompatActivity {
                 ActivityLauncher.launchSettingsActivityAsTechnician();
                 return true;
 
+            case KeyEvent.KEYCODE_DPAD_UP:
+                pressNumber("0");
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                pressNumber("2");
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                pressNumber("4");
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                pressNumber("68");
+                break;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+//                pressNumber("8");
+                break;
+                
+
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -111,6 +128,8 @@ public abstract class LoginActivity extends AppCompatActivity {
         try {
             View messageBox = findViewById(R.id.rl_mensaje_wifi);
             messageBox.setVisibility(View.VISIBLE);
+
+            showOpenSettingsButtons();
         }catch(Exception e){
             System.out.println(e.toString());
         }
@@ -119,6 +138,8 @@ public abstract class LoginActivity extends AppCompatActivity {
         try {
             View messageBox = findViewById(R.id.rl_mensaje_wifi);
             messageBox.setVisibility(View.INVISIBLE);
+
+            hideOpenSettingsButtons();
         }catch(Exception e){
             System.out.println(e.toString());
         }
@@ -130,6 +151,28 @@ public abstract class LoginActivity extends AppCompatActivity {
         }else{
             hideNoInternet();
         }
+    }
+
+    void showOpenSettingsButtons(){
+        View button= findViewById(R.id.btnOpenSettings);
+        button.setVisibility(View.VISIBLE);
+    }
+    void hideOpenSettingsButtons(){
+        View button= findViewById(R.id.btnOpenSettings);
+        button.setVisibility(View.GONE);
+    }
+    void openSettingsAsNormalUser(){
+        ActivityLauncher.launchSettingsActivityAsNormalUser();
+    }
+
+    void onStartActivity(){
+        View button= findViewById(R.id.btnOpenSettings);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                openSettingsAsNormalUser();
+            }
+        });
     }
 
 
