@@ -17,7 +17,7 @@ public class TvboxSettingsActivity extends SettingsActivity{
 
         //Use Tvbox with subscriptions style
         icon = getResources().getDrawable(R.drawable.login);
-        text="Usar suscripciones";
+        text="Suscripción";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_TO_SUBSCRIPTIONS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
         bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;

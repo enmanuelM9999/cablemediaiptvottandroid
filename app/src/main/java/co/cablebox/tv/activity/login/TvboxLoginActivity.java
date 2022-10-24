@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,37 +118,67 @@ public class TvboxLoginActivity extends LoginActivity {
         //END_INCLUDE (set_ui_flags)
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String getSerialNumber() {
-        String serialNumber;
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public static String getSerialNumber() {
+//        String serialNumber;
+//        try {
+//            Class<?> c = Class.forName("android.os.SystemProperties");
+//            Method get = c.getMethod("get", String.class);
+//
+//            serialNumber = (String) get.invoke(c, "gsm.sn1");
+//            if (serialNumber.equals(""))
+//                serialNumber = (String) get.invoke(c, "ril.serialnumber");
+//            if (serialNumber.equals(""))
+//                serialNumber = (String) get.invoke(c, "ro.serialno");
+//            if (serialNumber.equals(""))
+//                serialNumber = (String) get.invoke(c, "sys.serialnumber");
+//            if (serialNumber.equals(""))
+//                serialNumber = Build.SERIAL;
+//
+//            // If none of the methods above worked
+//            /*if (serialNumber.equals(""))
+//                serialNumber = null;
+//            if (serialNumber.equals(Build.UNKNOWN))
+//                serialNumber = null;*/
+//            if (serialNumber.equals(""))
+//                serialNumber = Build.getSerial();
+//            if (serialNumber.equals(""))
+//                serialNumber = "---------------";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            serialNumber = null;
+//        }
+//
+//        return serialNumber;
+//    }
+
+    public String getSerialNumber(){
+        return getMacAddr();
+    }
+
+    public static String getMacAddr() {
         try {
-            Class<?> c = Class.forName("android.os.SystemProperties");
-            Method get = c.getMethod("get", String.class);
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
 
-            serialNumber = (String) get.invoke(c, "gsm.sn1");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "ril.serialnumber");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "ro.serialno");
-            if (serialNumber.equals(""))
-                serialNumber = (String) get.invoke(c, "sys.serialnumber");
-            if (serialNumber.equals(""))
-                serialNumber = Build.SERIAL;
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
 
-            // If none of the methods above worked
-            /*if (serialNumber.equals(""))
-                serialNumber = null;
-            if (serialNumber.equals(Build.UNKNOWN))
-                serialNumber = null;*/
-            if (serialNumber.equals(""))
-                serialNumber = Build.getSerial();
-            if (serialNumber.equals(""))
-                serialNumber = "---------------";
-        } catch (Exception e) {
-            e.printStackTrace();
-            serialNumber = null;
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
         }
-
-        return serialNumber;
+        return "02:00:00:00:00:00";
     }
 }
