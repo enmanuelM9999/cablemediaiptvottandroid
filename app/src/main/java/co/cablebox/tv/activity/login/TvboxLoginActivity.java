@@ -156,7 +156,53 @@ public class TvboxLoginActivity extends LoginActivity {
         return getMacAddr();
     }
 
+    static String DEFAULT_MAC_ADDRESS="UNKNOWN";
+
     public static String getMacAddr() {
+        try {
+//            String mac= getEthernetMacAddress();
+//            if(mac.equals(DEFAULT_MAC_ADDRESS)){
+//                mac=getWlanMacAddress();
+//            }
+//            return mac;
+
+            return getEthernetMacAddress();
+        } catch (Exception ex) {
+        }
+        return DEFAULT_MAC_ADDRESS;
+    }
+
+    public static String getEthernetMacAddress() {
+        String macAddress = DEFAULT_MAC_ADDRESS;
+        try {
+            List<NetworkInterface> allNetworkInterfaces = Collections.list(NetworkInterface
+                    .getNetworkInterfaces());
+            for (NetworkInterface nif : allNetworkInterfaces) {
+                if (!nif.getName().equalsIgnoreCase("eth0"))
+                    continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return macAddress;
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:", b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                macAddress = res1.toString();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return macAddress;
+    }
+
+    public static String getWlanMacAddress() {
         try {
             List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface nif : all) {
@@ -164,7 +210,7 @@ public class TvboxLoginActivity extends LoginActivity {
 
                 byte[] macBytes = nif.getHardwareAddress();
                 if (macBytes == null) {
-                    return "";
+                    return DEFAULT_MAC_ADDRESS;
                 }
 
                 StringBuilder res1 = new StringBuilder();
@@ -179,6 +225,6 @@ public class TvboxLoginActivity extends LoginActivity {
             }
         } catch (Exception ex) {
         }
-        return "02:00:00:00:00:00";
+        return DEFAULT_MAC_ADDRESS;
     }
 }
