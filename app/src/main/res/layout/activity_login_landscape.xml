@@ -436,34 +436,39 @@
             android:textSize="13dp" />
     </LinearLayout>
 
+    <!-- Message no net -->
     <RelativeLayout
         android:id="@+id/rl_mensaje_wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_10"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/h_100"
+        android:background="#123"
+        android:paddingHorizontal="10dp"
         android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/iv_inf_wi"
+            android:layout_width="@dimen/h_40"
+            android:layout_height="@dimen/h_40"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/no_signal"></ImageView>
 
         <TextView
             android:id="@+id/tv_inf_wi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/iv_inf_wi"
             android:fontFamily="@font/segoe_ui_bold"
             android:textSize="@dimen/h_40"
             android:text="No tienes conexión"></TextView>
 
-        <ImageView
-            android:layout_width="@dimen/h_40"
-            android:layout_height="@dimen/h_40"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/tv_inf_wi"
-            android:src="@drawable/no_signal"></ImageView>
+
     </RelativeLayout>
 
+    <!-- Open settings -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
