@@ -543,6 +543,9 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     Timer tiempo_canal = new Timer();
     boolean nuevoCanal = true;
 
+
+    BroadcastReceiver mReceiver;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -627,7 +630,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                 /*Catch screen off event*/
                 IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
                 filter.addAction(Intent.ACTION_SCREEN_OFF);
-                BroadcastReceiver mReceiver = new BroadcastReceiver() {
+                 mReceiver = new BroadcastReceiver() {
 
                     public void onReceive(Context context, Intent intent) {
                         if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
@@ -650,6 +653,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
 
                 //si es modo smartphone, habilitar los botones del panel superior
                 configTopButtons();
+
+                onTouchSettingsButton();
 
                 //Fullscreen
                 System.out.println("-----------------------------------------video oncreate");
@@ -1973,6 +1978,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void releaseResources(){
         reproduccion.cancel(true);
 
+        unregisterReceiver(mReceiver);
+
         mediaPlayer.stop();
         mediaPlayer.getVLCVout().detachViews();
         mediaPlayer.release();
@@ -3165,8 +3172,48 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         showChannelList();
         showPanelNum();
         showHideHud();
+        showSettingsButton();
         viewHideHud.requestFocus();
         clearScreen(HUD_HIDE_TIME);
+    }
+
+    void showSettingsButton(){
+        try {
+            View v= findViewById(R.id.btnOpenSettings);
+            v.setVisibility(View.VISIBLE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void hideSettingsButton(){
+        try {
+            View v= findViewById(R.id.btnOpenSettings);
+            v.setVisibility(View.INVISIBLE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void onTouchSettingsButton(){
+        try {
+            View v= findViewById(R.id.btnOpenSettings);
+            v.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    ActivityLauncher.launchSettingsActivityAsNormalUser();
+                    return false;
+                }
+            });
+            v.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    ActivityLauncher.launchSettingsActivityAsNormalUser();
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -3297,6 +3344,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         hideChannelList();
         hidePanelNum();
         hideHideHud();
+        hideSettingsButton();
         //tvChannelNumberChange.setVisibility(View.INVISIBLE);
     }
 

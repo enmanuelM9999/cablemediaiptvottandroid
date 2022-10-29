@@ -73,7 +73,6 @@ public class ActivityLauncher {
         Intent i= new Intent(context, activityClass);
         SettingsActivity.needsImportantSettings=needsImportantSettings;
         i.putExtra("needsImportantSettings",needsImportantSettings); //pass props to the activity
-        System.out.println("------------putting "+needsImportantSettings);
         context.startActivity(i);
     }
 

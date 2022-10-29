@@ -251,9 +251,15 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                     if (wordKey.equals(KEY_OPEN_APP_TECHNICIAN_MODE)) {
                         turnOnTechnicianMode();
                     } else if(wordKey.equals(KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE)){
-                        SettingsActivity.needsImportantSettings=true;
-                        turnOnTechnicianMode();
+                        finish();
+                        ActivityLauncher.launchSettingsActivityAsTechnician();
 
+                    }else if(wordKey.equals(KEY_SHOW_NUMERIC_PANEL)){
+//                        rlPanelNum.setVisibility(View.VISIBLE);
+//                        rlPanelNum.requestFocus();}
+
+                        finish();
+                        ActivityLauncher.launchSettingsActivityAsTechnician();
                     }
                     wordKey = "";
                     break;
@@ -286,6 +292,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
     private static final String KEY_OPEN_APP_TECHNICIAN_MODE = "55555";
     private static final String SH0W1M31 = "88888";
     private static final String KEY_OPEN_APP_ADVANCED_TECHNICIAN_MODE = "02468";
+    private static final String KEY_SHOW_NUMERIC_PANEL = "222224444422222";
     private String wordKey = "";
     private int delayBusNum = 3000;
 
@@ -327,6 +334,20 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    private void launchSettingsActivity(){
+        needsImportantSettings=true;
+        VideoplayerActivity.canCloseSocketConnectionPauseVideoPlayer=true;
+
+        Context context= AppState.getAppContext();
+        Class<?> activityClass= AppState.getAppFactory().getSettingsActivity();
+
+        Intent i= new Intent(context, activityClass);
+        SettingsActivity.needsImportantSettings=needsImportantSettings;
+        i.putExtra("needsImportantSettings",needsImportantSettings); //pass props to the activity
+        finish();
+        context.startActivity(i);
     }
 
     private void start(){
@@ -721,6 +742,17 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                 //"return true" evita comportamientos por defecto del S.O. para el botón presionado
                 return true;
 
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                if(rlPanelNum.getVisibility() != View.VISIBLE){
+                    claveExit("2");
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if(rlPanelNum.getVisibility() != View.VISIBLE){
+                    claveExit("4");
+                }
+                break;
+
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -737,7 +769,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         removeAllHandlerMessages();
         hideAllFailureScreens();
         isUpdatingApp =false;
-        unregisterReceiver();
+        unregisterReceiver(myReceiver);
         finish();
     }
 
@@ -1370,16 +1402,18 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
     private void loadSettingsToArrayList(){
 
         if (SettingsActivity.needsImportantSettings){
-            Drawable icon= getResources().getDrawable(R.drawable.settings);
-            String text= "Ajustes";
-            String actionType= SettingsGridViewItem.ACTION_TYPE_START_SETTINGS;
-            String action =Settings.ACTION_SETTINGS;
-            String bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
-            String bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
 
-            SettingsGridViewItem item= new SettingsGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
-            gridViewItems.add(item);
         }
+
+        Drawable icon= getResources().getDrawable(R.drawable.settings);
+        String text= "Ajustes";
+        String actionType= SettingsGridViewItem.ACTION_TYPE_START_SETTINGS;
+        String action =Settings.ACTION_SETTINGS;
+        String bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
+        String bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
+
+        SettingsGridViewItem item= new SettingsGridViewItem(icon,text,actionType,action, bgColor,bgColorAlpha);
+        gridViewItems.add(item);
     }
 
     /**
@@ -1506,46 +1540,11 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                         switch (theItem.getAction()){
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS:
                                 ActivityLauncher.launchMainActivity();
-                                /*
-                                turnOffTechnicianMode();
-                                guaranteeOpenChannelsWithBusyWaiting();*/
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_RED:
-//                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
-//                                    handler.removeMessages(CODE_ACT_PLAN);
-//                                    if(llRedes.getVisibility() == View.INVISIBLE) {
-//                                        showWifiPanel();
-//                                    }else if(llRedes.getVisibility() == View.VISIBLE){
-//                                        hideWifiPanel();
-//                                    }
-//                                }
                                 startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
-//                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
-//                                    /*
-//                                    handler.removeMessages(CODE_ACT_PLAN);
-//                                    llDescarga.setVisibility(View.VISIBLE);
-//                                    isUpdatingApp=true;
-//                                    //myReceiver.Descargar(ipmuxIP+":"+ipmuxPort);
-//
-//                                    String fileName=AppState.getUrlService().getApkName();
-//                                    myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
-//                                    * */
-//                                    String fileName=AppState.getUrlService().getApkName();
-//                                    String host=AppState.getUrlService().generateAndReturnApkDownloadUri();
-//                                    ActivityLauncher.launchUpdatingActivity(host,fileName);
-//                                }
-//                                else{
-//                                    Toast.makeText(SettingsActivity.this,"No requiere actualización",Toast.LENGTH_LONG);
-//                                }
-
-
-
-
-//                                AppState.requestUpdateApp();
-
-
                                 if(AppState.isNetDisponible()){
                                     VideoplayerActivity.checkIfMustUpdate=true;
                                     AppState.notifyAppAlreadyUpdated=true;

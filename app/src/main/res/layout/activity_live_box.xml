@@ -110,7 +110,6 @@
             </RelativeLayout>
 
             <TextView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -118,15 +117,15 @@
                 android:foregroundGravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/cableoperador_go"
-                android:textSize="15dp"></TextView>
+                android:textSize="15dp"
+                android:visibility="gone"></TextView>
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="center"
-                >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -690,6 +689,27 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/rl_panel_up"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnOpenSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_behavior_dark_3d"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            android:textAllCaps="false"
+
+            android:gravity="center"
+            android:text="Ajustes"></Button>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/viewHideHud"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -700,7 +720,7 @@
         android:focusable="true"
         android:nextFocusLeft="@id/lv_canales"
         android:nextFocusRight="@id/tv_num_four"
-        android:nextFocusUp="@id/viewHideHud"
+        android:nextFocusUp="@id/btnOpenSettings"
         android:nextFocusDown="@id/viewHideHud"
         android:visibility="visible"></RelativeLayout>
 

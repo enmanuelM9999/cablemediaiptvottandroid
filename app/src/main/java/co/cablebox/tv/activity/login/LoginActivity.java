@@ -129,7 +129,6 @@ public abstract class LoginActivity extends AppCompatActivity {
             View messageBox = findViewById(R.id.rl_mensaje_wifi);
             messageBox.setVisibility(View.VISIBLE);
 
-            showOpenSettingsButtons();
         }catch(Exception e){
             System.out.println(e.toString());
         }
@@ -139,7 +138,6 @@ public abstract class LoginActivity extends AppCompatActivity {
             View messageBox = findViewById(R.id.rl_mensaje_wifi);
             messageBox.setVisibility(View.INVISIBLE);
 
-            hideOpenSettingsButtons();
         }catch(Exception e){
             System.out.println(e.toString());
         }

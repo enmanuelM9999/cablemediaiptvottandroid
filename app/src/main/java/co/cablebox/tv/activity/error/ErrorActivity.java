@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -63,8 +64,45 @@ public abstract class ErrorActivity extends AppCompatActivity {
         /*If exist an error, reset user credentials info for user can login again*/
         //AppState.getUser().resetUserCredentials();
 
+
+        onTouchSettingsButton();
+
+        hideChangeAccountButton();
+
         loadComponents();
 
+    }
+
+    void onTouchSettingsButton(){
+        try {
+            View button= findViewById(R.id.btnOpenSettings);
+            button.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    ActivityLauncher.launchSettingsActivityAsNormalUser();
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void hideChangeAccountButton(){
+        try {
+            View button= findViewById(R.id.btnErrorLaunchLogin);
+            button.setVisibility(View.INVISIBLE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    void showChangeAccountButton(){
+        try {
+            View button= findViewById(R.id.btnErrorLaunchLogin);
+            button.setVisibility(View.VISIBLE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void loadComponents(){}

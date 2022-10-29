@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.R;
 import co.cablebox.tv.URLService;
@@ -63,6 +64,22 @@ public class TvboxLoginActivity extends LoginActivity {
 
         /*Connect socket*/
         connectSocket();
+
+        onTouchSettingsButton();
+    }
+
+    void onTouchSettingsButton(){
+        try {
+            View button= findViewById(R.id.btnOpenSettings);
+            button.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    ActivityLauncher.launchSettingsActivityAsNormalUser();
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void showSerialNumberAndServerInfo(){
