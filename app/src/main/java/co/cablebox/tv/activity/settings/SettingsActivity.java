@@ -359,9 +359,13 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         createWifiConnectorObject();
 
 
-        String idMsg="ID: "+AppState.getUser().getUserId();
+        String idMsg="Id: "+AppState.getUser().getUserId();
         tvImei.setText(idMsg);
         tvImei.setVisibility(View.VISIBLE);
+
+
+        if(needsImportantSettings){showHost();}
+        else {hideHost();}
 
         //declarar las acciones de peticiones a la api
         //initVolleyCallback();
@@ -381,11 +385,27 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         llLoadingChannels.setVisibility(View.INVISIBLE);
         hideAllFailureScreens();
 
-
-            turnOnTechnicianMode();
+        turnOnTechnicianMode();
 
     }
 
+    private void showHost(){
+        try {
+            TextView tvHost=findViewById(R.id.tv_host);
+            tvHost.setVisibility(View.VISIBLE);
+            tvHost.setText("Server: "+AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void hideHost(){
+        try {
+            TextView tvHost=findViewById(R.id.tv_host);
+            tvHost.setVisibility(View.GONE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void funciones(){
         btnOK.setOnClickListener(new View.OnClickListener() {

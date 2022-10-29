@@ -55,39 +55,39 @@
         android:id="@+id/ll_descarga"
         android:layout_width="@dimen/h_700"
         android:layout_height="@dimen/h_400"
-        android:background="@drawable/bg_border_radius"
-        android:backgroundTintMode="screen"
-        android:backgroundTint="#18ffffff"
-        android:orientation="vertical"
         android:layout_centerInParent="true"
+        android:background="@drawable/bg_border_radius"
+        android:backgroundTint="#18ffffff"
+        android:backgroundTintMode="screen"
+        android:orientation="vertical"
         android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/h_50"
             android:fontFamily="@font/segoe_ui_bold"
-            android:textSize="@dimen/h_60"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="Actualizando..."></TextView>
+            android:text="Actualizando..."
+            android:textSize="@dimen/h_60"></TextView>
 
         <TextView
             android:id="@+id/tv_por_descarga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:textSize="@dimen/h_40"
             android:layout_gravity="center"
+            android:fontFamily="@font/segoe_ui_bold"
             android:gravity="center"
-            android:text="%"></TextView>
+            android:text="%"
+            android:textSize="@dimen/h_40"></TextView>
 
         <SeekBar
             android:id="@+id/sb_descarga"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:progress="0"
-            android:focusable="false"></SeekBar>
+            android:focusable="false"
+            android:progress="0"></SeekBar>
     </LinearLayout>
 
 

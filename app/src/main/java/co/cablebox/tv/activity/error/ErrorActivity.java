@@ -58,7 +58,7 @@ public abstract class ErrorActivity extends AppCompatActivity {
 
         /* Set user info and server info*/
         tvErrorUserId.setText(AppState.getUser().getUserId());
-        tvErrorServerInfo.setText(AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
+//        tvErrorServerInfo.setText(AppState.getUrlService().generateAndReturnSocketUriWithoutProtocol());
 
         /*If exist an error, reset user credentials info for user can login again*/
         //AppState.getUser().resetUserCredentials();

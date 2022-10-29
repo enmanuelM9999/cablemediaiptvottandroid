@@ -67,7 +67,7 @@ public class TvboxLoginActivity extends LoginActivity {
 
     private void showSerialNumberAndServerInfo(){
         showSerialNumber();
-        showServerInfo();
+//        showServerInfo();
     }
     private void showServerInfo(){
         /*Get server info*/
@@ -160,13 +160,13 @@ public class TvboxLoginActivity extends LoginActivity {
 
     public static String getMacAddr() {
         try {
-//            String mac= getEthernetMacAddress();
-//            if(mac.equals(DEFAULT_MAC_ADDRESS)){
-//                mac=getWlanMacAddress();
-//            }
-//            return mac;
+            String mac= getEthernetMacAddress();
+            if(mac.equals(DEFAULT_MAC_ADDRESS)){
+                mac=getWlanMacAddress();
+            }
+            return mac;
 
-            return getEthernetMacAddress();
+//            return getEthernetMacAddress();
         } catch (Exception ex) {
         }
         return DEFAULT_MAC_ADDRESS;

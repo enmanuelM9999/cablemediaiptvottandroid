@@ -16,89 +16,113 @@
         android:id="@+id/ll_panel_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="60dp"
-        android:paddingTop="35dp"
-        android:paddingBottom="10dp"
-        android:visibility="visible">
+        android:orientation="vertical"
+
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="60dp"
+
+        android:paddingHorizontal="0dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="0dp"
+        android:visibility="visible"
+        android:background="@drawable/bg_border_radius"
+        android:backgroundTint="#18ffffff"
+        android:backgroundTintMode="screen"
+        >
 
 
-        <RelativeLayout
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_gravity="center"
+           android:layout_marginBottom="7dp" >
+           <RelativeLayout
+               android:layout_width="wrap_content"
+               android:layout_height="40dp"
+               android:orientation="vertical">
+
+               <ImageView
+                   android:layout_width="50dp"
+                   android:layout_height="40dp"
+                   android:src="@drawable/cableoperador2" />
+
+           </RelativeLayout>
+
+           <TextView
+               android:id="@+id/cablebox_title"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_gravity="center_vertical"
+
+               android:foregroundGravity="center_vertical"
+               android:gravity="center"
+               android:alpha="0.5"
+               android:fontFamily="@font/segoe_ui_bold"
+               android:text="@string/app_name"
+               android:textSize="18dp"></TextView>
+
+       </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:orientation="vertical"
-            android:layout_marginRight="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:src="@drawable/cableoperador2" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_imei"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="0dp"
+                android:gravity="center"
+                android:text="ID: 22323343"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:alpha="0.5"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:typeface="sans" />
 
-        <TextView
-            android:id="@+id/cablebox_title"
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:alpha="0.5"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:text="Version 1.0.0"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/tv_host"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="SERVER: 111.1111.1111.111"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:alpha="0.5"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:typeface="sans"
+                android:visibility="visible"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:alpha="0.5"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/app_name"
-            android:textSize="18dp"></TextView>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="20dp"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:alpha="0.5"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="|"
-            android:textSize="18dp"></TextView>
 
-        <TextView
-            android:id="@+id/tv_imei"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="0dp"
-            android:gravity="center"
-            android:text="ID: 22323343"
-            android:textAlignment="center"
-            android:textSize="18dp"
-            android:alpha="0.5"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:typeface="sans" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="20dp"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:alpha="0.5"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="|"
-            android:textSize="18dp"></TextView>
-
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:alpha="0.5"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="Version 1.0.0"
-            android:textSize="18dp"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -254,34 +278,6 @@
             android:text="Ok"
             android:textSize="@dimen/w_60" />
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_mensaje_wifi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/h_10"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/h_100"
-        android:visibility="invisible">
-
-        <TextView
-            android:id="@+id/tv_inf_wi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_centerVertical="true"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:textSize="@dimen/h_40"
-            android:text="No tienes conexión"></TextView>
-
-        <ImageView
-            android:layout_width="@dimen/h_40"
-            android:layout_height="@dimen/h_40"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/tv_inf_wi"
-            android:src="@drawable/no_signal"></ImageView>
-    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_descarga"
@@ -1007,6 +1003,39 @@
                 android:textAlignment="center"
                 android:textSize="30dp" />
         </LinearLayout>
+    </RelativeLayout>
+
+
+    <!-- Message no net -->
+    <RelativeLayout
+        android:id="@+id/rl_mensaje_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="#123"
+        android:paddingHorizontal="10dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/iv_inf_wi"
+            android:layout_width="@dimen/h_40"
+            android:layout_height="@dimen/h_40"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/no_signal"></ImageView>
+
+        <TextView
+            android:id="@+id/tv_inf_wi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/iv_inf_wi"
+            android:fontFamily="@font/segoe_ui_bold"
+            android:textSize="@dimen/h_40"
+            android:text="No tienes conexión"></TextView>
+
+
     </RelativeLayout>
 
 </RelativeLayout>
