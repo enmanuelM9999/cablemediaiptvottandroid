@@ -1490,14 +1490,15 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                                 guaranteeOpenChannelsWithBusyWaiting();*/
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_RED:
-                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
-                                    handler.removeMessages(CODE_ACT_PLAN);
-                                    if(llRedes.getVisibility() == View.INVISIBLE) {
-                                        showWifiPanel();
-                                    }else if(llRedes.getVisibility() == View.VISIBLE){
-                                        hideWifiPanel();
-                                    }
-                                }
+//                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
+//                                    handler.removeMessages(CODE_ACT_PLAN);
+//                                    if(llRedes.getVisibility() == View.INVISIBLE) {
+//                                        showWifiPanel();
+//                                    }else if(llRedes.getVisibility() == View.VISIBLE){
+//                                        hideWifiPanel();
+//                                    }
+//                                }
+                                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE:
 //                                if(llDescarga.getVisibility() == View.INVISIBLE && !isUpdatingApp){
