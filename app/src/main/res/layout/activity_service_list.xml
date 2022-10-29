@@ -1028,12 +1028,12 @@
             android:id="@+id/tv_inf_wi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/iv_inf_wi"
             android:fontFamily="@font/segoe_ui_bold"
-            android:textSize="@dimen/h_40"
-            android:text="No tienes conexión"></TextView>
+            android:text="No tienes conexión"
+            android:textSize="@dimen/h_40"></TextView>
 
 
     </RelativeLayout>

@@ -75,6 +75,7 @@ import co.cablebox.tv.ActivityLauncher;
 import co.cablebox.tv.AppState;
 import co.cablebox.tv.BuildConfig;
 import co.cablebox.tv.R;
+import co.cablebox.tv.ToastManager;
 import co.cablebox.tv.activity.ConnectToWifiDialog;
 import co.cablebox.tv.activity.WifiListRvAdapter;
 import co.cablebox.tv.activity.helpers.SettingsGridViewItem;
@@ -1545,9 +1546,14 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 //                                AppState.requestUpdateApp();
 
 
-                                VideoplayerActivity.checkIfMustUpdate=true;
-                                AppState.notifyAppAlreadyUpdated=true;
-                                ActivityLauncher.launchMainActivity();
+                                if(AppState.isNetDisponible()){
+                                    VideoplayerActivity.checkIfMustUpdate=true;
+                                    AppState.notifyAppAlreadyUpdated=true;
+                                    ActivityLauncher.launchMainActivity();
+                                }else{
+                                    ToastManager.toast("No tienes conexión");
+                                    rlMensajeWifi.setVisibility(View.VISIBLE);
+                                }
                                 break;
                             case SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP:
                                 showChangeIpDialog();

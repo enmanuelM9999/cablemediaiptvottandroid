@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 public class UpdatingActivity extends AppCompatActivity {
@@ -45,9 +46,33 @@ public class UpdatingActivity extends AppCompatActivity {
         //Necessary for start apk downloading
         initDescarga();
 
+
+
         //Start download and apk installing
-        downloadManager=myReceiver.download(host,fileName);
-        //myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
+        if(!AppState.isNetDisponible()){
+            showNonetMessage();
+        }else{
+            hideNonetMessage();
+            downloadManager=myReceiver.download(host,fileName);
+            //myReceiver.download(AppState.getUrlService().generateAndReturnApkDownloadUri(),fileName);
+        }
+    }
+
+    private void showNonetMessage(){
+        try {
+            View rlNoNet=findViewById(R.id.rl_mensaje_wifi);
+            rlNoNet.setVisibility(View.VISIBLE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void hideNonetMessage(){
+        try {
+            View rlNoNet=findViewById(R.id.rl_mensaje_wifi);
+            rlNoNet.setVisibility(View.VISIBLE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setFontOnTitle(){

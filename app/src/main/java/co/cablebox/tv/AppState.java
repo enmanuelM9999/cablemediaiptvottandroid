@@ -2,6 +2,8 @@ package co.cablebox.tv;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -118,5 +120,16 @@ public class AppState {
         }finally {
             return applicationWasUpdated;
         }
+    }
+
+    // Comprobar si la conexion esta disponible
+    public static boolean isNetDisponible() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
     }
 }
