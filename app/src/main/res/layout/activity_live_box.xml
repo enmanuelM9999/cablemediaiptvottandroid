@@ -688,26 +688,6 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/rl_panel_up"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnOpenSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_behavior_dark_3d"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="visible"
-            android:textAllCaps="false"
-
-            android:gravity="center"
-            android:text="Ajustes"></Button>
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/viewHideHud"
@@ -918,13 +898,13 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/ll_panel_three">
 
-            <TextView
-                android:id="@+id/numSpace"
+            <!-- Btn open settings-->
+            <LinearLayout
+                android:id="@+id/btnOpenSettings"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:gravity="center"
                 android:layout_margin="2dp"
-                android:text=""
                 android:textAlignment="center"
                 android:textSize="20dp"
                 android:clickable="true"
@@ -932,8 +912,13 @@
                 android:nextFocusDown="@id/tv_num_one"
                 android:nextFocusLeft="@id/viewHideHud"
                 android:background="@drawable/button_behavior_dark_3d"
+                android:orientation="horizontal" >
 
-                />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/cog_icon"></ImageView>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_num_zero"

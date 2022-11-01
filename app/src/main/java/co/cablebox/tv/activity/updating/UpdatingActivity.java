@@ -69,7 +69,7 @@ public class UpdatingActivity extends AppCompatActivity {
     private void hideNonetMessage(){
         try {
             View rlNoNet=findViewById(R.id.rl_mensaje_wifi);
-            rlNoNet.setVisibility(View.VISIBLE);
+            rlNoNet.setVisibility(View.INVISIBLE);
         }catch (Exception e){
             e.printStackTrace();
         }
