@@ -71,10 +71,41 @@
             android:gravity="center"
             android:text="Actualizando..."
             android:textSize="@dimen/h_60"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvLocalVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:gravity="center"
+                android:text="De 2.29"
+                android:textSize="15dp"></TextView>
+            <TextView
+                android:id="@+id/tvServerVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/segoe_ui_bold"
+                android:gravity="center"
+                android:text=" a 2.30"
+                android:textSize="15dp"></TextView>
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_por_descarga"
             android:layout_width="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/segoe_ui_bold"

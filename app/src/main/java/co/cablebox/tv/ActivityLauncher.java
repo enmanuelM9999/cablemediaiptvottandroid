@@ -83,11 +83,12 @@ public class ActivityLauncher {
         context.startActivity(i);
     }
 
-    public static void launchUpdatingActivity(String host, String fileName){
+    public static void launchUpdatingActivity(String host, String fileName,String serverVersion){
         Context context= AppState.getAppContext();
         Intent i= new Intent(context, UpdatingActivity.class);
         i.putExtra("host",host); //pass props to the activity
         i.putExtra("fileName",fileName); //pass props to the activity
+        i.putExtra("serverVersion",serverVersion); //pass props to the activity
         context.startActivity(i);
     }
 

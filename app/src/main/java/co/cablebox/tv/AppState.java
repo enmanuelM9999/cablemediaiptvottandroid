@@ -104,7 +104,8 @@ public class AppState {
             if(localVersionIsOutdated){ //app outdated
                 String host=updatingData.getUrl_base_apk();
                 String fileName=updatingData.getNombre_apk();
-                ActivityLauncher.launchUpdatingActivity(host, fileName);
+                String serverVersion=updatingData.getVersion_tvbox();
+                ActivityLauncher.launchUpdatingActivity(host, fileName,serverVersion);
                 applicationWasUpdated=true;
             }
             else{//app already updated

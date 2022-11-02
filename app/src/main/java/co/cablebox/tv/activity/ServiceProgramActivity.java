@@ -1906,7 +1906,7 @@ public class ServiceProgramActivity extends Activity implements WifiConnectorMod
 
         //verCanales
         icon = getResources().getDrawable(R.drawable.house);
-        text="Ver canales";
+        text="Canales";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
         bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;

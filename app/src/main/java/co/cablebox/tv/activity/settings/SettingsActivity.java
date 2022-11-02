@@ -445,7 +445,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                     editor.commit();
 
                     llIpNueva.setVisibility(View.INVISIBLE);
-                    Toast.makeText(SettingsActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "El CAS ha cambiado", Toast.LENGTH_SHORT).show();
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(etIP.getWindowToken(), 0);
@@ -1360,7 +1360,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
         //verCanales
         icon = getResources().getDrawable(R.drawable.watch_tv_3d);
-        text="Ver canales";
+        text="Canales";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
         bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
@@ -1382,7 +1382,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
             icon = getResources().getDrawable(R.drawable.icon_ip_3d);
-            text="Cambiar IP";
+            text="Cambiar CAS";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
         }
@@ -1628,7 +1628,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(SettingsActivity.this);
-            builder.setTitle("Cambiar IP");
+            builder.setTitle("Cambiar CAS");
             //builder.setMessage(""); //Mensaje además del titulo
             inputNewIp= new EditText(SettingsActivity.this);
 
@@ -1655,7 +1655,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
                         AppState.getUrlService().setSocketPort(ipmuxPort);
 
                         llIpNueva.setVisibility(View.INVISIBLE);
-                        Toast.makeText(SettingsActivity.this, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, "El CAS ha cambiado", Toast.LENGTH_SHORT).show();
                         //inicio();
                         //socketNoti();
                         //initData();

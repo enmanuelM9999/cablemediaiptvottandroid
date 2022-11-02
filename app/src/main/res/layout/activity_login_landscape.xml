@@ -489,12 +489,54 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:background="@drawable/button_behavior_outline">
+            android:background="@drawable/button_behavior_outline"
+            android:alpha="0.5"
+            android:visibility="visible"
+            >
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/cog_icon"
+
+                ></ImageView>
+        </LinearLayout>
+
+        <!-- Btn open settings 2-->
+        <LinearLayout
+            android:id="@+id/btnOpenSettings2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/button_behavior_outline"
+            android:alpha="0.5"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/cog_icon"
+
+                ></ImageView>
+        </LinearLayout>
+
+        <!-- Btn open settings 3-->
+        <LinearLayout
+            android:id="@+id/btnOpenSettings3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/button_behavior_outline"
+            android:alpha="0.5"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/cog_icon"
+
                 ></ImageView>
         </LinearLayout>
 

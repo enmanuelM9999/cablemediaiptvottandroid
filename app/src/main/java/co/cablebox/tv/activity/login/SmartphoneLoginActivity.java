@@ -119,7 +119,7 @@ public class SmartphoneLoginActivity extends LoginActivity implements IpmuxActiv
                    AppState.getSocketConnection().socketEmitConnect();
 
                    /*Show loading animation*/
-                   Toast.makeText(SmartphoneLoginActivity.this,"Entrando...",Toast.LENGTH_LONG).show();
+                   Toast.makeText(SmartphoneLoginActivity.this,"Ingresando...",Toast.LENGTH_LONG).show();
 
                    loginExtraSteps();
                }

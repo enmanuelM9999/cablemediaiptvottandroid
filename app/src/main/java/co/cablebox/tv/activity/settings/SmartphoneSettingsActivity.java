@@ -20,7 +20,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
 
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(context);
-            builder.setTitle("Cambiar IP");
+            builder.setTitle("Cambiar CAS");
             //builder.setMessage(""); //Mensaje además del titulo
             inputNewIp= new EditText(context);
 
@@ -46,7 +46,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
                         AppState.getUrlService().setSocketPort(ipmuxPort);
 
                         llIpNueva.setVisibility(View.INVISIBLE);
-                        Toast.makeText(context, "La Ip ha cambiado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "El CAS ha cambiado", Toast.LENGTH_SHORT).show();
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(inputNewIp.getWindowToken(), 0);
@@ -88,7 +88,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
 
         //verCanales
         icon = getResources().getDrawable(R.drawable.watch_tv_3d);
-        text="Ver canales";
+        text="Canales";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
         bgColorAlpha= SettingsGridViewItem.DEFAULT_BG_COLOR;
@@ -104,7 +104,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
             icon = getResources().getDrawable(R.drawable.icon_ip_3d);
-            text="Cambiar IP";
+            text="Cambiar CAS";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
         }

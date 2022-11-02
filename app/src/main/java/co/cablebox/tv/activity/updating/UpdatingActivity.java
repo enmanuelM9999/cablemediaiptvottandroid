@@ -42,6 +42,15 @@ public class UpdatingActivity extends AppCompatActivity {
         /*Recover props*/
         String fileName = ""+getIntent().getStringExtra("fileName");
         String host= ""+getIntent().getStringExtra("host");
+        String serverVersion= ""+getIntent().getStringExtra("serverVersion");
+        String localVersion=AppState.getAppVersion();
+
+        /*Set text*/
+        TextView tvServerVersion= findViewById(R.id.tvServerVersion);
+        TextView tvLocalVersion= findViewById(R.id.tvLocalVersion);
+
+        tvLocalVersion.setText("De "+localVersion);
+        tvServerVersion.setText(" a "+serverVersion);
 
         //Necessary for start apk downloading
         initDescarga();
