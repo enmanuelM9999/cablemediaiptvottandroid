@@ -1382,7 +1382,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
             icon = getResources().getDrawable(R.drawable.icon_ip_3d);
-            text="Cambiar CAS";
+            text="CAS";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
         }
@@ -1628,7 +1628,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(SettingsActivity.this);
-            builder.setTitle("Cambiar CAS");
+            builder.setTitle("CAS");
             //builder.setMessage(""); //Mensaje además del titulo
             inputNewIp= new EditText(SettingsActivity.this);
 

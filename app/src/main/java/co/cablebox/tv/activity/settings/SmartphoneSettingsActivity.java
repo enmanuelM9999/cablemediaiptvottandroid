@@ -20,7 +20,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
 
             EditText inputNewIp;
             AlertDialog.Builder builder= new AlertDialog.Builder(context);
-            builder.setTitle("Cambiar CAS");
+            builder.setTitle("CAS");
             //builder.setMessage(""); //Mensaje además del titulo
             inputNewIp= new EditText(context);
 
@@ -104,7 +104,7 @@ public class SmartphoneSettingsActivity extends SettingsActivity {
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
             icon = getResources().getDrawable(R.drawable.icon_ip_3d);
-            text="Cambiar CAS";
+            text="CAS";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
         }
