@@ -8,9 +8,4 @@
         </shape>
     </item>
 
-    <item android:drawable="@drawable/random_solid"
-        android:start="@dimen/w_50"
-        android:top="@dimen/w_50"
-        android:bottom="@dimen/w_50"
-        android:end="@dimen/w_50"></item>
 </layer-list>
