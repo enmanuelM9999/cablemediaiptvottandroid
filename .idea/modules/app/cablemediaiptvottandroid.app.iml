@@ -60,10 +60,13 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.http.legacy" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/engine.io-client-2.0.0.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/glide-3.7.0.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/gson-2.3.1.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/json-20090211.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/okhttp-3.12.12.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/picasso-2.5.2.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/socket.io-client-2.0.1.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/universal-image-loader-1.9.5.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/vaadin-usage-statistics-2.1.2.jar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/WebSocket.jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
@@ -74,8 +77,8 @@
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout-solver:2.0.4" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/libvlc-all-3.5.0-eap6.aar" level="project" />
     <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/croller.aar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/libs/libvlc-all-3.5.0-eap6.aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.leanback:leanback:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.recyclerview:recyclerview:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.4@aar" level="project" />

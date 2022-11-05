@@ -41,6 +41,10 @@ public class URLService {
         return "http://"+getSocketIP()+":5508/archivos/apk/subidas";
     }
 
+    public String generateAndReturnChannelLogoFolder(){
+        return "http://"+getSocketIP()+":5508/archivos/logos";
+    }
+
     /**
      * Método que lee las variables socketProtocol, socketIP, socketPort, y construye una uri para que la app acceda al servidor de sockets y haga peticiones
      * */

@@ -69,6 +69,10 @@ public class Channels implements Serializable {
         }
 
         public String getLogo() {
+            return logo;
+        }
+
+        public String getLogo_DEPRECATED() {
             String logo2 = logo
                     .replace("&", "_")
                     .replace("+", "_")

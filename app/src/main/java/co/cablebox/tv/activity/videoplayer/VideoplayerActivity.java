@@ -2,6 +2,9 @@ package co.cablebox.tv.activity.videoplayer;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+
+import com.bumptech.glide.Glide;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -54,6 +57,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+
+
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
@@ -82,6 +87,7 @@ import co.cablebox.tv.activity.ServiceProgramActivity;
 import co.cablebox.tv.bean.Channels;
 import co.cablebox.tv.bean.MensajeBean;
 import co.cablebox.tv.utils.ConexionSQLiteHelper;
+import co.cablebox.tv.utils.ImageLoader;
 import co.cablebox.tv.utils.NetWorkUtils;
 import co.cablebox.tv.utils.OnSwipeTouchListener;
 import co.cablebox.tv.utils.StorageUtils;
@@ -858,38 +864,30 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         else if(programBack < 0)
             programBack = channels.getChannels().size() - 1;
 
-        /*tv_program_name_list_top.setText(channels.getData().get(programBack).getNum() + "    " +
-                channels.getData().get(programBack).getName());
-        selecImg(tv_program_logo_list_top, channels.getData().get(programBack).getLogo());
-
-        tv_program_name_list_center.setText(channels.getData().get(channelIndex).getNum() + "    " +
-                channels.getData().get(channelIndex).getName());
-        selecImg(tv_program_logo_list_center, channels.getData().get(channelIndex).getLogo());
-
-        tv_program_name_list_bot.setText(channels.getData().get(programNext).getNum() + "    " +
-                channels.getData().get(programNext).getName());
-        selecImg(tv_program_logo_list_bot, channels.getData().get(programNext).getLogo());*/
     }
 
     // Buscar imagen en la drawable y actualizar imagen en la interfaz
     public void selecImg(ImageView imageView, String nombre) {
-        boolean aux = false;
-        Field[] drawables = R.drawable.class.getFields();
-        for (Field f : drawables) {
-            try {
-                if (f.getName().startsWith(nombre)) {
-                    aux = true;
-                    int resourceID = this.getResources().getIdentifier(nombre, "drawable",this.getPackageName());
-                    imageView.setImageResource(f.getInt(resourceID));
-                    break;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (!aux) {
-            imageView.setImageResource(R.drawable.plantilla);
-        }
+        AppState.setAppContext(getApplicationContext());
+        ImageLoader.loadChannelLogo(nombre,imageView);
+        AppState.setAppContext(this);
+//        boolean aux = false;
+//        Field[] drawables = R.drawable.class.getFields();
+//        for (Field f : drawables) {
+//            try {
+//                if (f.getName().startsWith(nombre)) {
+//                    aux = true;
+//                    int resourceID = this.getResources().getIdentifier(nombre, "drawable",this.getPackageName());
+//                    imageView.setImageResource(f.getInt(resourceID));
+//                    break;
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (!aux) {
+//            imageView.setImageResource(R.drawable.plantilla);
+//        }
     }
 
     /* Iniciar Variables necesarias para la actividad
@@ -1360,6 +1358,8 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
                     TextView textView = (TextView) convertView.findViewById(R.id.tv_program_name);
                     textView.setText(canales.get(position).getNum() + "    " +
                             canales.get(position).getName());
+
+
                 }else{
                     ImageView imageView = (ImageView) convertView.findViewById(R.id.tv_program_logo);
                     imageView.setImageResource(R.drawable.ic_mantenimiento);
@@ -3724,7 +3724,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         llSmartphoneButtons.setVisibility(View.VISIBLE);
     }
 
-//    Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
+
 
 
 
@@ -3733,4 +3733,12 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
     public void fixLogoutDialogStyle(AlertDialog ad){
         ad.getWindow().setLayout(300, 180); //Controlling width and height.
     }
+
+    public void loadHttpImage(String resource, ImageView canvas){
+        Glide.with(AppState.getAppContext())
+                .load(resource)
+                .into(canvas);
+    }
+
+
 }

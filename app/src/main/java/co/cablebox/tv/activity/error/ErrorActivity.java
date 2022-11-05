@@ -7,7 +7,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -189,4 +192,5 @@ public abstract class ErrorActivity extends AppCompatActivity {
         handler.removeMessages(CODE_SALIR_APP);
         handler.sendEmptyMessageDelayed(CODE_SALIR_APP, delayBusNum);
     }
+
 }

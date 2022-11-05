@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             AppState.restartSocketConnection();
 
             /*Set app context*/
-            AppState.setAppContext(this);
+            AppState.setAppContext(MainActivity.this);
 
             /*Check device type*/
             String deviceType= getDeviceType();
