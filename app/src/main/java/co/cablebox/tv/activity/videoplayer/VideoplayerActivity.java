@@ -3724,6 +3724,7 @@ public abstract class VideoplayerActivity extends Activity implements IVLCVout.O
         llSmartphoneButtons.setVisibility(View.VISIBLE);
     }
 
+//    Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView);
 
 
 

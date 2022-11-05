@@ -1359,7 +1359,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         String bgColorAlpha;
 
         //verCanales
-        icon = getResources().getDrawable(R.drawable.watch_tv_3d);
+        icon = getResources().getDrawable(R.drawable.live_tv_flat_white);
         text="Canales";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANNELS;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
@@ -1367,13 +1367,13 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //net
-        icon = getResources().getDrawable(R.drawable.wifi);
+        icon = getResources().getDrawable(R.drawable.wifi_flat_white);
         text="Red";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_RED;
         gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //actualizar
-        icon = getResources().getDrawable(R.drawable.download);
+        icon = getResources().getDrawable(R.drawable.download_flat_white);
         text="Actualizar";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_UPDATE;
         gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
@@ -1381,7 +1381,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
         //fix para saber si la activity necesita mostrar ajustes importantes o no. Los ajustes importantes o delicados, son los que pueden causar un mal funcionamiento de la app si no se saben usar
         if (SettingsActivity.needsImportantSettings){
             //cambiarIp
-            icon = getResources().getDrawable(R.drawable.icon_ip_3d);
+            icon = getResources().getDrawable(R.drawable.lock_flat_white);
             text="CAS";
             action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_IP;
             gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
@@ -1405,7 +1405,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
         }
 
-        Drawable icon= getResources().getDrawable(R.drawable.settings);
+        Drawable icon= getResources().getDrawable(R.drawable.settings_flat_white);
         String text= "Ajustes";
         String actionType= SettingsGridViewItem.ACTION_TYPE_START_SETTINGS;
         String action =Settings.ACTION_SETTINGS;
@@ -1482,6 +1482,7 @@ public abstract class SettingsActivity extends Activity implements WifiConnector
 
                 TextView appName = (TextView) convertView.findViewById(R.id.name_app);
                 appName.setText(gridViewItems.get(position).getText());
+
 
                 return convertView;
             }

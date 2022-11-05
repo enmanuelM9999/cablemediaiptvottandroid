@@ -21,6 +21,7 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_a.xml" value="0.2165" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_blue.xml" value="0.2165" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_blue_3d.xml" value="0.188" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_blue_3d_rounded.xml" value="0.1515" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_dark.xml" value="0.1315" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_flat_green.xml" value="0.138" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable-anydpi/borde_volumen_flat_red.xml" value="0.138" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/button_behavior_pink_3d.xml" value="0.188" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/button_behavior_purple.xml" value="0.138" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/button_behavior_yellow.xml" value="0.138" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/button_downoutline_white.xml" value="0.193" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/button_outline_white.xml" value="0.185" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/circularbuttonwhite.xml" value="0.1835" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/circularinputwhite.xml" value="0.1835" />
@@ -61,6 +63,7 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/sel_focus.xml" value="0.143" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/top_button_video_player.xml" value="0.215" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/transparent_bg.xml" value="0.194" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/drawable/transparent_bg_gray.xml" value="0.1" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_apps_list.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_detail.xml" value="0.1328125" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_error.xml" value="0.25" />
@@ -76,11 +79,11 @@
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_service_list.xml" value="0.25" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_tvbox_loading_channels.xml" value="0.33" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/activity_updating.xml" value="0.25" />
-        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/item.xml" value="0.209375" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/item.xml" value="0.25" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/layout_cableoperador_loading.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/lv_list_item.xml" value="0.28266913809082483" />
         <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/new_login.xml" value="0.25" />
-        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/row_item.xml" value="0.209375" />
+        <entry key="..\:/Users/enman/Documents/Cmedia/ipmux/cablemediaiptvottandroid/app/src/main/res/layout/row_item.xml" value="0.33" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_login.xml" value="0.209375" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_service_list.xml" value="0.1962962962962963" />
         <entry key="..\:/Users/enman/Documents/cablemedia-cablebox_iptv_android-6966a83e8473 - copia/app/src/main/res/layout/activity_tvbox_loading_channels.xml" value="0.1" />

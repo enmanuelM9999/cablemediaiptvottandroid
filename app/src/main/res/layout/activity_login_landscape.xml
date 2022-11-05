@@ -483,59 +483,20 @@
         >
 
 
-        <!-- Btn open settings-->
-        <LinearLayout
-            android:id="@+id/btnOpenSettingsOriginal"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/button_behavior_outline"
-            android:alpha="0.5"
-            android:visibility="gone"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/cog_icon"
-
-                ></ImageView>
-        </LinearLayout>
-
-        <!-- Btn open settings 2-->
-        <LinearLayout
-            android:id="@+id/btnOpenSettings2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/button_behavior_outline"
-            android:alpha="0.5"
-            android:visibility="gone"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/cog_icon"
-
-                ></ImageView>
-        </LinearLayout>
-
-        <!-- Btn open settings 3-->
+        <!-- Btn open settings -->
         <LinearLayout
             android:id="@+id/btnOpenSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:background="@drawable/button_behavior_no_fill_only_on_hover"
-            android:alpha="0.5"
             android:visibility="visible"
             >
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/cog_icon"
+                android:background="@drawable/settings_flat_white"
 
                 ></ImageView>
         </LinearLayout>

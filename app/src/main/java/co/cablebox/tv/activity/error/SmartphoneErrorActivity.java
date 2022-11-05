@@ -45,7 +45,7 @@ public class SmartphoneErrorActivity extends ErrorActivity{
     @Override
     public void loadComponents(){
         /*Button to login*/
-        Button btnErrorLaunchLogin=findViewById(R.id.btnErrorLaunchLogin);
+        View btnErrorLaunchLogin=findViewById(R.id.btnErrorLaunchLogin);
         btnErrorLaunchLogin.setVisibility(View.VISIBLE);
         btnErrorLaunchLogin.setOnClickListener(new View.OnClickListener() {
 

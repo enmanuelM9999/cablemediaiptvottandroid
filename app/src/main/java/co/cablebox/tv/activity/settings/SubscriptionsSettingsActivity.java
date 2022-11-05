@@ -18,7 +18,7 @@ public class SubscriptionsSettingsActivity extends SettingsActivity{
 
 
         //logout
-        icon = getResources().getDrawable(R.drawable.logout);
+        icon = getResources().getDrawable(R.drawable.logout_flat_white);
         text="Cerrar sesión";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_LOGOUT;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;
@@ -26,7 +26,7 @@ public class SubscriptionsSettingsActivity extends SettingsActivity{
         gridViewItems.add(new SettingsGridViewItem(icon,text,actionType,action,bgColor,bgColorAlpha));
 
         //Use Tvbox with iptv style
-        icon = getResources().getDrawable(R.drawable.iptv);
+        icon = getResources().getDrawable(R.drawable.ethernet_flat_white);
         text="Usar IPTV";
         action= SettingsGridViewItem.ACTION_START_CONFIGURATION_CHANGE_TO_IPTV;
         bgColor= SettingsGridViewItem.DEFAULT_BG_COLOR;

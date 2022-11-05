@@ -177,20 +177,24 @@
           android:layout_alignParentLeft="true"
           >
 
-          <!-- Btn open settings-->
+          <!-- Btn open settings -->
           <LinearLayout
               android:id="@+id/btnOpenSettings"
-              android:layout_width="70dp"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:gravity="center"
-              android:background="@drawable/button_behavior_outline">
+              android:background="@drawable/button_behavior_no_fill_only_on_hover"
+              android:visibility="visible"
+              >
               <ImageView
-                  android:layout_width="30dp"
-                  android:layout_height="30dp"
+                  android:layout_width="40dp"
+                  android:layout_height="40dp"
                   android:layout_margin="10dp"
-                  android:background="@drawable/cog_icon"
+                  android:background="@drawable/settings_flat_white"
+
                   ></ImageView>
           </LinearLayout>
+
       </LinearLayout>
   </RelativeLayout>
 

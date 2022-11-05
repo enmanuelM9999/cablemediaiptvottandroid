@@ -345,30 +345,53 @@
                 android:layout_alignParentLeft="true"
                 >
 
-                <!-- Btn open settings-->
+                <!-- Btn open settings -->
                 <LinearLayout
                     android:id="@+id/btnOpenSettings"
-                    android:layout_width="70dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:background="@drawable/button_behavior_outline">
+                    android:background="@drawable/button_behavior_no_fill_only_on_hover"
+                    android:visibility="visible"
+                    >
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_margin="10dp"
-                        android:background="@drawable/cog_icon"
+                        android:background="@drawable/settings_flat_white"
+
                         ></ImageView>
                 </LinearLayout>
-                <Button
+
+                <!-- Btn change account -->
+                <LinearLayout
                     android:id="@+id/btnErrorLaunchLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="CAMBIAR CUENTA"
-                    android:background="@drawable/button_behavior_outline"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="5dp"
+                    android:background="@drawable/button_behavior_no_fill_only_on_hover"
                     android:visibility="visible"
-                    ></Button>
+                    >
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/person_flat_white"
+
+                        ></ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cambiar cuenta">
+
+                    </TextView>
+                </LinearLayout>
+
+
+
             </LinearLayout>
 
         </RelativeLayout>
