@@ -2,7 +2,6 @@
   <library name="Gradle: com.jakewharton:butterknife-runtime:10.2.3@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/0fad2b653a526b227f156ea7ec1349f4/transformed/jetified-butterknife-runtime-10.2.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0fad2b653a526b227f156ea7ec1349f4/transformed/jetified-butterknife-runtime-10.2.3/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0fad2b653a526b227f156ea7ec1349f4/transformed/jetified-butterknife-runtime-10.2.3/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
